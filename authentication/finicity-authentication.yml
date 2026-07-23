@@ -1,0 +1,23 @@
+generated: '2026-07-23'
+method: derived
+source: openapi/finicity-openbanking-us-openapi-original.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: FinicityAppKey
+  type: apiKey
+  in: header
+  parameter: Finicity-App-Key
+  description: The "Finicity-App-Key" from the developer dashboard
+  sources:
+  - openapi/finicity-openbanking-us-openapi-original.yml
+- name: FinicityAppToken
+  type: apiKey
+  in: header
+  parameter: Finicity-App-Token
+  description: A token returned by the `/authentication` API
+  sources:
+  - openapi/finicity-openbanking-us-openapi-original.yml

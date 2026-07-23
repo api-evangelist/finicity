@@ -1,0 +1,30 @@
+generated: '2026-07-23'
+method: searched
+source: >-
+  https://developer.mastercard.com/open-banking-us/documentation/connect/ and npm (mastercardapi)
+note: >-
+  Client-side / embeddable surfaces distinct from server SDKs. The marquee component is Connect —
+  a hosted, prebuilt account-linking and consent experience embedded via the Connect SDKs.
+families:
+  - name: Connect
+    kind: hosted embeddable experience
+    description: >-
+      Prebuilt, hosted account-linking + data-sharing consent flow. The partner generates a
+      Connect URL (POST /connect/v2/generate) and embeds/launches it via the Connect SDK.
+    variants:
+      - Data Connect (full)
+      - Lite Connect
+      - Fix Connect
+      - Joint Borrower Connect
+    loaders:
+      - name: connect-web-sdk
+        registry: npm
+        url: https://www.npmjs.com/package/connect-web-sdk
+      - name: connect-react-native-sdk
+        registry: npm
+        url: https://www.npmjs.com/package/connect-react-native-sdk
+  - name: Connect Components
+    kind: composable UI operations
+    description: >-
+      Experience configuration + component operations (Get Experience IDs, Duplicate Experience
+      for Indirect Partner) that customize the embedded Connect UI per partner.

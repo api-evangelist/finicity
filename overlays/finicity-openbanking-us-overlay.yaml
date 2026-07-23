@@ -1,0 +1,28 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Mastercard Open Banking (US) / Finicity
+  version: 1.0.0
+extends: openapi/finicity-openbanking-us-openapi-original.yml
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-provider: finicity
+      x-apievangelist-category: financial-data-aggregation
+      x-apievangelist-auth: two-header-apikey
+      x-apievangelist-events: [webhooks, txpush]
+      x-apievangelist-standards: [fdx, cfpb-1033, fcra]
+      x-apievangelist-sandbox: test-drive-finbank
+  - target: $.components.securitySchemes.FinicityAppToken
+    update:
+      x-token-endpoint: /aggregation/v2/partners/authentication
+      x-token-lifetime: short-lived
+  - target: $.info
+    update:
+      x-apievangelist-artifacts:
+        authentication: authentication/finicity-authentication.yml
+        conventions: conventions/finicity-conventions.yml
+        errors: errors/finicity-problem-types.yml
+        lifecycle: lifecycle/finicity-lifecycle.yml
+        sandbox: sandbox/finicity-sandbox.yml
+        webhooks: asyncapi/finicity-webhooks.yml
+        data_model: data-model/finicity-data-model.yml

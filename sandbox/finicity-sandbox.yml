@@ -1,0 +1,41 @@
+generated: '2026-07-23'
+method: searched
+source: >-
+  https://github.com/Mastercard/open-banking-us-openapi (bin/setup.sh + README) and
+  https://developer.mastercard.com/open-banking-us/documentation/test-the-apis/
+note: >-
+  Mastercard Open Banking (US) ships a "Test Drive" plan that runs against the live
+  api.finicity.com host using a free Mastercard Developers account (Partner ID, Partner Secret,
+  App Key). Test data is provided via the FinBank simulated institution rather than test API keys.
+plan: Test Drive
+base_url: https://api.finicity.com
+credentials_required:
+  - partnerId
+  - partnerSecret
+  - appKey (Finicity-App-Key)
+auth_flow:
+  step: POST /aggregation/v2/partners/authentication
+  body: '{ "partnerId": "...", "partnerSecret": "...", "partnerId app key in Finicity-App-Key header" }'
+  returns: short-lived Finicity-App-Token
+test_customer:
+  create: POST /aggregation/v2/customers/testing (AddTestingCustomer)
+  note: creates a testing customer whose accounts can only link to the FinBank test institution
+test_institution:
+  name: FinBank Profiles - A
+  institutionId: '102105'
+  credentials:
+    username: profile_03
+    password: profile_03
+    credential_ids:
+      username: '102105001'
+      password: '102105002'
+  note: >-
+    Verbatim from the official setup script — sign in to FinBank with profile_03 / profile_03,
+    or add all accounts via POST /aggregation/v1/customers/{customerId}/institutions/102105/accounts/addall.
+bank_account_profiles_docs: https://developer.mastercard.com/open-banking-us/documentation/test-the-apis/#bank-account-profiles
+connect_test:
+  generate_url: POST /connect/v2/generate (GenerateConnectUrl)
+  note: open the returned Connect link, search "FinBank Profiles - A", add profile_03 accounts.
+txpush_test:
+  create_test_transaction: POST /aggregation/v1/customers/{customerId}/accounts/{accountId}/transactions (CreateTxPushTestTransaction)
+  note: injects a synthetic transaction to exercise TxPush event delivery in test.

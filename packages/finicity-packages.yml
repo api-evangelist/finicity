@@ -1,0 +1,41 @@
+generated: '2026-07-23'
+method: searched
+source: https://www.npmjs.com/~mastercardapi
+note: >-
+  First-party client libraries for the Mastercard Open Banking (US) / Finicity platform.
+  The server-side REST clients are generated per-language from the published OpenAPI via
+  OpenAPI Generator (see Mastercard/open-banking-us-openapi tests), so the officially
+  distributed packages on registries are the Connect front-end SDKs plus the shared
+  Mastercard OAuth1/encryption helper libraries.
+packages:
+  - language: javascript
+    registry: npm
+    name: connect-web-sdk
+    url: https://www.npmjs.com/package/connect-web-sdk
+    install: npm install connect-web-sdk
+    repo: https://github.com/Mastercard/connect-web-sdk
+    version: 2.3.0
+    official: true
+    description: Mastercard Open Banking Connect Web SDK — embeds the hosted Connect account-linking experience.
+  - language: javascript
+    registry: npm
+    name: connect-react-native-sdk
+    url: https://www.npmjs.com/package/connect-react-native-sdk
+    install: npm install connect-react-native-sdk
+    version: 2.1.0
+    official: true
+    description: React Native SDK for the Mastercard Open Finance Connect experience.
+  - language: javascript
+    registry: npm
+    name: mastercard-oauth1-signer
+    url: https://www.npmjs.com/package/mastercard-oauth1-signer
+    official: true
+    description: Shared Mastercard library for signing API requests (used across Mastercard Developers APIs).
+  - language: java
+    registry: github
+    name: open-banking-us-openapi (generated client)
+    url: https://github.com/Mastercard/open-banking-us-openapi
+    official: true
+    description: >-
+      Java API client generated from the official OpenAPI via OpenAPI Generator; the repo's test
+      suite consumes it. Other languages are generated the same way (see OpenAPI Generator).

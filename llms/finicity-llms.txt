@@ -1,0 +1,32 @@
+# Finicity (Mastercard Open Banking, US)
+
+> Finicity, LLC is a Utah-based financial-data aggregator and open-finance platform, acquired by Mastercard in 2020 and now operating as Mastercard Open Banking (US). It provides consumer-permissioned account and transaction aggregation, Verification of Assets/Income/Employment, cash-flow analysis, bank statements, and account validation for ACH payments over the api.finicity.com host. Auth is a two-header API-key model (Finicity-App-Key + a short-lived Finicity-App-Token). A founding FDX participant; FCRA-regulated CRA for its verification reports.
+
+## APIs
+- [Aggregation (Accounts & Transactions)](https://developer.mastercard.com/open-banking-us/documentation/): consumer-permissioned account/transaction aggregation.
+- [Finicity Connect](https://developer.mastercard.com/open-banking-us/documentation/connect/): hosted, embeddable account-linking + consent experience.
+- [Verification of Assets (VoA)](https://developer.mastercard.com/open-banking-us/documentation/): permissioned asset-verification reports for lending.
+- [Verification of Income & Employment (VoIE)](https://developer.mastercard.com/open-banking-us/documentation/): income/employment signals from transaction + payroll data.
+- [Transaction Analysis (Cash Flow)](https://developer.mastercard.com/open-banking-us/documentation/): cash-flow, income and expense decisioning insights.
+- [Payments (Account Validation)](https://developer.mastercard.com/open-banking-us/documentation/): account ownership/status validation for ACH.
+- [Open Banking Data Access (FDX)](https://developer.mastercard.com/open-banking-us/documentation/): FDX-aligned data sharing in support of CFPB 1033.
+
+## Specs
+- [OpenAPI 3.0.3 (openbanking-us.yaml, v1.43.0, 157 operations)](https://raw.githubusercontent.com/Mastercard/open-banking-us-openapi/main/openbanking-us.yaml)
+- [Postman collection](https://github.com/Mastercard/open-banking-us-postman)
+- [Authentication profile](https://raw.githubusercontent.com/api-evangelist/finicity/refs/heads/main/authentication/finicity-authentication.yml)
+- [Conventions](https://raw.githubusercontent.com/api-evangelist/finicity/refs/heads/main/conventions/finicity-conventions.yml)
+- [Error catalog](https://raw.githubusercontent.com/api-evangelist/finicity/refs/heads/main/errors/finicity-problem-types.yml)
+- [Lifecycle](https://raw.githubusercontent.com/api-evangelist/finicity/refs/heads/main/lifecycle/finicity-lifecycle.yml)
+- [Webhooks / TxPush event catalog](https://raw.githubusercontent.com/api-evangelist/finicity/refs/heads/main/asyncapi/finicity-webhooks.yml)
+- [Data model](https://raw.githubusercontent.com/api-evangelist/finicity/refs/heads/main/data-model/finicity-data-model.yml)
+- [Candidate MCP tool surface](https://raw.githubusercontent.com/api-evangelist/finicity/refs/heads/main/mcp/finicity-mcp.yml)
+
+## Docs
+- [Developer portal / documentation](https://developer.mastercard.com/open-banking-us/documentation/)
+- [API reference](https://developer.mastercard.com/open-banking-us/documentation/api-reference/)
+- [Connect](https://developer.mastercard.com/open-banking-us/documentation/connect/)
+- [Test the APIs (Test Drive / FinBank)](https://developer.mastercard.com/open-banking-us/documentation/test-the-apis/)
+- [Codes and formats](https://developer.mastercard.com/open-banking-us/documentation/codes-and-formats/)
+- [API status](https://developer.mastercard.com/open-banking-us/documentation/status/)
+- [GitHub org (Mastercard)](https://github.com/Mastercard)

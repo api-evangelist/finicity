@@ -1,0 +1,35 @@
+generated: '2026-07-23'
+method: searched
+source: openapi/finicity-openbanking-us-openapi-original.yml
+spec_type: Webhooks
+note: >-
+  Finicity/Mastercard Open Banking exposes two event surfaces. No standalone AsyncAPI document is
+  published, so this captures the webhook/event catalog derived from the OpenAPI management
+  operations. The current surface is notification-subscriptions/webhooks; the legacy per-customer
+  webhook-subscription operations and TxPush remain but are being superseded (see lifecycle/).
+surfaces:
+  - name: Notification Subscriptions (Webhooks)
+    base_path: /notification-subscriptions/webhooks
+    delivery: HTTP POST to partner-registered callback URL
+    management_operations:
+      - createWebhookSubscription (deprecated legacy variant)
+      - listWebhookSubscriptions (deprecated legacy variant)
+      - updateWebhookSubscription
+      - deleteWebhookSubscription
+      - listAvailableWebhookSubscriptionEvents
+      - changeWebhookSubscriptionEventStatus
+      - testWebhookSubscription
+    note: >-
+      Subscriptions bind to available event types (listable via
+      listAvailableWebhookSubscriptionEvents); per-event enable/disable + test-delivery supported.
+  - name: TxPush
+    base_path: /aggregation/v1/customers/{customerId}/accounts/{accountId}/txpush
+    delivery: real-time transaction + balance push notifications per subscribed account
+    management_operations:
+      - SubscribeToTxPushNotifications
+      - DisableTxPushNotifications
+      - DeleteTxPushSubscription
+      - CreateTxPushTestTransaction
+    events:
+      - transaction (new transaction posted to a subscribed account)
+      - balance (balance change on a subscribed account)

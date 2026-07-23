@@ -1,0 +1,20 @@
+generated: '2026-07-23'
+method: generated
+source: openapi/finicity-openbanking-us-openapi-original.yml
+skills:
+  - file: finicity-link-accounts-with-connect.md
+    name: Link a customer's accounts with Finicity Connect
+    api: openapi/finicity-openbanking-us-openapi-original.yml
+    operations: [CreateToken, AddCustomer, GenerateConnectUrl, RefreshCustomerAccounts, GetCustomerAccounts]
+  - file: finicity-pull-transactions.md
+    name: Pull a customer's transactions
+    api: openapi/finicity-openbanking-us-openapi-original.yml
+    operations: [CreateToken, RefreshCustomerAccounts, LoadHistoricTransactionsForCustomerAccount, GetAllCustomerTransactions, GetCustomerAccountTransactions]
+  - file: finicity-generate-voa-report.md
+    name: Generate a Verification of Assets (VoA) report
+    api: openapi/finicity-openbanking-us-openapi-original.yml
+    operations: [CreateToken, RefreshCustomerAccounts, GenerateVOAReport, GenerateVOAWithIncomeReport]
+  - file: finicity-subscribe-webhooks.md
+    name: Subscribe to transaction and balance events
+    api: openapi/finicity-openbanking-us-openapi-original.yml
+    operations: [CreateToken, SubscribeToTxPushNotifications, CreateTxPushTestTransaction, DisableTxPushNotifications, updateWebhookSubscription]

@@ -1,0 +1,43 @@
+generated: '2026-07-23'
+method: derived
+source: openapi/finicity-openbanking-us-openapi-original.yml
+note: >-
+  Standards posture derived from the OpenAPI plus Finicity's public positioning. FDX participation
+  and CFPB Section 1033 alignment are publicly documented program facts; named security
+  certifications (SOC 2 / ISO 27001 / PCI) were not verified against a published Mastercard/Finicity
+  trust page in this round, so no `Compliance` pointer is emitted.
+standards:
+  - id: openapi-3.0
+    conforms: true
+    evidence: openbanking-us.yaml is OpenAPI 3.0.3 with 139 paths / 157 operations / 783 schemas
+  - id: oauth2
+    conforms: false
+    evidence: auth is apiKey header pair (Finicity-App-Key + Finicity-App-Token), not OAuth2
+  - id: apikey-auth
+    conforms: true
+    evidence: two securitySchemes of type apiKey in header (partner app key + short-lived app token)
+  - id: fdx
+    conforms: true
+    evidence: >-
+      Finicity is a founding participant of the Financial Data Exchange (FDX); the platform exposes
+      FDX-aligned consumer-permissioned data-sharing surfaces
+  - id: cfpb-1033
+    conforms: true
+    evidence: platform positioned as an enabler of CFPB Section 1033 personal financial data rights
+  - id: fcra
+    conforms: true
+    evidence: >-
+      Finicity operates as an FCRA-regulated consumer reporting agency for its verification products
+      (Verification of Assets / Income / Employment reports)
+  - id: webhooks
+    conforms: true
+    evidence: notification-subscriptions/webhooks + aggregation TxPush event surfaces
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: error responses use a Finicity JSON error envelope, not application/problem+json
+  - id: pagination
+    conforms: true
+    evidence: list operations expose start / limit / page query parameters
+  - id: idempotency
+    conforms: false
+    evidence: no Idempotency-Key header/parameter documented in the spec

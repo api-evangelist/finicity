@@ -1,0 +1,52 @@
+generated: '2026-07-23'
+method: derived
+source: openapi/finicity-openbanking-us-openapi-original.yml
+docs: https://developer.mastercard.com/open-banking-us/documentation/codes-and-formats/
+format: finicity-error
+note: >-
+  Finicity/Mastercard Open Banking returns a JSON error envelope (code + message) rather than
+  RFC 9457 application/problem+json. Problem types below are derived from the HTTP status codes
+  actually declared across the 157 operations; per-code numeric error meanings live in the
+  "Codes and formats" docs reference (partner-gated for the full table).
+envelope:
+  fields:
+    - code
+    - message
+  media_type: application/json
+problems:
+  - status: 400
+    title: Bad Request
+    detail: Malformed request, invalid or missing required parameters/body.
+    occurrences: 143
+  - status: 401
+    title: Unauthorized
+    detail: Missing/invalid Finicity-App-Key or Finicity-App-Token, or expired app token.
+    occurrences: 150
+  - status: 403
+    title: Forbidden
+    detail: Authenticated but not entitled to the resource/product for this partner.
+    occurrences: 34
+  - status: 404
+    title: Not Found
+    detail: Customer, account, transaction, report or subscription id does not exist.
+    occurrences: 134
+  - status: 406
+    title: Not Acceptable
+    detail: Requested representation/Accept type not supported.
+    occurrences: 4
+  - status: 408
+    title: Request Timeout
+    detail: Upstream institution or aggregation request timed out.
+    occurrences: 1
+  - status: 409
+    title: Conflict
+    detail: Resource state conflict (e.g. duplicate customer / subscription already exists).
+    occurrences: 6
+  - status: 429
+    title: Too Many Requests
+    detail: Rate limit exceeded for the partner/app.
+    occurrences: 3
+  - status: 500
+    title: Internal Server Error
+    detail: Unexpected server-side failure.
+    occurrences: 0

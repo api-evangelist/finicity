@@ -1,0 +1,35 @@
+generated: '2026-07-23'
+method: derived
+source: openapi/finicity-openbanking-us-openapi-original.yml
+note: Cross-cutting request/response semantics derived from the OpenAPI and the public docs.
+authentication:
+  style: two-header apiKey
+  headers:
+    - Finicity-App-Key   # static partner app key from the developer dashboard
+    - Finicity-App-Token # short-lived token from POST /aggregation/v2/partners/authentication (CreateToken)
+  ref: authentication/finicity-authentication.yml
+idempotency:
+  supported: false
+  note: No Idempotency-Key header or parameter is documented in the spec; report generation is
+    naturally deduplicated per customer/report id rather than via idempotency keys.
+pagination:
+  style: offset
+  params: [start, limit]
+  also_seen: [page]
+  note: List/transaction endpoints page with start + limit (1-based start); a few use page.
+versioning:
+  style: uri-path
+  note: Per-resource path versions (v1..v4) coexist; migrate per-endpoint. See lifecycle/.
+  ref: lifecycle/finicity-lifecycle.yml
+date_filtering:
+  params: [fromDate, toDate]
+  format: epoch seconds (UNIX timestamps)
+error_envelope:
+  media_type: application/json
+  shape: '{ "code": <int>, "message": <string> }'
+  ref: errors/finicity-problem-types.yml
+rate_limiting:
+  documented: partner/app level; 429 Too Many Requests returned on exceed
+events:
+  webhooks: notification-subscriptions/webhooks + aggregation TxPush
+  ref: asyncapi/finicity-webhooks.yml

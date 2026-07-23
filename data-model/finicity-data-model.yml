@@ -1,0 +1,57 @@
+generated: '2026-07-23'
+method: derived
+source: openapi/finicity-openbanking-us-openapi-original.yml
+note: Entity graph derived from OpenAPI path hierarchy (customerId/accountId/consumerId/subscriptionId)
+  and report/webhook resources; ids are numeric Finicity resource ids.
+entities:
+- name: Customer
+- name: Account
+- name: Transaction
+- name: Institution
+- name: InstitutionLogin
+- name: Consumer
+- name: Report
+- name: Subscription
+- name: WebhookSubscription
+- name: ConnectSession
+relationships:
+- from: Customer
+  to: Account
+  type: has_many
+  via: customerId (path)
+- from: Account
+  to: Transaction
+  type: has_many
+  via: accountId (path)
+- from: Account
+  to: Institution
+  type: belongs_to
+  via: institutionId
+- from: Account
+  to: InstitutionLogin
+  type: belongs_to
+  via: institutionLoginId
+- from: Customer
+  to: Consumer
+  type: has_one
+  via: customerId
+- from: Consumer
+  to: Report
+  type: has_many
+  via: consumerId
+- from: Customer
+  to: Report
+  type: has_many
+  via: customerId
+- from: Customer
+  to: Subscription
+  type: has_many
+  via: customerId (TxPush)
+- from: Account
+  to: Subscription
+  type: has_many
+  via: accountId (TxPush)
+- from: ConnectSession
+  to: Customer
+  type: belongs_to
+  via: customerId

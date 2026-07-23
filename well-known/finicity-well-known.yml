@@ -1,0 +1,22 @@
+generated: '2026-07-23'
+method: searched
+note: >-
+  The api.finicity.com host is fully authenticated — every path (including /.well-known/*)
+  returns 401 without valid Finicity-App-Key/Finicity-App-Token headers, so no anonymous
+  well-known discovery documents are exposed. The corporate site www.finicity.com returns 403
+  to automated fetches. No 200 documents were captured; recorded as valid negative discovery.
+hosts:
+  - host: https://api.finicity.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 401
+      - path: /.well-known/openid-configuration
+        status: 401
+      - path: /.well-known/oauth-authorization-server
+        status: 401
+      - path: /.well-known/api-catalog
+        status: 401
+  - host: https://www.finicity.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 403

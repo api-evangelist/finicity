@@ -1,0 +1,34 @@
+generated: '2026-07-23'
+method: searched
+source: openapi/finicity-openbanking-us-openapi-original.yml
+versioning:
+  scheme: uri-path
+  note: >-
+    Per-resource path versioning (v1..v4 coexist across the API — e.g. aggregation/v1..v4,
+    decisioning/v2, connect/v2, aggregation/v2/partners/authentication). The OpenAPI document
+    itself is semver-versioned; current spec version 1.43.0.
+  spec_version: 1.43.0
+deprecation:
+  policy_url: https://developer.mastercard.com/open-banking-us/documentation/
+  in_spec: true
+  note: >-
+    Operations are flagged deprecated in-spec (OpenAPI `deprecated: true`); the entire legacy
+    /v1/customers webhook-subscription surface has been superseded by notification-subscriptions,
+    and several read endpoints replaced by newer path versions.
+status_page: https://developer.mastercard.com/open-banking-us/documentation/status/
+deprecated_operations:
+  - openapi/finicity-openbanking-us-openapi-original.yml#GetAppRegistrationStatus
+  - openapi/finicity-openbanking-us-openapi-original.yml#GetReportByConsumer
+  - openapi/finicity-openbanking-us-openapi-original.yml#GetAvailableBalance
+  - openapi/finicity-openbanking-us-openapi-original.yml#createWebhookSubscription
+  - openapi/finicity-openbanking-us-openapi-original.yml#listWebhookSubscriptions
+  - openapi/finicity-openbanking-us-openapi-original.yml#getWebhookSubscriptionById
+  - openapi/finicity-openbanking-us-openapi-original.yml#updateWebhookSubscription
+  - openapi/finicity-openbanking-us-openapi-original.yml#deleteWebhookSubscription
+  - openapi/finicity-openbanking-us-openapi-original.yml#updateWebhookSubscriptionEvent
+  - openapi/finicity-openbanking-us-openapi-original.yml#deleteWebhookSubscriptionEvent
+  - openapi/finicity-openbanking-us-openapi-original.yml#changeWebhookSubscriptionEventStatus
+  - openapi/finicity-openbanking-us-openapi-original.yml#listAvailableWebhookSubscriptionEvents
+  - openapi/finicity-openbanking-us-openapi-original.yml#changeWebhookSubscriptionStatus
+  - openapi/finicity-openbanking-us-openapi-original.yml#testWebhookSubscription
+  - openapi/finicity-openbanking-us-openapi-original.yml#testWebhookSubscriptionBasedOnEventId

@@ -47,6 +47,10 @@ apis:
     url: https://developer.mastercard.com/open-banking-us/documentation/
   - type: APIReference
     url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: OpenAPI
+    url: openapi/finicity-openbanking-us-openapi-original.yml
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
 - aid: finicity:finicity-connect
   name: Finicity Connect
   description: Hosted, embeddable account-linking experience that lets a consumer
@@ -145,14 +149,62 @@ apis:
   - type: APIReference
     url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
 common:
+- type: Authentication
+  url: authentication/finicity-authentication.yml
+- type: DomainSecurity
+  url: security/finicity-domain-security.yml
+- type: Packages
+  url: packages/finicity-packages.yml
+- type: SDKs
+  url: packages/finicity-packages.yml
+- type: WellKnown
+  url: well-known/finicity-well-known.yml
+- type: MCPServer
+  url: mcp/finicity-mcp.yml
+- type: LLMsTxt
+  url: llms/finicity-llms.txt
+- type: Overlay
+  url: overlays/finicity-openbanking-us-overlay.yaml
+- type: Conformance
+  url: conformance/finicity-conformance.yml
+- type: ErrorCatalog
+  url: errors/finicity-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/finicity-lifecycle.yml
+- type: StatusPage
+  url: https://developer.mastercard.com/open-banking-us/documentation/status/
+- type: Deprecation
+  url: lifecycle/finicity-lifecycle.yml
+- type: Conventions
+  url: conventions/finicity-conventions.yml
+- type: ChangeLog
+  url: changelog/finicity-changelog.yml
+- type: Components
+  url: components/finicity-components.yml
+- type: DataModel
+  url: data-model/finicity-data-model.yml
+- type: Sandbox
+  url: sandbox/finicity-sandbox.yml
+- type: AgentSkill
+  url: skills/_index.yml
 - type: Website
   url: https://www.finicity.com/
 - type: DeveloperPortal
   url: https://developer.mastercard.com/open-banking-us/documentation/
 - type: Documentation
   url: https://developer.mastercard.com/open-banking-us/documentation/
+- type: APIReference
+  url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+- type: GettingStarted
+  url: https://developer.mastercard.com/open-banking-us/documentation/test-the-apis/
+- type: Postman
+  url: https://github.com/Mastercard/open-banking-us-postman
+- type: Support
+  url: https://developer.mastercard.com/support/
+- type: SignUp
+  url: https://developer.mastercard.com/product/open-banking/
 - type: GitHubOrganization
-  url: https://github.com/Finicity
+  url: https://github.com/Mastercard
 - type: LinkedIn
   url: https://www.linkedin.com/company/finicity/
 maintainers:

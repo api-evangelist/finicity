@@ -1,0 +1,14 @@
+generated: '2026-07-23'
+method: searched
+source: >-
+  https://github.com/Mastercard/open-banking-us-openapi (openbanking-us.yaml info.version) and
+  https://developer.mastercard.com/open-banking-us/documentation/
+note: >-
+  The authoritative dated changelog / release notes live on the partner developer portal; the
+  publicly verifiable version signal is the OpenAPI document's semver, maintained in the public
+  Mastercard/open-banking-us-openapi repository. Recent dated entries are portal-gated and were
+  not captured to avoid fabrication.
+scheme: semver (OpenAPI document version)
+current_version: 1.43.0
+release_notes: https://developer.mastercard.com/open-banking-us/documentation/
+entries: []

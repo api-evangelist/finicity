@@ -1,0 +1,439 @@
+# Candidate MCP tool surface derived from the Mastercard Open Banking (US) / Finicity OpenAPI.
+generated: '2026-07-23'
+method: derived
+status: candidate
+source: openapi/finicity-openbanking-us-openapi-original.yml
+note: No official Finicity/Mastercard Open Banking MCP server published as of this date; tools derived
+  1:1 from non-deprecated OpenAPI operations as a candidate agent surface. Input schemas are each operation
+  parameters + requestBody in the referenced spec.
+server:
+  name: finicity
+  transport: http
+  url: null
+tools:
+- name: create_token
+  description: Create Access Token
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#CreateToken
+- name: modify_partner_secret
+  description: Modify Partner Secret
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#ModifyPartnerSecret
+- name: generate_connect_url
+  description: Generate Data Connect URL
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateConnectUrl
+- name: generate_lite_connect_url
+  description: Generate Lite Data Connect URL
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateLiteConnectUrl
+- name: generate_fix_connect_url
+  description: Generate Fix Data Connect URL
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateFixConnectUrl
+- name: send_connect_email
+  description: Send Data Connect Email
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#SendConnectEmail
+- name: generate_joint_borrower_connect_url
+  description: Generate Data Connect URL - Joint Borrower
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateJointBorrowerConnectUrl
+- name: verify_micro_entry_microdeposit
+  description: Account Validation Assistant User Verification of Microdeposits
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#VerifyMicroEntryMicrodeposit
+- name: generate_transfer_bill_pay_switch_url
+  description: Generate Connect Transfer URL for Bill Pay Switch
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateTransferBillPaySwitchUrl
+- name: generate_transfer_deposit_switch_url
+  description: Generate Connect Transfer URL for Deposit Switch
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateTransferDepositSwitchUrl
+- name: send_joint_borrower_connect_email
+  description: Send Data Connect Email - Joint Borrower
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#SendJointBorrowerConnectEmail
+- name: add_testing_customer
+  description: Add Testing Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#AddTestingCustomer
+- name: add_customer
+  description: Add Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#AddCustomer
+- name: get_customers
+  description: Get Customers
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomers
+- name: get_customer_with_app_data
+  description: Get Customer With App Data by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomerWithAppData
+- name: get_customer
+  description: Get Customer by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomer
+- name: modify_customer
+  description: Modify Customer by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#ModifyCustomer
+- name: delete_customer
+  description: Delete Access to Customer by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#DeleteCustomer
+- name: create_consumer
+  description: Create Consumer for the Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#CreateConsumer
+- name: get_consumer_for_customer
+  description: Get the Consumer Record for the Given Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetConsumerForCustomer
+- name: get_consumer
+  description: Get Consumer by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetConsumer
+- name: modify_consumer
+  description: Modify Consumer by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#ModifyConsumer
+- name: get_customer_accounts_by_institution_login
+  description: Get Customer Accounts by Institution Login ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomerAccountsByInstitutionLogin
+- name: refresh_customer_accounts_by_institution_login
+  description: Refresh Customer Accounts by Institution Login ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#RefreshCustomerAccountsByInstitutionLogin
+- name: refresh_customer_accounts_by_institution_login_v2
+  description: Refresh Customer Accounts by Institution Login ID for Data Access Tiers
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#RefreshCustomerAccountsByInstitutionLoginV2
+- name: delete_customer_accounts_by_institution_login
+  description: Delete Access to Customer Accounts by Institution Login ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#DeleteCustomerAccountsByInstitutionLogin
+- name: get_customer_account
+  description: Get Customer Account by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomerAccount
+- name: delete_customer_account
+  description: Delete Access to Customer Account by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#DeleteCustomerAccount
+- name: get_customer_accounts
+  description: Get Customer Accounts
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomerAccounts
+- name: refresh_customer_accounts
+  description: Refresh Customer Accounts
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#RefreshCustomerAccounts
+- name: refresh_customer_accounts_v2
+  description: Refresh Customer Accounts for Data Access Tiers
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#RefreshCustomerAccountsV2
+- name: get_customer_accounts_by_institution
+  description: Get Customer Accounts by Institution ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomerAccountsByInstitution
+- name: get_customer_accounts_by_institution_simple
+  description: Get Customer Accounts by Institution ID (Simple)
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomerAccountsByInstitutionSimple
+- name: get_customer_accounts_by_institution_login_simple
+  description: Get Customer Accounts by Institution Login ID (Simple)
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomerAccountsByInstitutionLoginSimple
+- name: get_customer_account_simple
+  description: Get Customer Account by ID (Simple)
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomerAccountSimple
+- name: get_customer_accounts_simple
+  description: Get Customer Accounts (Simple)
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomerAccountsSimple
+- name: load_historic_transactions_for_customer_account
+  description: Load Historic Transactions for Customer Account
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#LoadHistoricTransactionsForCustomerAccount
+- name: get_account_owner
+  description: Get Account Owner
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetAccountOwner
+- name: get_account_owner_details
+  description: Get Account Owner Details
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetAccountOwnerDetails
+- name: generate_fcra_payment_success_indicators
+  description: Generate FCRA Payment Success Indicators
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateFcraPaymentSuccessIndicators
+- name: get_fcra_payment_success_indicators
+  description: Get FCRA Payment Success Indicators by Pay Request ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetFcraPaymentSuccessIndicators
+- name: generate_payment_success_indicators
+  description: Generate Non-FCRA Payment Success Indicators
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GeneratePaymentSuccessIndicators
+- name: get_payment_success_indicators
+  description: Get Non-FCRA Payment Success Indicators by Pay Request ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetPaymentSuccessIndicators
+- name: get_fcrapayment_success_indicator
+  description: Get FCRA Payment Success Indicator (Legacy)
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetFCRAPaymentSuccessIndicator
+- name: get_payment_success_indicator
+  description: Get Non-FCRA Payment Success Indicator (Legacy)
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetPaymentSuccessIndicator
+- name: register_app
+  description: Register App
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#RegisterApp
+- name: modify_app_registration
+  description: Modify App Registration
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#ModifyAppRegistration
+- name: get_applications
+  description: Get App Registration Details
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#getApplications
+- name: get_registered_institutions
+  description: Get App Registration Status by Institution
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#getRegisteredInstitutions
+- name: set_customer_app_id
+  description: Set Customer App ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#SetCustomerAppID
+- name: migrate_institution_login_accounts
+  description: Migrate Institution Login Accounts
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#MigrateInstitutionLoginAccounts
+- name: get_certified_institutions_with_rssd
+  description: Get Certified Institutions With RSSD
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCertifiedInstitutionsWithRSSD
+- name: get_institutions
+  description: Get Institutions
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetInstitutions
+- name: get_certified_institutions
+  description: Get Certified Institutions
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCertifiedInstitutions
+- name: get_institution
+  description: Get Institution by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetInstitution
+- name: get_institution_branding
+  description: Get Institution Branding by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetInstitutionBranding
+- name: get_institutions_by_routing_number
+  description: Get Institutions by Routing Number
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetInstitutionsByRoutingNumber
+- name: get_location_matches
+  description: Get Merchant Location Matches
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetLocationMatches
+- name: generate_voareport
+  description: Generate VOA Report for the Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateVOAReport
+- name: generate_voawith_income_report
+  description: Generate VOA With Income Report for the Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateVOAWithIncomeReport
+- name: generate_prequalification_crareport
+  description: Generate Prequalification (CRA) Report for the Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GeneratePrequalificationCRAReport
+- name: generate_prequalification_non_crareport
+  description: Generate Prequalification (Non-CRA) Report
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GeneratePrequalificationNonCRAReport
+- name: generate_voireport
+  description: Generate VOI Report for the Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateVOIReport
+- name: generate_voepayroll_report
+  description: Generate VOE - Payroll Report for the Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateVOEPayrollReport
+- name: generate_voetransactions_report
+  description: Generate VOE - Transactions Report for the Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateVOETransactionsReport
+- name: generate_pay_statement_report
+  description: Generate Pay Statement Report for the Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GeneratePayStatementReport
+- name: generate_voiepaystub_with_txverify_report
+  description: Generate VOIE Paystub (With TXVerify) Report for the Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateVOIEPaystubWithTXVerifyReport
+- name: generate_voiepaystub_report
+  description: Generate VOIE - Paystub Report for the Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateVOIEPaystubReport
+- name: refresh_voiepayroll_report
+  description: Generate VOIE - Payroll Report for the Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#RefreshVOIEPayrollReport
+- name: get_customer_account_statement
+  description: Get Customer Account Statement
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomerAccountStatement
+- name: generate_statement_report
+  description: Generate Statement Report for Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateStatementReport
+- name: get_customer_account_multiple_statement
+  description: Get Customer Account Multiple Statement Details
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomerAccountMultipleStatement
+- name: get_all_customer_transactions
+  description: Get All Customer Transactions
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetAllCustomerTransactions
+- name: get_transaction_by_unique_transaction_id
+  description: Get Transaction by UniqueTransactionId
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetTransactionByUniqueTransactionId
+- name: get_customer_transaction
+  description: Get Customer Transaction by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomerTransaction
+- name: get_customer_account_transactions
+  description: Get Customer Account Transactions
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetCustomerAccountTransactions
+- name: generate_transactions_report
+  description: Generate Transactions Report for the Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateTransactionsReport
+- name: get_recurring_transactions
+  description: Get Recurring Transactions for Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetRecurringTransactions
+- name: generate_balance_analytics_report
+  description: Generate Balance Analytics Report for the customer - Personal/Business
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateBalanceAnalyticsReport
+- name: generate_cashflow_analytics_report
+  description: Generate Cash Flow Analytics Report for the customer - Personal/Business
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateCashflowAnalyticsReport
+- name: generate_payment_history_report
+  description: Generate Payment History Report for the Customer - Business
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GeneratePaymentHistoryReport
+- name: store_customer_pay_statement
+  description: Store Customer Pay Statement
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#StoreCustomerPayStatement
+- name: get_loan_payment_details
+  description: Get Loan Payment Details
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetLoanPaymentDetails
+- name: get_portfolio_by_customer
+  description: Get Portfolio by Customer and Portfolio
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetPortfolioByCustomer
+- name: subscribe_to_tx_push_notifications
+  description: Subscribe to TxPush Notifications
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#SubscribeToTxPushNotifications
+- name: disable_tx_push_notifications
+  description: Disable TxPush Notifications
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#DisableTxPushNotifications
+- name: create_tx_push_test_transaction
+  description: Create TxPush Test Transaction
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#CreateTxPushTestTransaction
+- name: delete_tx_push_subscription
+  description: Delete TxPush Subscription
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#DeleteTxPushSubscription
+- name: get_portfolio_by_consumer
+  description: Get Portfolio by Consumer and Portfolio
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetPortfolioByConsumer
+- name: get_account_achdetails
+  description: Get Account ACH Details
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetAccountACHDetails
+- name: report_reissue
+  description: Report Reissue
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#ReportReissue
+- name: get_report_by_id
+  description: Get Report by Report ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetReportById
+- name: get_report_by_customer
+  description: Get Report by Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetReportByCustomer
+- name: get_report_by_report_id
+  description: Get Report by Report ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetReportByReportId
+- name: get_reports_by_customer_id
+  description: Get List of Reports by Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetReportsByCustomerId
+- name: get_reports_by_consumer_id
+  description: Get List of Reports by Consumer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetReportsByConsumerId
+- name: get_reseller_billing_report
+  description: Get Billing Summary for Partner
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#getResellerBillingReport
+- name: get_asset_by_customer_id
+  description: Get Asset by Customer and ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetAssetByCustomerID
+- name: get_available_balance_live
+  description: Get Available Balance
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetAvailableBalanceLive
+- name: generate_cash_flow_business_report
+  description: Generate Cash Flow Report for the Customer (Business)
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateCashFlowBusinessReport
+- name: generate_cash_flow_personal_report
+  description: Generate Cash Flow Report for the Customer (Personal)
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateCashFlowPersonalReport
+- name: initiate_micro_amount_deposits
+  description: Initiate Micro Entries
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#InitiateMicroAmountDeposits
+- name: verify_micro_amount_deposits
+  description: Verify Micro Entries
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#VerifyMicroAmountDeposits
+- name: get_micro_deposits_details
+  description: Get Micro Entries Details
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetMicroDepositsDetails
+- name: generate_third_party_access_key
+  description: Generate Third Party Access Key
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateThirdPartyAccessKey
+- name: update_third_party_access_key
+  description: Update Third Party Access
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#UpdateThirdPartyAccessKey
+- name: revoke_third_party_access_key
+  description: Revoke Third Party Access
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#RevokeThirdPartyAccessKey
+- name: get_customer_authorization_details
+  description: Get Customer Authorization Details
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#getCustomerAuthorizationDetails
+- name: add_business_details
+  description: Create a New Business for a Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#AddBusinessDetails
+- name: get_business_by_customer
+  description: Get Business for Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetBusinessByCustomer
+- name: update_business
+  description: Update Business by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#UpdateBusiness
+- name: get_business_by_id
+  description: Get Business by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetBusinessById
+- name: get_account_payment_instruction_details
+  description: Get Account ACH Details with RTP/FedNow
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetAccountPaymentInstructionDetails
+- name: account_matching_score_details
+  description: Account Owner Match
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#AccountMatchingScoreDetails
+- name: get_all_experience
+  description: Get Experience IDs
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetAllExperience
+- name: create_connect_experience
+  description: Duplicate Experience for Indirect Partner
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#CreateConnectExperience
+- name: get_all_deposit_switches
+  description: Get Deposit Switches by Customer ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#getAllDepositSwitches
+- name: get_all_external_deposit_switches
+  description: Get Deposit Switches by External ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#getAllExternalDepositSwitches
+- name: get_deposit_switch_details
+  description: Get Deposit Switch by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#getDepositSwitchDetails
+- name: post-institutions-institution_id-oauth-urls
+  description: Create OAuth URL
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#post-institutions-institutionId-oauth-urls
+- name: post-institutions-institution_id-login-forms
+  description: Create Login Form
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#post-institutions-institutionId-login-forms
+- name: post-reconnections
+  description: Initiate Reconnection
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#post-reconnections
+- name: post-configurations
+  description: Create Components Configuration
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#post-configurations
+- name: get-configurations
+  description: Get All Configurations for Current Partner
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#get-configurations
+- name: get-configurations-configuration_id
+  description: Get Configuration Details
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#get-configurations-configurationId
+- name: delete-configurations-configuration_id
+  description: Delete Configuration
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#delete-configurations-configurationId
+- name: enrich_transactions
+  description: Performs Enrichment of the Provided Transactions
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#enrichTransactions
+- name: get_all_pay_switches
+  description: Get Pay Switches by Customer ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#getAllPaySwitches
+- name: generate_payment_risk_insights_report
+  description: Generate Payment Risk Insights Report for the Customer
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GeneratePaymentRiskInsightsReport
+- name: generate_foresight_analytics_non_cra_report
+  description: Generate foresight analytics non-CRA report for the customer - Personal
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateForesightAnalyticsNonCraReport
+- name: generate_foresight_analytics_first_third_party_non_cra_report
+  description: Generate Non CRA Foresight Analytics Report Using 1st/3rd Party Transaction Data
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateForesightAnalyticsFirstThirdPartyNonCraReport
+- name: get_bill_pay_switch_details
+  description: Get Pay Switch by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#getBillPaySwitchDetails
+- name: get_account_details_by_institution_login_id
+  description: Fetch all the requested field details using institution login ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetAccountDetailsByInstitutionLoginId
+- name: get_account_details_by_account_id
+  description: Fetch all the requested details using the account ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetAccountDetailsByAccountId
+- name: generate_sbcametrics_report
+  description: Generate Small Business Credit Analytics Report
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GenerateSBCAMetricsReport
+- name: get_portfolio_by_path_param_port_folio_id
+  description: Get Portfolio by Portfolio ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetPortfolioByPathParamPortFolioID
+- name: refresh_transactions
+  description: Trigger Customer Account Refresh
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#refreshTransactions
+- name: get_transaction_refresh_status
+  description: Get Customer Account Refresh Status
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#getTransactionRefreshStatus
+- name: get_data_sharing_consents_by_customer_id
+  description: Get Customer Data Sharing Consents By Customer ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetDataSharingConsentsByCustomerId
+- name: get_data_sharing_consents_by_id
+  description: Get Customer Data Sharing Consent By ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#GetDataSharingConsentsByID
+- name: revoke_data_sharing_consent_by_id
+  description: Revoke Data Sharing Consent by ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#RevokeDataSharingConsentById
+- name: revoke_data_sharing_consent_by_institution_login_id
+  description: Revoke Data Sharing Consent for an Institution by Institution Login ID
+  source_operation: openapi/finicity-openbanking-us-openapi-original.yml#RevokeDataSharingConsentByInstitutionLoginID
