@@ -1,0 +1,160 @@
+aid: finicity
+url: https://raw.githubusercontent.com/api-evangelist/finicity/refs/heads/main/apis.yml
+name: Finicity
+kind: company
+description: Finicity, LLC is a Utah-based financial-data aggregator and open-finance
+  technology provider acquired by Mastercard in 2020 and now operating as Mastercard
+  Open Banking (US) within Mastercard Open Finance. It is not a chartered bank but
+  a consumer-permissioned data-access and decisioning platform (and an FCRA-regulated
+  consumer reporting agency for its verification products), providing account and
+  transaction aggregation, Verification of Assets, Income and Employment, transaction
+  and cash-flow analysis, statements, and account validation for ACH payments.
+  Finicity runs a first-party developer portal (developer.mastercard.com/open-banking-us,
+  formerly developer.finicity.com and docs.finicity.com, both of which now redirect)
+  over the live api.finicity.com host, is a founding participant in the Financial
+  Data Exchange (FDX) with FDX-aligned data-sharing APIs, and positions its platform
+  as an enabler of CFPB Section 1033 personal financial data rights. Public product
+  documentation is openly reachable, but the full API reference and any
+  machine-readable OpenAPI specification are partner-gated behind Mastercard
+  Developers credentials.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Financial Services
+- Data Aggregation
+- Open Finance
+- Open Banking
+- FDX
+- United States
+- Payments
+- Financial Data
+created: '2026-07-23'
+modified: '2026-07-23'
+specificationVersion: '0.19'
+apis:
+- aid: finicity:finicity-aggregation-api
+  name: Finicity Aggregation (Accounts & Transactions) API
+  description: Consumer-permissioned account and transaction aggregation across banks,
+    credit unions, cards, loans and investment accounts, delivering account details,
+    balances and categorized transactions.
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Aggregation
+  - Accounts
+  - Transactions
+  properties:
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+- aid: finicity:finicity-connect
+  name: Finicity Connect
+  description: Hosted, embeddable account-linking experience that lets a consumer
+    authenticate to their financial institution and permission data sharing, returning
+    the linked accounts to the partner application.
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/connect/
+  baseURL: https://api.finicity.com
+  tags:
+  - Connect
+  - Onboarding
+  - Account Linking
+  properties:
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/connect/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+- aid: finicity:finicity-verification-of-assets-api
+  name: Finicity Verification of Assets (VoA) API
+  description: Generates a consumer-permissioned Verification of Assets report from
+    aggregated account and balance data for mortgage, lending and underwriting
+    workflows, an FCRA-regulated consumer report product.
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Verification
+  - Assets
+  - Lending
+  properties:
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+- aid: finicity:finicity-verification-of-income-employment-api
+  name: Finicity Verification of Income & Employment (VoIE) API
+  description: Derives income streams and employment signals from permissioned
+    transaction and payroll data to produce Verification of Income and Verification
+    of Employment reports for lending decisions.
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Verification
+  - Income
+  - Employment
+  properties:
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+- aid: finicity:finicity-transaction-analysis-api
+  name: Finicity Transaction Analysis (Cash Flow) API
+  description: Analyzes permissioned transaction history to produce cash-flow,
+    income and expense insights used for prequalification, credit decisioning and
+    financial-health scoring.
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Transactions
+  - Cash Flow
+  - Decisioning
+  properties:
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+- aid: finicity:finicity-payments-account-validation-api
+  name: Finicity Payments (Account Validation) API
+  description: Validates account ownership and status for ACH and account-funding
+    flows, returning account, routing and owner verification signals to reduce
+    returned payments and fraud.
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Payments
+  - Account Validation
+  - ACH
+  properties:
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+- aid: finicity:finicity-open-banking-data-access
+  name: Finicity Open Banking Data Access (FDX)
+  description: FDX-aligned, consumer-permissioned open-banking data-access surface
+    through which Finicity, as a founding Financial Data Exchange participant,
+    shares financial data on behalf of connected institutions in support of CFPB
+    Section 1033 data rights.
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Open Banking
+  - FDX
+  - Data Access
+  properties:
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+common:
+- type: Website
+  url: https://www.finicity.com/
+- type: DeveloperPortal
+  url: https://developer.mastercard.com/open-banking-us/documentation/
+- type: Documentation
+  url: https://developer.mastercard.com/open-banking-us/documentation/
+- type: GitHubOrganization
+  url: https://github.com/Finicity
+- type: LinkedIn
+  url: https://www.linkedin.com/company/finicity/
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

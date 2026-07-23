@@ -1,0 +1,95 @@
+aid: finicity
+name: Finicity
+review:
+  question: Does Finicity (Mastercard Open Banking US) expose a first-party public developer
+    API surface, and is any machine-readable OpenAPI specification publicly downloadable?
+  answer: true
+  publicOpenAPI: false
+  date: '2026-07-23'
+  reviewer: API Evangelist
+findings:
+  summary: |
+    Finicity, LLC is a US financial-data aggregator, not a chartered bank. Founded
+    in Utah, it was acquired by Mastercard in 2020 and now operates as Mastercard
+    Open Banking (US) inside Mastercard Open Finance. It runs a genuine first-party
+    developer portal at developer.mastercard.com/open-banking-us/documentation/
+    (HTTP 200), and the legacy Finicity surfaces developer.finicity.com and
+    docs.finicity.com both redirect to it. The production API is served from the
+    live host api.finicity.com (HTTP 401, auth-gated). Finicity publicly documents
+    a family of consumer-permissioned products — Aggregation (Accounts &
+    Transactions), Finicity Connect, Verification of Assets (VoA), Verification of
+    Income & Employment (VoIE), Transaction Analysis / Cash Flow, and Payments
+    Account Validation — plus FDX-aligned open-banking data access. The verification
+    products are FCRA-regulated consumer reports.
+
+    No machine-readable OpenAPI/Swagger specification is publicly downloadable:
+    candidate spec URLs under the portal return the SPA HTML shell rather than a
+    spec, and api.finicity.com/openapi.json and /swagger.json return 401. The full
+    interactive API reference sits behind Mastercard Developers partner credentials.
+    Nothing was harvested into openapi/.
+  posture:
+    charterType: Non-bank financial-data aggregator / open-finance technology provider (Mastercard subsidiary)
+    firstPartyDeveloperPortal: true
+    developerPortalURL: https://developer.mastercard.com/open-banking-us/documentation/
+    developerPortalStatus: 200
+    apiHost: https://api.finicity.com
+    apiHostStatus: 401
+    downloadableOpenAPI: false
+    specProvenance: none (no public spec; full API reference partner-gated behind Mastercard Developers)
+    fdxParticipant: true
+    fdxNote: Founding participant in the Financial Data Exchange (FDX); data sharing is FDX-aligned.
+    cfpb1033Posture: Positioned publicly as an enabler of CFPB Section 1033 consumer financial data rights.
+    aggregatorAccess: true
+    aggregatorNote: Finicity is itself an aggregator (peer of Plaid, MX, Akoya); for most connected institutions it is the data-access seam rather than a first-party bank API.
+    authModel: Finicity partner authentication — Finicity-App-Key + Partner ID + Partner Secret exchanged for a Finicity-App-Token; consumer permissioning captured via Finicity Connect.
+  transports:
+  - protocol: REST
+    scheme: https
+    baseURL: https://api.finicity.com
+    documented: true
+    note: Production API host returns HTTP 401 unauthenticated, confirming a live auth-gated REST surface.
+  - protocol: OpenAPI
+    documented: false
+    note: No publicly downloadable OpenAPI/Swagger; portal spec URLs return the SPA shell and api.finicity.com spec paths return 401.
+probes:
+- url: https://developer.mastercard.com/open-banking-us/documentation/
+  status: 200
+  note: First-party developer portal landing (public); confirmed live.
+- url: https://docs.finicity.com/
+  status: 302
+  note: Legacy Finicity docs host, redirects to developer.mastercard.com/open-banking-us/documentation/.
+- url: https://developer.finicity.com/
+  status: 200
+  note: Legacy Finicity developer host, redirects into developer.mastercard.com (Mastercard Developers).
+- url: https://api.finicity.com/
+  status: 401
+  note: Live production API host, auth-gated.
+- url: https://api.finicity.com/aggregation/v1/customers
+  status: 401
+  note: Real Aggregation API path, auth-gated (confirms path scheme).
+- url: https://api.finicity.com/openapi.json
+  status: 401
+  note: No public OpenAPI spec.
+- url: https://www.finicity.com/
+  status: 301
+  note: Brand domain 301-redirects to Mastercard Open Finance (mastercard.com/us/en/business/open-finance.html).
+- url: https://github.com/Finicity
+  status: 200
+  note: Finicity GitHub organization exists (sparse; 1 public repo).
+- url: https://www.linkedin.com/company/finicity/
+  status: 200
+  note: Finicity LinkedIn company page.
+sources:
+- url: https://developer.mastercard.com/open-banking-us/documentation/
+  type: Documentation
+  note: Public developer documentation landing for Mastercard Open Banking US (formerly Finicity).
+- url: https://developer.mastercard.com/product/open-banking/
+  type: Documentation
+  note: Mastercard Open Banking product overview (HTTP 200).
+actions:
+  openapiHarvested: false
+  reason: |
+    No publicly downloadable OpenAPI/Swagger specification exists. The developer
+    portal is a client-rendered SPA and the full API reference is partner-gated;
+    api.finicity.com returns 401 for spec paths. Only identity and honestly probed,
+    publicly reachable surfaces were captured. openapi/ intentionally left empty.
