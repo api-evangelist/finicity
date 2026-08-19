@@ -1,4 +1,3 @@
-# Candidate MCP tool surface derived from the Mastercard Open Banking (US) / Finicity OpenAPI.
 generated: '2026-07-23'
 method: derived
 status: candidate
@@ -437,3 +436,9 @@ tools:
 - name: revoke_data_sharing_consent_by_institution_login_id
   description: Revoke Data Sharing Consent for an Institution by Institution Login ID
   source_operation: openapi/finicity-openbanking-us-openapi-original.yml#RevokeDataSharingConsentByInstitutionLoginID
+deployment:
+  mode: none
+  verified: derived
+  tools: 142
+  checked: '2026-08-12'
+  source: catalog MCP census
