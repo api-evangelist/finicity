@@ -41,7 +41,7 @@ tags:
 - Financial Data
 created: '2026-07-23'
 modified: '2026-07-23'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: finicity:finicity-aggregation-api
   name: Finicity Aggregation (Accounts & Transactions) API
