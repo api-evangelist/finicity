@@ -31,6 +31,15 @@ deliveryModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
+- Financial-Services
+- Data Aggregation
+- Open Finance
+- Open Banking
+- FDX
+- United States
+- Payments
+- Financial Data
+tags_raw:
 - Financial Services
 - Data Aggregation
 - Open Finance
@@ -51,6 +60,10 @@ apis:
   humanURL: https://developer.mastercard.com/open-banking-us/documentation/
   baseURL: https://api.finicity.com
   tags:
+  - Aggregation
+  - Account
+  - Transaction
+  tags_raw:
   - Aggregation
   - Accounts
   - Transactions
@@ -119,6 +132,10 @@ apis:
   humanURL: https://developer.mastercard.com/open-banking-us/documentation/
   baseURL: https://api.finicity.com
   tags:
+  - Transaction
+  - Cash Flow
+  - Decisioning
+  tags_raw:
   - Transactions
   - Cash Flow
   - Decisioning
