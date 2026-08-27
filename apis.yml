@@ -52,35 +52,11 @@ created: '2026-07-23'
 modified: '2026-07-23'
 specificationVersion: '0.23'
 apis:
-- aid: finicity:finicity-aggregation-api
-  name: Finicity Aggregation (Accounts & Transactions) API
-  description: Consumer-permissioned account and transaction aggregation across banks,
-    credit unions, cards, loans and investment accounts, delivering account details,
-    balances and categorized transactions.
-  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
-  baseURL: https://api.finicity.com
-  tags:
-  - Aggregation
-  - Account
-  - Transaction
-  tags_raw:
-  - Aggregation
-  - Accounts
-  - Transactions
-  properties:
-  - type: Documentation
-    url: https://developer.mastercard.com/open-banking-us/documentation/
-  - type: APIReference
-    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
-  - type: OpenAPI
-    url: openapi/finicity-openbanking-us-openapi-original.yml
-  - type: Webhooks
-    url: asyncapi/finicity-webhooks.yml
 - aid: finicity:finicity-connect
   name: Finicity Connect
-  description: Hosted, embeddable account-linking experience that lets a consumer
-    authenticate to their financial institution and permission data sharing, returning
-    the linked accounts to the partner application.
+  description: >-
+    Hosted, embeddable account-linking experience that lets a consumer authenticate to their financial
+    institution and permission data sharing, returning the linked accounts to the partner application.
   humanURL: https://developer.mastercard.com/open-banking-us/documentation/connect/
   baseURL: https://api.finicity.com
   tags:
@@ -94,9 +70,9 @@ apis:
     url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
 - aid: finicity:finicity-verification-of-assets-api
   name: Finicity Verification of Assets (VoA) API
-  description: Generates a consumer-permissioned Verification of Assets report from
-    aggregated account and balance data for mortgage, lending and underwriting
-    workflows, an FCRA-regulated consumer report product.
+  description: >-
+    Generates a consumer-permissioned Verification of Assets report from aggregated account and balance
+    data for mortgage, lending and underwriting workflows, an FCRA-regulated consumer report product.
   humanURL: https://developer.mastercard.com/open-banking-us/documentation/
   baseURL: https://api.finicity.com
   tags:
@@ -110,9 +86,9 @@ apis:
     url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
 - aid: finicity:finicity-verification-of-income-employment-api
   name: Finicity Verification of Income & Employment (VoIE) API
-  description: Derives income streams and employment signals from permissioned
-    transaction and payroll data to produce Verification of Income and Verification
-    of Employment reports for lending decisions.
+  description: >-
+    Derives income streams and employment signals from permissioned transaction and payroll data to produce
+    Verification of Income and Verification of Employment reports for lending decisions.
   humanURL: https://developer.mastercard.com/open-banking-us/documentation/
   baseURL: https://api.finicity.com
   tags:
@@ -126,9 +102,9 @@ apis:
     url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
 - aid: finicity:finicity-transaction-analysis-api
   name: Finicity Transaction Analysis (Cash Flow) API
-  description: Analyzes permissioned transaction history to produce cash-flow,
-    income and expense insights used for prequalification, credit decisioning and
-    financial-health scoring.
+  description: >-
+    Analyzes permissioned transaction history to produce cash-flow, income and expense insights used for
+    prequalification, credit decisioning and financial-health scoring.
   humanURL: https://developer.mastercard.com/open-banking-us/documentation/
   baseURL: https://api.finicity.com
   tags:
@@ -146,9 +122,9 @@ apis:
     url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
 - aid: finicity:finicity-payments-account-validation-api
   name: Finicity Payments (Account Validation) API
-  description: Validates account ownership and status for ACH and account-funding
-    flows, returning account, routing and owner verification signals to reduce
-    returned payments and fraud.
+  description: >-
+    Validates account ownership and status for ACH and account-funding flows, returning account, routing
+    and owner verification signals to reduce returned payments and fraud.
   humanURL: https://developer.mastercard.com/open-banking-us/documentation/
   baseURL: https://api.finicity.com
   tags:
@@ -162,10 +138,10 @@ apis:
     url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
 - aid: finicity:finicity-open-banking-data-access
   name: Finicity Open Banking Data Access (FDX)
-  description: FDX-aligned, consumer-permissioned open-banking data-access surface
-    through which Finicity, as a founding Financial Data Exchange participant,
-    shares financial data on behalf of connected institutions in support of CFPB
-    Section 1033 data rights.
+  description: >-
+    FDX-aligned, consumer-permissioned open-banking data-access surface through which Finicity, as a founding
+    Financial Data Exchange participant, shares financial data on behalf of connected institutions in
+    support of CFPB Section 1033 data rights.
   humanURL: https://developer.mastercard.com/open-banking-us/documentation/
   baseURL: https://api.finicity.com
   tags:
@@ -177,6 +153,570 @@ apis:
     url: https://developer.mastercard.com/open-banking-us/documentation/
   - type: APIReference
     url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+- aid: finicity:finicity-account-validation-assistance-api
+  name: Finicity Account Validation Assistance API
+  description: Micro entries and account verification
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Account Validation Assistance
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-account-validation-assistance-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-accounts-api
+  name: Finicity Accounts API
+  description: Fetch or refresh customer accounts
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-accounts-simple-api
+  name: Finicity Accounts (Simple) API
+  description: Fetch simple customer accounts
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Accounts (Simple)
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-accounts-simple-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-app-registration-api
+  name: Finicity App Registration API
+  description: Register and assign apps to customers
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - App Registration
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-app-registration-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-authentication-api
+  name: Finicity Authentication API
+  description: Generate authentication tokens and manage credentials
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-authentication-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-balance-analytics-api
+  name: Finicity Balance Analytics API
+  description: Balance Analytics for businesses
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Balance Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-balance-analytics-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-bank-statements-api
+  name: Finicity Bank Statements API
+  description: Fetch account statements and generate reports asynchronously
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Bank Statements
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-bank-statements-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-businesses-api-api
+  name: Finicity Businesses API
+  description: >-
+    Create and manage business associated with customers in order to use Balance Analytics or Cash Flow
+    Analytics
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Businesses API
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-businesses-api-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-cash-flow-analytics-api
+  name: Finicity Cash Flow Analytics API
+  description: Cash Flow Analytics for business
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Cash Flow Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-cash-flow-analytics-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-cash-flow-api
+  name: Finicity Cash Flow API
+  description: Generate cash flow reports asynchronously
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Cash Flow
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-cash-flow-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-connect-api
+  name: Finicity Connect API
+  description: >-
+    Allow customers to log into their financial institutions and grant Finicity authorization
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Connect
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-connect-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-connect-components-api
+  name: Finicity Connect Components API
+  description: >-
+    Allow customers to log into their financial institutions and grant Finicity authorization
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Connect Components
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-connect-components-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-consumer-foresight-api
+  name: Finicity Consumer Foresight API
+  description: Generate consumer foresight analytics reports
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Consumer Foresight
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-consumer-foresight-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-consumers-api
+  name: Finicity Consumers API
+  description: Create and manage consumers associated with customers in order to use report services
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Consumers
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-consumers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-customer-authorization-details-api
+  name: Finicity Customer Authorization Details API
+  description: APIs to retrieve customer authorization details
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Customer Authorization Details
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-customer-authorization-details-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-customers-api
+  name: Finicity Customers API
+  description: Enroll and manage customers
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Customers
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-customers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-data-sharing-consent-api
+  name: Finicity Data Sharing Consent API
+  description: Manage data sharing consents
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Data Sharing Consent
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-data-sharing-consent-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-identity-api
+  name: Finicity Identity API
+  description: Match the request details to the Institution account holder details
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Identity
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-identity-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-institutions-api
+  name: Finicity Institutions API
+  description: Search and fetch financial institutions
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Institutions
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-institutions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-pay-statements-api
+  name: Finicity Pay Statements API
+  description: Upload pay statements
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Pay Statements
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-pay-statements-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-payment-enablement-bundle-api
+  name: Finicity Payment Enablement Bundle API
+  description: Any or all of the Payments endpoints in one API call
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Payment Enablement Bundle
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-payment-enablement-bundle-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-payment-history-report-api
+  name: Finicity Payment History Report API
+  description: Payment History Report for business
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Payment History Report
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-payment-history-report-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-payment-success-indicator-api
+  name: Finicity Payment Success Indicator API
+  description: Predict a transaction's likelihood to settle
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Payment Success Indicator
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-payment-success-indicator-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-payments-api
+  name: Finicity Payments API
+  description: Fetch ACH details and account balances
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-payments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-portfolios-api
+  name: Finicity Portfolios API
+  description: Generate portfolios of the most recent reports
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Portfolios
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-portfolios-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-reports-api
+  name: Finicity Reports API
+  description: Fetch generated reports when ready
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-reports-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-small-business-credit-analytics-api
+  name: Finicity Small Business Credit Analytics API
+  description: Fetch merchant location matches and generate reports
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Small Business Credit Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-small-business-credit-analytics-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-third-party-access-api
+  name: Finicity Third Party Access API
+  description: Generate and manage access keys for other partners
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Third Party Access
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-third-party-access-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-transaction-data-enrichment-api
+  name: Finicity Transaction Data Enrichment API
+  description: Enhance the transaction data set
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Transaction Data Enrichment
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-transaction-data-enrichment-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-transactions-api
+  name: Finicity Transactions API
+  description: Fetch customer and account transactions and generate reports asynchronously
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-transactions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-transfer-api
+  name: Finicity Transfer API
+  description: Fetch details of the deposit and bill pay switches
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Transfer
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-transfer-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-txpush-api
+  name: Finicity Tx Push API
+  description: Manage TxPush subscriptions
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - TxPush
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-txpush-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-verify-assets-api
+  name: Finicity Verify Assets API
+  description: Generate asset reports asynchronously
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Verify Assets
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-verify-assets-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-verify-income-and-employment-api
+  name: Finicity Verify Income and Employment API
+  description: Generate income and employment reports asynchronously
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Verify Income and Employment
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-verify-income-and-employment-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
+- aid: finicity:finicity-webhook-subscription-api
+  name: Finicity Webhook Subscription API
+  description: APIs for Managing Partner Webhook Event Subscriptions
+  humanURL: https://developer.mastercard.com/open-banking-us/documentation/
+  baseURL: https://api.finicity.com
+  tags:
+  - Webhook Subscription
+  properties:
+  - type: OpenAPI
+    url: openapi/finicity-webhook-subscription-api-openapi.yml
+  - type: Documentation
+    url: https://developer.mastercard.com/open-banking-us/documentation/
+  - type: APIReference
+    url: https://developer.mastercard.com/open-banking-us/documentation/api-reference/
+  - type: Webhooks
+    url: asyncapi/finicity-webhooks.yml
 common:
 - type: Authentication
   url: authentication/finicity-authentication.yml
