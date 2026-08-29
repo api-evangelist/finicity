@@ -718,6 +718,9 @@ apis:
   - type: Webhooks
     url: asyncapi/finicity-webhooks.yml
 common:
+- type: CapabilityMap
+  url: capabilities/finicity-capability-edges.yml
+  name: Finicity Business Capability Map
 - type: Authentication
   url: authentication/finicity-authentication.yml
 - type: DomainSecurity

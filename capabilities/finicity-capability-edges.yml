@@ -1,0 +1,38 @@
+slug: finicity
+provider: Finicity
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Webhook Subscription
+  spec_file: finicity-webhook-subscription-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.88
+  evidence: POST /notification-subscriptions/webhooks createWebhookSubscription Create Webhook Subscription;
+    GET /notification-subscriptions/webhooks/events listAvailableWebhookSubscriptionEvents; testWebhookSubscription
+  reason: Full CRUD plus enable/disable and test operations over outbound webhook subscriptions and their
+    event types (schemas Subscription, WebhookEvent, AvailableEvent). This is exactly the lifecycle of
+    outbound webhook/event subscriptions and delivery testing described by BC-4270.80.
+- tag: TxPush
+  spec_file: finicity-txpush-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.75
+  evidence: POST /aggregation/v1/customers/{customerId}/accounts/{accountId}/txpush SubscribeToTxPushNotifications
+    Subscribe to TxPush Notifications; schemas TxPushCallbackUrl, TxPushSubscriptions
+  reason: Operations manage outbound push-notification subscriptions with a callback URL, including test
+    event creation and subscription deletion — the lifecycle of outbound event/webhook subscriptions for
+    API consumers. Confidence moderate as this is largely integration plumbing, but BC-4270.80 exists
+    precisely for it.
