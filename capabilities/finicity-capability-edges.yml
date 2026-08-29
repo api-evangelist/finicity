@@ -3,7 +3,7 @@ provider: Finicity
 generated_by: planning/capability-mapping/scripts/classify_capabilities.py
 model: claude-opus-5
 frame:
-- Software & Technology
+- Banking & Capital Markets
 min_confidence: 0.7
 capability_model:
   source: https://github.com/vincentmakes/turbo-ea-capabilities
@@ -18,21 +18,20 @@ edges:
   capability_id: BC-4270.80
   capability_id_l1: BC-4270
   capability_name: Webhook & Event Subscription Management
-  confidence: 0.88
-  evidence: POST /notification-subscriptions/webhooks createWebhookSubscription Create Webhook Subscription;
-    GET /notification-subscriptions/webhooks/events listAvailableWebhookSubscriptionEvents; testWebhookSubscription
-  reason: Full CRUD plus enable/disable and test operations over outbound webhook subscriptions and their
-    event types (schemas Subscription, WebhookEvent, AvailableEvent). This is exactly the lifecycle of
-    outbound webhook/event subscriptions and delivery testing described by BC-4270.80.
-- tag: TxPush
-  spec_file: finicity-txpush-api-openapi.yml
-  capability_id: BC-4270.80
-  capability_id_l1: BC-4270
-  capability_name: Webhook & Event Subscription Management
-  confidence: 0.75
-  evidence: POST /aggregation/v1/customers/{customerId}/accounts/{accountId}/txpush SubscribeToTxPushNotifications
-    Subscribe to TxPush Notifications; schemas TxPushCallbackUrl, TxPushSubscriptions
-  reason: Operations manage outbound push-notification subscriptions with a callback URL, including test
-    event creation and subscription deletion — the lifecycle of outbound event/webhook subscriptions for
-    API consumers. Confidence moderate as this is largely integration plumbing, but BC-4270.80 exists
-    precisely for it.
+  confidence: 0.78
+  evidence: POST /notification-subscriptions/webhooks  createWebhookSubscription  Create Webhook Subscription
+    ... GET /notification-subscriptions/webhooks/events  listAvailableWebhookSubscriptionEvents
+  reason: Full CRUD plus enable/disable and test of outbound webhook subscriptions and their event types
+    — exactly outbound webhook/event subscription lifecycle on a developer platform. Slight discount because
+    such plumbing could equally be judged non-business.
+- tag: Small Business Credit Analytics
+  spec_file: finicity-small-business-credit-analytics-api-openapi.yml
+  capability_id: BC-1320.20
+  capability_id_l1: BC-1320
+  capability_name: Credit Underwriting & Decisioning Management
+  confidence: 0.7
+  evidence: POST /decisioning/customers/{customerId}/sbca  GenerateSBCAMetricsReport  Generate Small Business
+    Credit Analytics Report; schemas SBCAAnalyticsReport, HasConsent
+  reason: Produces credit analytics metrics on a small business from permissioned bank data, used by lenders
+    to underwrite/decision small-business credit. Some ambiguity between decisioning support and credit
+    risk modelling.
