@@ -175,6 +175,8 @@ apis:
   humanURL: https://developer.mastercard.com/open-banking-us/documentation/
   baseURL: https://api.finicity.com
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
@@ -451,6 +453,8 @@ apis:
   humanURL: https://developer.mastercard.com/open-banking-us/documentation/
   baseURL: https://api.finicity.com
   tags:
+  - institutions
+  tags_raw:
   - Institutions
   properties:
   - type: OpenAPI
@@ -547,6 +551,8 @@ apis:
   humanURL: https://developer.mastercard.com/open-banking-us/documentation/
   baseURL: https://api.finicity.com
   tags:
+  - Portfolio
+  tags_raw:
   - Portfolios
   properties:
   - type: OpenAPI
@@ -627,6 +633,8 @@ apis:
   humanURL: https://developer.mastercard.com/open-banking-us/documentation/
   baseURL: https://api.finicity.com
   tags:
+  - Transaction
+  tags_raw:
   - Transactions
   properties:
   - type: OpenAPI
@@ -718,6 +726,11 @@ apis:
   - type: Webhooks
     url: asyncapi/finicity-webhooks.yml
 common:
+- type: ParentCompany
+  url: https://apis.io/providers/mastercard/
+  name: Mastercard
+  x-relationship: acquired
+  x-evidence: "Finicity, LLC is a Utah-based financial-data aggregator and open-finance technology provider acquired by Mastercard in 2020 and now operating as Mastercard Open Banking (US) within Mastercard Open Finance."
 - type: CapabilityMap
   url: capabilities/finicity-capability-edges.yml
   name: Finicity Business Capability Map
