@@ -1,0 +1,335 @@
+openapi: 3.2.0
+info:
+  title: Open Finance Authentication API
+  description: 'OpenAPI specification for Finicity APIs.
+
+
+    Open Finance (formerly Open Banking) solutions in the US are provided by
+
+    Finicity, a Mastercard company.'
+  contact:
+    name: API Support
+    email: apisupport@mastercard.com
+    url: https://developer.mastercard.com/open-finance-us/documentation/support/
+  version: 1.43.0
+servers:
+- url: https://api.finicity.com
+  description: Production
+security:
+- FinicityAppKey: []
+  FinicityAppToken: []
+tags:
+- name: Authentication
+  description: Generate authentication tokens and manage credentials
+paths:
+  /aggregation/v2/partners/authentication:
+    post:
+      tags:
+      - Authentication
+      summary: Create Access Token
+      description: 'Send Partner ID and Partner Secret to the Partner Authentication service to obtain a token for accessing Finicity APIs.
+
+        * The token is valid for two hours and is required on all calls to the Finicity APIs
+
+        * As a best practice, use a single token for all calls. Assign a timestamp for each token, and then check the current timestamp before making any calls. If the token is greater than 90 minutes, generate a new one.
+
+        * ⚠️ After five failed attempts to authenticate, your account will be locked. To reset your account, you can report a support issue using the support.finicity.com portal. Alternatively, contact your Client Success Manager or your onboarding representative.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: CreateToken
+      requestBody:
+        $ref: '#/components/requestBodies/CreateTokenRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/CreateTokenResponse'
+        '400':
+          $ref: '#/components/responses/GeneralBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticationUnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/PartnerNotFoundResponse'
+      security:
+      - FinicityAppKey: []
+    put:
+      tags:
+      - Authentication
+      summary: Modify Partner Secret
+      description: 'Change the Partner Secret used to authenticate this partner.
+
+
+        The secret does not expire, but can be changed by calling this API. A valid Partner Secret may contain upper and lowercase characters, numbers, and the characters !, @, #, $, %, &, *, _, -, +. It must include at least one number and at least one letter, and its length should be between 12 and 255 characters.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: ModifyPartnerSecret
+      requestBody:
+        $ref: '#/components/requestBodies/ModifyPartnerSecretRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/ModifyPartnerSecretResponse'
+        '400':
+          $ref: '#/components/responses/ModifyPartnerSecretBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticationUnauthorizedErrorResponse'
+      security:
+      - FinicityAppKey: []
+components:
+  schemas:
+    PartnerCredentials:
+      required:
+      - partnerId
+      - partnerSecret
+      type: object
+      properties:
+        partnerId:
+          $ref: '#/components/schemas/PartnerId'
+        partnerSecret:
+          type: string
+          description: Your Partner Secret displayed in the [Developer Dashboard](https://developer.mastercard.com/account/log-in)
+          example: aqJ5Ic4SEVx2IgDQ6oR4
+    AccessToken:
+      required:
+      - token
+      type: object
+      description: A temporary access token to be passed in the `Finicity-App-Token` HTTP header of all subsequent API requests
+      properties:
+        token:
+          description: The access token value
+          type: string
+          example: YBh22Sb9Es6e66Q7lWdt
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    ErrorWrapper:
+      description: A top level object for errors.
+      type: object
+      required:
+      - Errors
+      properties:
+        Errors:
+          $ref: '#/components/schemas/Errors'
+    Errors:
+      description: Object that contains the list of errors.
+      type: object
+      required:
+      - Error
+      properties:
+        Error:
+          $ref: '#/components/schemas/ErrorList'
+    Error:
+      description: A single error.
+      type: object
+      properties:
+        Source:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: The application that generated this error
+          example: Event Subscription Service
+        ReasonCode:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: A unique constant identifying the error case encountered during transaction processing
+          example: '10001'
+        Description:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: Description of the ReasonCode field with additional details.
+          example: Resource Not Found.
+        Recoverable:
+          type: boolean
+          description: Indicates whether this error will always be returned for this request, or retrying could change the outcome
+          example: false
+        Details:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: Details for backwards compatibility.
+          example: Invalid JSON payload
+    PartnerId:
+      type: string
+      description: Your Partner ID displayed in the [Developer Dashboard](https://developer.mastercard.com/account/log-in)
+      example: '1234583871234'
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    PartnerCredentialsWithNewSecret:
+      required:
+      - partnerId
+      - partnerSecret
+      - newPartnerSecret
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/PartnerCredentials'
+      - type: object
+        properties:
+          newPartnerSecret:
+            type: string
+            description: A new value for the Partner Secret
+            example: OrU7tjiA3tIspCgb85xV
+          immediate:
+            type: boolean
+            description: This is an optional flag, with a default value of true. This flag should be passed as false when the partners want the 30-day grace period to be activated.
+            example: true
+    ErrorList:
+      description: The list of errors.
+      type: array
+      minItems: 1
+      items:
+        $ref: '#/components/schemas/Error'
+  examples:
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    InvalidCredentialsExample:
+      value:
+        code: '10001'
+        message: Invalid credentials
+    InvalidNewPartnerSecretExample:
+      value:
+        code: '24437'
+        message: New password is not as per policy
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    PartnerNotFoundExample:
+      value:
+        code: 12401
+        message: partner not found
+    NotAuthorizedExample:
+      value:
+        code: '10021'
+        message: You are not authorized.
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+  responses:
+    GeneralBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+    CreateTokenResponse:
+      description: The access token was successfully created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessToken'
+    AuthenticationUnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check Partner ID, Partner Secret or Finicity-App-Key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            InvalidCredentialsExample:
+              $ref: '#/components/examples/InvalidCredentialsExample'
+            NotAuthorizedExample:
+              $ref: '#/components/examples/NotAuthorizedExample'
+    PartnerNotFoundResponse:
+      description: Partner was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorWrapper'
+          examples:
+            PartnerNotFoundExample:
+              $ref: '#/components/examples/PartnerNotFoundExample'
+    ModifyPartnerSecretResponse:
+      description: The Partner Secret was successfully updated
+    ModifyPartnerSecretBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidNewPartnerSecretExample:
+              $ref: '#/components/examples/InvalidNewPartnerSecretExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+  requestBodies:
+    ModifyPartnerSecretRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PartnerCredentialsWithNewSecret'
+    CreateTokenRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PartnerCredentials'
+  securitySchemes:
+    FinicityAppKey:
+      name: Finicity-App-Key
+      type: apiKey
+      in: header
+      description: The "Finicity-App-Key" from the developer dashboard
+    FinicityAppToken:
+      name: Finicity-App-Token
+      type: apiKey
+      in: header
+      description: A token returned by the `/authentication` API

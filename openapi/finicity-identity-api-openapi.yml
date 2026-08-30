@@ -1,0 +1,1501 @@
+openapi: 3.2.0
+info:
+  title: Open Finance Identity API
+  description: 'OpenAPI specification for Finicity APIs.
+
+
+    Open Finance (formerly Open Banking) solutions in the US are provided by
+
+    Finicity, a Mastercard company.'
+  contact:
+    name: API Support
+    email: apisupport@mastercard.com
+    url: https://developer.mastercard.com/open-finance-us/documentation/support/
+  version: 1.43.0
+servers:
+- url: https://api.finicity.com
+  description: Production
+security:
+- FinicityAppKey: []
+  FinicityAppToken: []
+tags:
+- name: Identity
+  description: Match the request details to the Institution account holder details
+paths:
+  /aggregation/v1/customers/{customerId}/accounts/{accountId}/owner:
+    get:
+      tags:
+      - Identity
+      summary: Get Account Owner
+      description: 'Retrieve the names and addresses of the account owner from a financial institution.
+
+
+        Note: this is a premium service, billable per every successful API call.
+
+
+        This service retrieves account data from the institution. This usually returns quickly, but in some scenarios may take a few minutes to complete. In the event of a timeout condition, retry the call.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetAccountOwner
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/AccountIdParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAccountOwnerResponse'
+        '203':
+          $ref: '#/components/responses/MFAChallengeNeededResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /aggregation/v3/customers/{customerId}/accounts/{accountId}/owner:
+    get:
+      tags:
+      - Identity
+      summary: Get Account Owner Details
+      description: 'This service retrieves the account details for an account holder from an institution. The following data objects are available.
+
+
+        * Account holders
+
+
+        * Addresses
+
+
+        * Emails
+
+
+        * Phones
+
+
+        * Documentations (not currently available in the US region)
+
+
+        * Identity Insights
+
+
+
+        Note: The data returned varies from institution to institution as not all of them make the same data available. This is a premium service, billable per each successful API call.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetAccountOwnerDetails
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/AccountIdParameter'
+      - $ref: '#/components/parameters/WithInsightsParameter'
+      - $ref: '#/components/parameters/MetaDataParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAccountOwnerDetailsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+  /account-owner-verification-matchings/customers/{customerId}/accounts/{accountId}:
+    parameters:
+    - $ref: '#/components/parameters/CustomerIdParameter'
+    - $ref: '#/components/parameters/AccountIdParameter'
+    - $ref: '#/components/parameters/InsightsParameter'
+    post:
+      x-internal: true
+      tags:
+      - Identity
+      summary: Account Owner Match
+      description: 'This service returns a confidence score measuring if the values provided in the request match the account holder details retrieved from an institution. The following data objects are available.
+
+        * Account holders
+
+
+        * Addresses
+
+
+        * Emails
+
+
+        * Phones
+
+
+        * Documentations
+
+
+        * Identity insights
+
+
+        * Matching scores
+
+
+        Any customer information included in the request should be obtained from a separate source, not from the customer''s connected account; while the name value is required, all other data elements are optional. The account owner data elements (name, address, email, phone, etc.) returned in the response are obtained from the customer''s financial institution and will be accompanied by a matching score for any value(s) provided in the request. These scores range from 0 to 100, with a higher number signifying an increased confidence that the two values are matching.
+
+
+        Note: The data returned varies from institution to institution as not all of them make the same data available. This is a premium service, billable per each successful API call.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: AccountMatchingScoreDetails
+      requestBody:
+        $ref: '#/components/requestBodies/AccountOwnerVerificationMatchingRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AccountOwnerVerificationGetMatchScoreResponse'
+        '400':
+          $ref: '#/components/responses/AccountOwnerVerificationBadRequest'
+        '404':
+          $ref: '#/components/responses/AccountOwnerVerificationErrorResponse'
+        '408':
+          $ref: '#/components/responses/TimedOutRequestResponse'
+components:
+  examples:
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    AOV3BadRequestErrorMessage:
+      value:
+        code: '14020'
+        status: '400'
+        title: Bad Request
+        level: error
+        message: Bad Request While Calling AOV3 api
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    ResellerInvalidDateRangeLessThanZeroExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
+    InvalidConsumerEmailExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.email.
+    AccountOwnerVerificationMissingField:
+      value:
+        code: '15001'
+        status: '400'
+        title: Missing required field
+        level: error
+        message: One of the specified fields is missing or blank.
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    InvalidForesightReportRequestExample:
+      value:
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    InvalidFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: Customer ID does not exist or does not belong to this partner
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    IdMatchBadRequestErrorMessage:
+      value:
+        code: '14020'
+        status: '400'
+        title: Bad Request
+        level: error
+        message: Bad Request While Calling Identity Matching api
+    InvalidConsumerSSNExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    NoAccountForInstitutionLoginIdExample:
+      value:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
+    CustomerIdNotFound:
+      value:
+        code: '10002'
+        message: Customer ID was not found.
+        status: '404'
+        title: Customer ID was not found.
+        user_message: Customer ID was not found.
+    ResellerNoDataForPartnerExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    ResellerInvalidDateRangeExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
+    PermissiblePurposeCodeExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: Permissible Purpose Code is required
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    TimedOutRequestErrorMessage:
+      value:
+        code: '10030'
+        status: '408'
+        title: Request timed out.
+        level: error
+        message: Please try again at a later time.
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    AccountsDetailsNotFound:
+      value:
+        code: '12017'
+        status: '404'
+        title: No Account Owners Details Found.
+        level: error
+        message: No Account Owners Details Found.
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    NoConsumerForCustomerExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer for customer with id 5011115315."
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+  schemas:
+    IdentityRiskScore:
+      type: number
+      description: Comprehensive identity risk score with a higher score indicating a riskier account sign-up.
+      example: 275
+    PhoneCountryCode:
+      type: string
+      description: The ISO-3166 alpha-2 country code associated with the phone number.
+      example: UK
+    ZipCode:
+      type: string
+      description: A ZIP code
+      example: '84123'
+    SingleLineAddress:
+      type: string
+      description: A street address
+      example: '434 W Ascension Way Suite #200 Murray UT 84123'
+    AccountOwnerDocumentation:
+      description: Account owner documentation
+      type: object
+      properties:
+        taxId:
+          $ref: '#/components/schemas/TaxId'
+        taxIdCountry:
+          $ref: '#/components/schemas/Country'
+        governmentId:
+          $ref: '#/components/schemas/GovernmentId'
+    AccountOwnerHolders:
+      required:
+      - holders
+      type: object
+      properties:
+        holders:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountOwnerDetails'
+          description: List of account owners
+    PhoneLineType:
+      type: string
+      description: 'The line type of the phone number.
+
+        * landline - traditional wired phone line.
+
+        * fixed-voip - VoIP-based fixed line phones.
+
+        * mobile - wireless phone line.
+
+        * voicemail - voicemail-only service.
+
+        * toll-free - callee pays for call.
+
+        * premium - caller pays a premium for the call-e.g., 976 area code.
+
+        * non-fixed-voip - Skype, for example * other - anything that does not match the previous categories.'
+      example: mobile
+    WithInsights:
+      type: boolean
+      description: If Identity Insights data must be returned or not
+      example: true
+    EmailAddress:
+      type: string
+      description: An email address
+      example: myname@mycompany.com
+    EmailScores:
+      properties:
+        email:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input with the account owner details fetch
+          example: 100
+    AccountOwnerDocumentations:
+      description: List of account owner documentation. Not currently available in the US region.
+      type: array
+      items:
+        $ref: '#/components/schemas/AccountOwnerDocumentation'
+    EmailDomainCreationDate:
+      type: string
+      description: Returns a date that the email domain was created.
+      example: '2011-06-29T00:00:00.000Z'
+    AccountOwnerVerificationMatchingDetails:
+      required:
+      - ownerName
+      - nameClassification
+      - nameClassificationConfidenceScore
+      - nameScores
+      type: object
+      properties:
+        relationship:
+          $ref: '#/components/schemas/AccountOwnerRelationshipType'
+        ownerName:
+          $ref: '#/components/schemas/AccountOwnerName'
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        middleName:
+          $ref: '#/components/schemas/MiddleName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        suffix:
+          $ref: '#/components/schemas/Suffix'
+        nameScores:
+          $ref: '#/components/schemas/NameScore'
+        nameClassification:
+          $ref: '#/components/schemas/NameClassificationType'
+        nameClassificationconfidencescore:
+          $ref: '#/components/schemas/ClassificationConfidenceScore'
+        addresses:
+          $ref: '#/components/schemas/AccountOwnerVerificationMatchingAddresses'
+        emails:
+          $ref: '#/components/schemas/AccountOwnerVerificationMatchingEmails'
+        phones:
+          $ref: '#/components/schemas/AccountOwnerVerificationMatchingPhones'
+        documentations:
+          $ref: '#/components/schemas/AccountOwnerDocumentations'
+        identityInsights:
+          $ref: '#/components/schemas/AccountOwnerIdentityInsights'
+      description: Owner of a customer account
+    AccountOwnerPhones:
+      description: List of phones
+      type: array
+      items:
+        $ref: '#/components/schemas/AccountOwnerPhone'
+    AddressLine2:
+      type: string
+      description: Address line 2
+      example: 'Suite #200'
+    AddressLine3:
+      type: string
+      description: Address line 3
+      example: UT 84123
+    IpGeolocationCountryCode:
+      type: string
+      description: The ISO-3166 alpha-2 country code associated with the geolocation of the IP address.
+      example: US
+    AddressLine1:
+      type: string
+      description: Address line 1
+      example: 434 W Ascension Way
+    AccountOwnerDetails:
+      required:
+      - ownerName
+      - nameClassification
+      - nameClassificationConfidenceScore
+      type: object
+      properties:
+        relationship:
+          $ref: '#/components/schemas/AccountOwnerRelationshipType'
+        ownerName:
+          $ref: '#/components/schemas/AccountOwnerName'
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        middleName:
+          $ref: '#/components/schemas/MiddleName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        suffix:
+          $ref: '#/components/schemas/Suffix'
+        nameClassification:
+          $ref: '#/components/schemas/NameClassificationType'
+        nameClassificationconfidencescore:
+          $ref: '#/components/schemas/ClassificationConfidenceScore'
+        asOfDate:
+          $ref: '#/components/schemas/AsOfDate'
+        addresses:
+          $ref: '#/components/schemas/AccountOwnerAddresses'
+        emails:
+          $ref: '#/components/schemas/AccountOwnerEmails'
+        phones:
+          $ref: '#/components/schemas/AccountOwnerPhones'
+        documentations:
+          $ref: '#/components/schemas/AccountOwnerDocumentations'
+        identityInsights:
+          $ref: '#/components/schemas/AccountOwnerIdentityInsights'
+      description: Owner of a customer account
+    AccountOwner:
+      required:
+      - ownerName
+      - ownerAddress
+      type: object
+      properties:
+        ownerName:
+          type: string
+          description: The name of the account owner. Can be multiple account owners in one string. This is how the source data is returned from the institution.
+          example: John Smith
+        ownerAddress:
+          $ref: '#/components/schemas/Address'
+        asOfDate:
+          $ref: '#/components/schemas/UnixDate'
+      description: Owner of a customer account
+    EmailIsDisposable:
+      type: boolean
+      description: True if the email address is from a disposable email service.
+      example: true
+    IdentityRiskReasonCode:
+      type: string
+      description: "Reason code for the identity risk score. Must be exactly two\n    uppercase letters."
+      pattern: ^[A-Z]{2}$
+      minLength: 2
+      maxLength: 2
+      example: AA
+    Insights:
+      type: boolean
+      description: If Identity Insights data must be returned or not
+      example: true
+    PhoneCountry:
+      type: string
+      description: Country calling code of the phone number as defined by ITU-T E.123 and E.164 international standards (max length 3)".
+      example: '61'
+    MiddleName:
+      type: string
+      description: The middle name of the account holder
+      example: L
+    Alerts:
+      type: string
+      description: An alert generated when processing the request.
+      example: Unable to generate IP and user insights
+    AccountOwnerVerificationMatchResults:
+      type: object
+      properties:
+        holders:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountOwnerVerificationMatchingDetails'
+        encryptedValue:
+          type: string
+          example: eyJraWQiOiI3NjFiMDAzYzFlYWRlM(...)==.Y+oPYKZEMTKyYcSIVEgtQw==
+          description: Encrypted response.
+    PhoneNumber:
+      type: string
+      description: A phone number (max length 15).
+      example: 1-801-984-4200
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    DeviceBrowser:
+      type: string
+      description: The name of the browser used to authorize your product or service.
+      example: Safari
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    AccountOwnerAddress:
+      description: Account owner address
+      type: object
+      properties:
+        ownerAddress:
+          $ref: '#/components/schemas/Address'
+        type:
+          $ref: '#/components/schemas/AddressType'
+        line1:
+          $ref: '#/components/schemas/AddressLine1'
+        line2:
+          $ref: '#/components/schemas/AddressLine2'
+        line3:
+          $ref: '#/components/schemas/AddressLine3'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        postalCode:
+          $ref: '#/components/schemas/ZipCode'
+        country:
+          $ref: '#/components/schemas/Country'
+    NameClassificationType:
+      type: string
+      description: 'The classification of the account holder:
+
+        * "person / personal / home"
+
+        * "business"
+
+        * "other"'
+      example: person
+    IpPhoneDistance:
+      type: number
+      description: The distance (in miles) between the IP address and the closest physical address associated with the phone number.
+      example: 200
+    IpLastSeenDays:
+      type: number
+      description: Count of days since the IP address was last observed in Ekata's Identity Network. If the IP address has not been observed before, IpLastSeenDays will be 0.
+      example: 15
+    AccountOwnerVerificationMatchingRequestName:
+      type: object
+      required:
+      - firstName
+      - lastName
+      properties:
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        middleName:
+          $ref: '#/components/schemas/MiddleName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        suffix:
+          $ref: '#/components/schemas/Suffix'
+    AccountOwnerEmails:
+      description: List of emails
+      type: array
+      items:
+        $ref: '#/components/schemas/AccountOwnerEmail'
+    AccountOwnerVerificationMatchingEmail:
+      description: Account owner email
+      type: object
+      properties:
+        isPrimary:
+          $ref: '#/components/schemas/AccountOwnerEmailPrimary'
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+        emailType:
+          $ref: '#/components/schemas/AccountOwnerEmailType'
+        emailScores:
+          $ref: '#/components/schemas/EmailScores'
+    IpAddressDistance:
+      type: number
+      description: The distance (in miles) between the IP address and the physical address.
+      example: 210
+    EmailValid:
+      type: boolean
+      description: True if the email address is valid.
+      example: true
+    PhoneLastSeenDays:
+      type: number
+      description: Count of days since the phone was last observed in Ekata's Identity Network. If the phone has not been observed before, `phoneLastSeenDays` will be 0.
+      example: 42
+    AccountOwnerVerificationMatchingPhones:
+      description: List of phones
+      type: array
+      items:
+        $ref: '#/components/schemas/AccountOwnerVerificationPhone'
+    NameScore:
+      required:
+      - ownerName
+      description: List of account owner Identity Insights
+      type: object
+      properties:
+        ownerName:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input "name" sub-attributes (firstName, middleName, lastName, suffix) along with the account owner details fetch ownerName
+          example: 0
+        firstName:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input with the account owner details fetch
+          example: 100
+        middleName:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input with the account owner details fetch
+          example: 100
+        lastName:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input with the account owner details fetch
+          example: 100
+        suffix:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input with the account owner details fetch
+          example: 100
+    LastName:
+      type: string
+      description: The last name of the account holder
+      example: Smith
+    EmailFirstSeenDays:
+      type: number
+      description: Count of days since the email was first observed in Ekata's Identity Network. If the email has not been observed before, first_seen_days will be 0.
+      example: 453
+    AccountOwnerAddresses:
+      description: List of addresses
+      type: array
+      items:
+        $ref: '#/components/schemas/AccountOwnerAddress'
+    PhoneCarrier:
+      type: string
+      description: The company that provides voice and/or data services for the phone number. Carriers are returned at the MVNO level.
+      example: Vodafone UK ltd.
+    AccountOwnerIdentityInsights:
+      description: List of account owner Identity Insights
+      type: object
+      properties:
+        requestRefId:
+          $ref: '#/components/schemas/RequestRefId'
+        isEmailValid:
+          $ref: '#/components/schemas/EmailValid'
+        emailFirstSeenDays:
+          $ref: '#/components/schemas/EmailFirstSeenDays'
+        emailDomainCreationDate:
+          $ref: '#/components/schemas/EmailDomainCreationDate'
+        emailToName:
+          $ref: '#/components/schemas/EmailToName'
+        emailMailboxVelocity:
+          $ref: '#/components/schemas/EmailMailboxVelocity'
+        emailIsDisposable:
+          $ref: '#/components/schemas/EmailIsDisposable'
+        ipRisk:
+          $ref: '#/components/schemas/IpRisk'
+        ipRiskScore:
+          $ref: '#/components/schemas/IpRiskScore'
+        identityRiskReasonCode:
+          $ref: '#/components/schemas/IdentityRiskReasonCode'
+        deviceRiskScore:
+          $ref: '#/components/schemas/DeviceRiskScore'
+        deviceType:
+          $ref: '#/components/schemas/DeviceType'
+        deviceBrowser:
+          $ref: '#/components/schemas/DeviceBrowser'
+        devicePlatform:
+          $ref: '#/components/schemas/DevicePlatform'
+        devicePhoneEmailFirstSeen:
+          $ref: '#/components/schemas/DevicePhoneEmailFirstSeen'
+        deviceBrowserIpTzDifference:
+          $ref: '#/components/schemas/DeviceBrowserIpTzDifference'
+        deviceIpEmailFirstSeen:
+          $ref: '#/components/schemas/DeviceIpEmailFirstSeen'
+        ipLastSeenDays:
+          $ref: '#/components/schemas/IpLastSeenDays'
+        ipGeolocationCountryCode:
+          $ref: '#/components/schemas/IpGeolocationCountryCode'
+        ipGeolocationSubdivision:
+          $ref: '#/components/schemas/IpGeolocationSubdivision'
+        ipPhoneDistance:
+          $ref: '#/components/schemas/IpPhoneDistance'
+        ipAddressDistance:
+          $ref: '#/components/schemas/IpAddressDistance'
+        isPhoneValid:
+          $ref: '#/components/schemas/PhoneValid'
+        phoneLineType:
+          $ref: '#/components/schemas/PhoneLineType'
+        phoneCarrier:
+          $ref: '#/components/schemas/PhoneCarrier'
+        phoneCountryCode:
+          $ref: '#/components/schemas/PhoneCountryCode'
+        phoneLastSeenDays:
+          $ref: '#/components/schemas/PhoneLastSeenDays'
+        phoneEmailFirstSeenDays:
+          $ref: '#/components/schemas/PhoneEmailFirstSeenDays'
+        phoneToName:
+          $ref: '#/components/schemas/PhoneToName'
+        phoneToAddress:
+          $ref: '#/components/schemas/PhoneToAddress'
+        addressValidityLevel:
+          $ref: '#/components/schemas/AddressValidityLevel'
+        addressToName:
+          $ref: '#/components/schemas/AddressToName'
+        emailRisk:
+          $ref: '#/components/schemas/EmailRisk'
+        identityRiskScore:
+          $ref: '#/components/schemas/IdentityRiskScore'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Warnings'
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alerts'
+    PhoneToAddress:
+      type: string
+      description: 'The match status between the input phone and the queried entity.
+
+        * match - Phone location matches input address line 1, address line 2, city, state, and postal code.
+
+
+        * postal-match - Phone location postal code matches input address postal code.
+
+
+        * zip4-match - Phone location postal code zip+4 matches input address postal code zip+4.
+
+
+        * city-state-match - Phone location city and state matches input address city and state.
+
+        * metro-match - Phone location is in the same metro area as input address.
+
+
+        * country-match - Phone location country matches input address country.
+
+
+        * no-match - Phone location does not match input address.'
+      example: match
+    DeviceBrowserIpTzDifference:
+      type: integer
+      description: Time zone difference between device browser and IP location
+      example: 1000
+    AddressType:
+      type: string
+      description: 'The type of address location:
+
+        * "Business"
+
+        * "Home"
+
+        * "Mailing"'
+      example: Home
+    AccountOwnerEmailPrimary:
+      type: boolean
+      description: The email is primary.
+      example: true
+    AccountOwnerVerificationMatchingAddresses:
+      description: List of addresses
+      type: array
+      items:
+        $ref: '#/components/schemas/AccountOwnerVerificationMatchingAddress'
+    DeviceType:
+      type: string
+      description: The device type used to authorize your product or service.
+      example: iPhone
+    PhoneToName:
+      type: string
+      description: 'The match status between the input name and the queried entity.
+
+
+        * not-found
+
+
+        * match
+
+
+        * no-match'
+      example: match
+    Country:
+      type: string
+      description: Country code is Iso3166-1 Alpha-2 code and Alpha 3 standard (max length 3).
+      example: CAN
+    PhoneValid:
+      type: boolean
+      description: True if the phone number is valid.
+      example: true
+    AccountOwnerRelationshipType:
+      type: string
+      description: 'The type of relationship to the account:
+
+        * "AUTHORIZED_USER"
+
+
+        * "BUSINESS"
+
+
+        * "FOR_BENEFIT_OF_PRIMARY"
+
+
+        * "FOR_BENEFIT_OF_PRIMARY_JOINT_RESTRICTED"
+
+
+        * "FOR_BENEFIT_OF_SECONDARY"
+
+
+        * "FOR_BENEFIT_OF_SECONDARY_JOINT_RESTRICTED"
+
+
+        * "FOR_BENEFIT_OF_SOLE_OWNER_RESTRICTED"
+
+
+        * "POWER_OF_ATTORNEY"
+
+
+        * "PRIMARY_JOINT_TENANTS"
+
+
+        * "PRIMARY"
+
+
+        * "PRIMARY_BORROWER"
+
+
+        * "PRIMARY_JOINT"
+
+
+        * "SECONDARY"
+
+
+        * "SECONDARY_JOINT_TENANTS"
+
+
+        * "SECONDARY_BORROWER"
+
+
+        * "SECONDARY_JOINT"
+
+
+        * "SOLE_OWNER"
+
+
+        * "TRUSTEE"
+
+
+        * "UNIFORM_TRANSFER_TO_MINOR"'
+      example: AUTHORIZED_USER
+    AddressToName:
+      type: string
+      description: 'The match status between the input name and the queried entity.
+
+        * not-found
+
+        * match
+
+        * no-match'
+      example: match
+    CountryCode:
+      type: string
+      description: Two-letter ISO 3166-1 alpha-2 country code
+      minLength: 2
+      maxLength: 2
+      example: US
+    Address:
+      type: string
+      description: A street address
+      example: '434 W Ascension Way Suite #200 Murray UT 84123'
+    AccountOwnerPhoneType:
+      type: string
+      description: 'The account owner''s phone type:
+
+
+        * "HOME"
+
+
+        * "BUSINESS"
+
+
+        * "CELL"
+
+
+        * "FAX"'
+      example: HOME
+    DeviceRiskScore:
+      type: number
+      description: Comprehensive risk score associated with a device, with a higher score indicating a riskier device. A number between 0 and 1.
+      example: 0.45
+    AccountOwnerVerificationPhone:
+      description: Consumer phone
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/AccountOwnerPhoneType'
+        country:
+          $ref: '#/components/schemas/PhoneCountry'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        phoneScores:
+          $ref: '#/components/schemas/PhoneScores'
+    DevicePhoneEmailFirstSeen:
+      type: integer
+      format: int64
+      description: Days since the combination of device, phone, and email was first seen
+      example: 140
+    IpRisk:
+      type: boolean
+      description: True if the IP address is considered risky, based on multiple IP data points and velocity calculations.
+      example: true
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    GovernmentId:
+      type: string
+      description: "A federal or state issued identification number in alphanumeric characters.\n* **Canada**:\n\n  * Passport: 8 digits\n\n  * Driver: 6-9 digits"
+      example: '123456789'
+    AccountOwnerVerificationMatchingAddress:
+      type: object
+      properties:
+        ownerAddress:
+          $ref: '#/components/schemas/SingleLineAddress'
+        line1:
+          $ref: '#/components/schemas/AddressLine1'
+        line2:
+          $ref: '#/components/schemas/AddressLine2'
+        line3:
+          $ref: '#/components/schemas/AddressLine3'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        country:
+          $ref: '#/components/schemas/CountryCode'
+        postalCode:
+          $ref: '#/components/schemas/ZipCode'
+        type:
+          type: string
+          description: The type of address (e.g. Home or Business).
+          minLength: 1
+          maxLength: 50
+          example: Home
+        addressScores:
+          $ref: '#/components/schemas/AddressScore'
+    IpGeolocationSubdivision:
+      type: string
+      description: More granular detail about the IP address location.
+      example: Oregon
+    AccountOwnerVerificationMatchingRequestAddress:
+      type: object
+      properties:
+        line1:
+          $ref: '#/components/schemas/AddressLine1'
+        line2:
+          $ref: '#/components/schemas/AddressLine2'
+        line3:
+          $ref: '#/components/schemas/AddressLine3'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        country:
+          $ref: '#/components/schemas/CountryCode'
+        postalCode:
+          $ref: '#/components/schemas/ZipCode'
+        type:
+          type: string
+          description: The type of address (e.g. Home or Business).
+          minLength: 1
+          maxLength: 50
+          example: Home
+    AccountOwnerVerificationMatchingRequest:
+      type: object
+      required:
+      - name
+      properties:
+        ownerName:
+          $ref: '#/components/schemas/AccountOwnerName'
+        name:
+          $ref: '#/components/schemas/AccountOwnerVerificationMatchingRequestName'
+        address:
+          $ref: '#/components/schemas/AccountOwnerVerificationMatchingRequestAddress'
+        phone:
+          type: string
+          description: A valid phone number. It may only include digits.
+          maxLength: 10
+          pattern: ^\d+$
+          example: '8005551234'
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+    PhoneEmailFirstSeenDays:
+      type: number
+      description: Count of days since the combination of phone and email was first observed in Ekata's Identity Network. If that combination has not been observed before, `phoneEmailFirstSeenDays` will be 0.
+      example: 54
+    DeviceIpEmailFirstSeen:
+      type: integer
+      description: Days since the combination of device, IP, and email was first seen
+      example: 365
+    MetaData:
+      type: string
+      description: OBAO is a program that is being offered to Mastercard issuers where when the new account is issued a Mastercard Debit or Prepaid account. OBAO offered partners will not be charged for ACH, AOV, and Balance API.
+      example: program=OBAO
+    DevicePlatform:
+      type: string
+      description: The device platform used to authorize your product or service.
+      example: iOS
+    EmailRisk:
+      type: number
+      description: Email Risk Score assesses the risk level of an email address by leveraging features from our Identity Graph and Identity Network. It provides the strongest indicator of a high-risk email.
+      example: 0.8
+    ClassificationConfidenceScore:
+      type: number
+      description: The confidence score 0 – 1.0 of the name classification.
+      example: 0.9
+      minimum: 0
+      maximum: 1.0
+    Warnings:
+      type: string
+      description: "An array containing warning messages. Warnings can be one of:\n\n  * Address: Input postal code was corrected\n  * Address: Input state corrected\n  * Email: Address is too long\n  * Email: General syntax error\n  * Email: Invalid domain syntax\n  * Email: Invalid top-level-domain (TLD) in address\n  * Email: Invalid username syntax\n  * IP: IP address is in private range\n  * Phone: Invalid country_hint value. Only Alpha-2 supported"
+      example: Test warnings
+    Suffix:
+      type: string
+      description: A generational or academic suffix
+      example: PhD
+    PhoneScores:
+      properties:
+        phone:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input with the account owner details fetch
+          example: 0
+    AccountOwnerName:
+      type: string
+      description: The full name of the account owner. Multiple account owners are returned in one string per the source data from the institution.
+      example: John Smith, PhD
+    EmailMailboxVelocity:
+      type: number
+      description: The velocity of the mailbox.
+      example: 3
+    AccountOwnerVerificationMatchingEmails:
+      description: List of emails
+      type: array
+      items:
+        $ref: '#/components/schemas/AccountOwnerVerificationMatchingEmail'
+    State:
+      type: string
+      description: State
+      example: UT
+    AsOfDate:
+      type: integer
+      description: The last time the payroll data was updated in the payroll provider's system
+      format: int64
+      example: 1596175200
+    AccountOwnerPhone:
+      description: Consumer phone
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/AccountOwnerPhoneType'
+        country:
+          $ref: '#/components/schemas/PhoneCountry'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+    AddressScore:
+      properties:
+        ownerAddress:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input "address" sub-attributes (line1,line2, line3, city, state, country, postalCode) with the account owner details fetch ownerAddress
+          example: 0
+        type:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input with the account owner details fetch
+          example: 100
+        line1:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input with the account owner details fetch
+          example: 34
+        line2:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input with the account owner details fetch
+          example: 100
+        line3:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input with the account owner details fetch
+          example: 100
+        city:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input with the account owner details fetch
+          example: 100
+        country:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input with the account owner details fetch
+          example: 100
+        postalCode:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input with the account owner details fetch
+          example: 100
+        state:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: This score represent the matching between user input with the account owner details fetch
+          example: 100
+    FirstName:
+      type: string
+      description: The first name of the account holder
+      example: John
+    IpRiskScore:
+      type: number
+      description: Comprehensive risk score associated with an IP address, with a higher score indicating a riskier IP address. A number between 0 and 1 rounded to three decimal places.
+      example: 0.123
+    AddressValidityLevel:
+      type: string
+      description: "The most granular level to which the address could be validated. Ex. If the address was only valid to the city level (but not to the house level), it would return “valid_to_city”.\n  * missing_address - An input address was not provided.\n\n  * invalid - The input address is not valid.\n\n  * valid - The input address is valid.\n\n  * valid_to_country - The input address could only be validated to the\ncountry level. This means the country of the input address is valid, but the other elements of the input address were unable to be confirmed as valid or invalid.\n\n  * valid_to_city - The input address was validated to the city level.\nThis means the country, state, city, and postal code of the input address are valid, but the street, house number, and subpremise of the input address were unable to be confirmed as valid or invalid.\n\n  * valid_to_street - The input address was validated to the street\nlevel. This means the country, state, city, postal code, and street of the input address are valid, but the house number and subpremise of the input address were unable to be confirmed as valid or invalid.\n\n    * valid_to_house_number - The input address was validated to the\nstreet and house number level. This means the country, state, city, postal code, street, and house number of the input address are valid, but the subpremise of the input address was unable to be confirmed as valid or invalid.\n\n    * valid_to_house_number_missing_apt - The input address was\nvalidated to the street and house number level. This means the country, state, city, postal code, street, and house number of the input address are valid, but the subpremise of the input address was missing and thus unable to be confirmed as valid or invalid."
+      example: valid
+    EmailToName:
+      type: string
+      description: 'The match status between the input name and the queried entity.
+
+        * not found
+
+        * match
+
+        * no-match'
+      example: not found
+    TaxId:
+      type: string
+      description: "Country specific tax ID associated with the customer.\n* **Canada**: Social Insurance Number (SIM) or Numero d'assurance sociale (NAS)\n\n  * Format: 123-456-789"
+      example: 123-45-7890
+    AccountOwnerEmail:
+      description: Account owner email
+      type: object
+      properties:
+        isPrimary:
+          $ref: '#/components/schemas/AccountOwnerEmailPrimary'
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+        emailType:
+          $ref: '#/components/schemas/AccountOwnerEmailType'
+    UnixDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    City:
+      type: string
+      description: City
+      example: Murray
+    RequestRefId:
+      type: string
+      description: The generated unique web transaction identifier.
+      example: be3ad617-04ad-43e1-a438-79425b6511b6
+    AccountOwnerEmailType:
+      type: string
+      description: 'The account owner''s email type.
+
+
+        * "Personal"
+
+
+        * "Business"'
+      example: Personal
+  responses:
+    AccountOwnerVerificationErrorResponse:
+      description: The customer or account does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            CustomerIdNotFoundErrorMessage:
+              $ref: '#/components/examples/CustomerIdNotFound'
+            AccountsDetailsNotFoundErrorMessage:
+              $ref: '#/components/examples/AccountsDetailsNotFound'
+    BadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            PermissiblePurposeCodeExample:
+              $ref: '#/components/examples/PermissiblePurposeCodeExample'
+            InvalidForesightReportRequestExample:
+              $ref: '#/components/examples/InvalidForesightReportRequestExample'
+            BothCraAndFtcPurposeTrueExample:
+              $ref: '#/components/examples/BothCraAndFtcPurposeTrueExample'
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            InvalidExperienceFieldExample:
+              $ref: '#/components/examples/InvalidExperienceFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+            ResellerPartnerNotAuthorizedExample:
+              $ref: '#/components/examples/ResellerPartnerNotAuthorizedExample'
+            ResellerInvalidDateRangeExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeExample'
+            ResellerInvalidDateRangeLessThanZeroExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeLessThanZeroExample'
+            ResellerInvalidDateRangeGreaterThanEndDateExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThanEndDateExample'
+            ResellerInvalidDateRangeGreaterThan31DaysExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThan31DaysExample'
+            CustomerReportLimitExceedExample:
+              $ref: '#/components/examples/CustomerReportLimitExceedExample'
+            InvalidConsumerSSNExample:
+              $ref: '#/components/examples/InvalidConsumerSSNExample'
+            InvalidConsumerPhoneExample:
+              $ref: '#/components/examples/InvalidConsumerPhoneExample'
+            InvalidConsumerEmailExample:
+              $ref: '#/components/examples/InvalidConsumerEmailExample'
+            InvalidValue:
+              $ref: '#/components/examples/InvalidValueExample'
+    MFAChallengeNeededResponse:
+      description: The request was unsuccessful due to a required Multi-Factor Authentication (MFA) challenge. There is no further action that can be taken to resolve this error.
+    TimedOutRequestResponse:
+      description: Response for when a request has timed out
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            TimedOutRequestErrorMessage:
+              $ref: '#/components/examples/TimedOutRequestErrorMessage'
+    AccountOwnerVerificationBadRequest:
+      description: The request send to Account Owner Service is inappropriate
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldBadRequestErrorMessage:
+              $ref: '#/components/examples/AccountOwnerVerificationMissingField'
+            AOV3BadRequestErrorMessage:
+              $ref: '#/components/examples/AOV3BadRequestErrorMessage'
+            IdMatchBadRequestErrorMessage:
+              $ref: '#/components/examples/IdMatchBadRequestErrorMessage'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
+    AccountOwnerVerificationGetMatchScoreResponse:
+      description: Shows the details of the match score after comparison with account owner response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountOwnerVerificationMatchResults'
+    ResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ConsumerNotFoundExample:
+              $ref: '#/components/examples/ConsumerNotFoundExample'
+            NoAccountForInstitutionLoginIdExample:
+              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            NoConsumerForCustomerExample:
+              $ref: '#/components/examples/NoConsumerForCustomerExample'
+            ResourceNotFoundExample:
+              $ref: '#/components/examples/ResourceNotFoundExample'
+            NoRegisteredApplicationExample:
+              $ref: '#/components/examples/NoRegisteredApplicationExample'
+            ResellerNoDataForPartnerExample:
+              $ref: '#/components/examples/ResellerNoDataForPartnerExample'
+            ResellerNoReportForPartnerExample:
+              $ref: '#/components/examples/ResellerNoReportForPartnerExample'
+    GetAccountOwnerDetailsResponse:
+      description: The account owner was successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountOwnerHolders'
+    GetAccountOwnerResponse:
+      description: The account owner was successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountOwner'
+  parameters:
+    WithInsightsParameter:
+      description: If this parameter is true, Identity Insights data will be returned along with the account owner information
+      name: withInsights
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/WithInsights'
+      example: false
+    InsightsParameter:
+      description: If this parameter is true, Identity Insights data will be returned along with the account owner information
+      name: insights
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/Insights'
+      example: false
+    MetaDataParameter:
+      name: Meta-Data
+      in: header
+      required: false
+      schema:
+        $ref: '#/components/schemas/MetaData'
+      description: OBAO is a program that is being offered to Mastercard issuers where when the new account is issued a Mastercard Debit or Prepaid account. OBAO offered partners will not be charged for ACH, AOV, and Balance API.
+      example: program=OBAO
+    AccountIdParameter:
+      description: The account ID
+      name: accountId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AccountId'
+      example: '5011648377'
+    CustomerIdParameter:
+      description: A customer ID
+      name: customerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
+  requestBodies:
+    AccountOwnerVerificationMatchingRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountOwnerVerificationMatchingRequest'
+  securitySchemes:
+    FinicityAppKey:
+      name: Finicity-App-Key
+      type: apiKey
+      in: header
+      description: The "Finicity-App-Key" from the developer dashboard
+    FinicityAppToken:
+      name: Finicity-App-Token
+      type: apiKey
+      in: header
+      description: A token returned by the `/authentication` API

@@ -1,0 +1,871 @@
+openapi: 3.2.0
+info:
+  title: Open Finance Customers API
+  description: 'OpenAPI specification for Finicity APIs.
+
+
+    Open Finance (formerly Open Banking) solutions in the US are provided by
+
+    Finicity, a Mastercard company.'
+  contact:
+    name: API Support
+    email: apisupport@mastercard.com
+    url: https://developer.mastercard.com/open-finance-us/documentation/support/
+  version: 1.43.0
+servers:
+- url: https://api.finicity.com
+  description: Production
+security:
+- FinicityAppKey: []
+  FinicityAppToken: []
+tags:
+- name: Customers
+  description: Enroll and manage customers
+paths:
+  /aggregation/v2/customers/testing:
+    post:
+      tags:
+      - Customers
+      summary: Add Testing Customer
+      description: 'Enroll a testing customer (Test Drive accounts).
+
+
+        For using testing customers with FinBank OAuth, you must register a test application with your systems engineer or account manager. Then, use that testing `applicationId` when creating testing customers.
+
+
+        Testing Customers can access FinBank profiles (except "FinBank Billable" profiles), and cannot access live financial institutions.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: AddTestingCustomer
+      requestBody:
+        $ref: '#/components/requestBodies/AddCustomerRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/AddCustomerResponse'
+        '400':
+          $ref: '#/components/responses/AddCustomerBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '409':
+          $ref: '#/components/responses/AddCustomerConflictErrorResponse'
+  /aggregation/v2/customers/active:
+    post:
+      tags:
+      - Customers
+      summary: Add Customer
+      description: 'Enroll an active customer, which is the actual owner of one or more real-world accounts. This is a billable customer.
+
+
+        Active customers must use the "FinBank Billable" profiles for testing purposes.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: AddCustomer
+      requestBody:
+        $ref: '#/components/requestBodies/AddCustomerRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/AddCustomerResponse'
+        '400':
+          $ref: '#/components/responses/AddCustomerBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '409':
+          $ref: '#/components/responses/AddCustomerConflictErrorResponse'
+  /aggregation/v1/customers:
+    get:
+      tags:
+      - Customers
+      summary: Get Customers
+      description: 'Find all customers enrolled by the current partner, where the search text is found in the customer''s username or any combination of `firstName` and `lastName` fields. If no search text is provided, all customers will be returned.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetCustomers
+      parameters:
+      - $ref: '#/components/parameters/CustomerUsernameParameter'
+      - $ref: '#/components/parameters/CustomerTypeParameter'
+      - $ref: '#/components/parameters/CustomerSearchParameter'
+      - $ref: '#/components/parameters/DSAPI_StartParameter'
+      - $ref: '#/components/parameters/LimitParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCustomersResponse'
+        '400':
+          $ref: '#/components/responses/GetCustomerBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/GetCustomerResourceNotFoundResponse'
+  /aggregation/v1/customers/{customerId}/application:
+    get:
+      tags:
+      - Customers
+      summary: Get Customer With App Data by ID
+      description: 'Retrieve a customer along with additional details about the OAuth application.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetCustomerWithAppData
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCustomerWithAppDataResponse'
+        '400':
+          $ref: '#/components/responses/GetCustomerAppDataBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/GetCustomerAppDataResourceNotFoundErrorResponse'
+  /aggregation/v1/customers/{customerId}:
+    get:
+      tags:
+      - Customers
+      summary: Get Customer by ID
+      description: 'Retrieve a customer by ID.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetCustomer
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCustomerResponse'
+        '400':
+          $ref: '#/components/responses/GetCustomerByIdBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+    put:
+      tags:
+      - Customers
+      summary: Modify Customer by ID
+      description: 'Modify an enrolled customer by ID.
+
+
+        You must specify either `firstName`, `lastName`, or both in the request.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: ModifyCustomer
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/ModifyCustomerRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/ModifyCustomerResponse'
+        '400':
+          $ref: '#/components/responses/ModifyCustomerBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/DisputeStatementErrorResponse'
+        '409':
+          $ref: '#/components/responses/ModifyCustomerConflictErrorResponse'
+    delete:
+      tags:
+      - Customers
+      summary: Delete Access to Customer by ID
+      description: 'Delete access to a customer and all associated accounts.
+
+        This will delete access to the customer and all their linked accounts. The customer data will no longer be accessible. Any customer data already collected will be retained in accordance with our enterprise data retention policy consistent with legal and business purposes.
+
+        ⚠️ Use this service carefully! It will not pause for confirmation before performing the operation!
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: DeleteCustomer
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      responses:
+        '204':
+          $ref: '#/components/responses/DeleteCustomerResponse'
+        '400':
+          $ref: '#/components/responses/DeleteCustomerAppDataBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/DeleteCustomerResourceNotFoundErrorResponse'
+components:
+  examples:
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    InvalidLimitExample:
+      value:
+        code: '41004'
+        message: Limit cannot be less than one.
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    InvalidForesightReportRequestExample:
+      value:
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    AggregationConnectPartnerNotFoundExample:
+      value:
+        code: '14003'
+        message: Aggregation connect partner not found.
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    PartnerNotFoundExample:
+      value:
+        code: 12401
+        message: partner not found
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    NoAccountForInstitutionLoginIdExample:
+      value:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
+    InvalidStartIndexExample:
+      value:
+        code: '41003'
+        message: Start index cannot be less than one.
+    ResellerNoDataForPartnerExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    InvalidCustomerIdExample:
+      value:
+        code: '14023'
+        message: Invalid customer id. customerId = (customerId)
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+    TemporaryCustomerCannotDeletedExample:
+      value:
+        code: '50016'
+        message: Accounts for temporary customers are maintained by the system, and cannot be deleted through the API.
+    InvalidCustomerTypeExample:
+      value:
+        code: '14016'
+        message: Invalid customer type.
+    UserNameNotAsPerPolicyExample:
+      value:
+        code: '110039'
+        message: Username is not as per the policy.
+    DisputeStatementErrorExample:
+      value:
+        code: '10406'
+        status: '403'
+        message: The active dispute statement for this consumer exists.
+    InvalidCharactorExample:
+      value:
+        code: '45003'
+        message: Invalid character in name fields.
+    NoDataToUpdateExample:
+      value:
+        code: '10025'
+        message: No data to update.
+    NoActiveSubscriptionFoundExample:
+      value:
+        code: '60013'
+        message: No active subscription found for a given customer.
+    NoAssignedApplicationExample:
+      value:
+        code: '50052'
+        message: Customer has no assigned application.
+    UsernameNotAvailableExample:
+      value:
+        code: '110002'
+        message: Username is not available.
+    InstitutionNotFoundExample:
+      value:
+        code: '14006'
+        message: Institution not found.
+    NoConsumerForCustomerExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer for customer with id 5011115315."
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+  requestBodies:
+    AddCustomerRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NewCustomer'
+    ModifyCustomerRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CustomerUpdate'
+  schemas:
+    DisplayingResults:
+      type: integer
+      description: The number of results returned
+      example: 1
+    EmailAddress:
+      type: string
+      description: An email address
+      example: myname@mycompany.com
+    DisputeStatementErrorMessage:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: integer
+          description: 'An error code for dispute statement. Useful links: [API Errors](https://developer.mastercard.com/open-finance-us/documentation/errors/), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/aggregation-status-codes/).'
+          format: int32
+          example: 10406
+        status:
+          type: string
+          description: A status code
+          example: '403'
+        message:
+          type: string
+          description: An error message
+          example: The active dispute statement for this consumer exists.
+    PhoneNumber:
+      type: string
+      description: A phone number (max length 15).
+      example: 1-801-984-4200
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    CustomerUsername:
+      type: string
+      description: 'The customer''s username, assigned by the partner (a unique identifier), following these rules: minimum 6 characters maximum 255 characters any mix of uppercase, lowercase, numeric, and non-alphabet special characters ! @ . # $ % & * _ - + the use of email in this field is discouraged it is recommended to use a unique non-email identifier. Use of special characters may result in an error (e.g. í, ü, etc.). Usernames are unique. A username used in Test Drive can''t be reused in other plans.'
+      example: customerusername1
+    StringUnixDate:
+      type: string
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: '1607450357'
+    CustomerWithAppData:
+      description: A finicity customer record with application info
+      required:
+      - id
+      - username
+      - firstName
+      - lastName
+      - type
+      - createdDate
+      - applicationId
+      - applicationName
+      allOf:
+      - $ref: '#/components/schemas/Customer'
+      - type: object
+        properties:
+          applicationId:
+            $ref: '#/components/schemas/ApplicationId'
+          applicationName:
+            $ref: '#/components/schemas/ApplicationName'
+    FoundResults:
+      type: integer
+      description: The total number of results matching search criteria
+      example: 200
+    LastName:
+      type: string
+      description: The last name of the account holder
+      example: Smith
+    MoreResultsAvailable:
+      type: boolean
+      description: If the value of `moreAvailable` is "true", you can retrieve the next page of results by increasing the value of the start parameter in your next request:"...&start=6&limit=5"
+      example: true
+    ApplicationId:
+      type: string
+      description: '`applicationId` value returned from the Get App Registration Status API and the partner assign the customers to. This cannot be changed once set. Only applicable in cases of partners with multiple registered applications. If the partner only has one app, this can usually be omitted. This field is populated after the app is in a status approved.'
+      example: 00278431-b712-4f30-a044-b611f25e533d
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    Customers:
+      description: A list of customers
+      required:
+      - displaying
+      - moreAvailable
+      - customers
+      type: object
+      properties:
+        found:
+          $ref: '#/components/schemas/FoundResults'
+        displaying:
+          $ref: '#/components/schemas/DisplayingResults'
+        moreAvailable:
+          $ref: '#/components/schemas/MoreResultsAvailable'
+        customers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+          description: A list of customer records
+    NewCustomer:
+      description: A new customer to be enrolled
+      required:
+      - username
+      type: object
+      properties:
+        username:
+          $ref: '#/components/schemas/CustomerUsername'
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        applicationId:
+          $ref: '#/components/schemas/ApplicationId'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+    CustomerType:
+      type: string
+      description: The type of customer ("active" or "testing" or "" for all types)
+      example: active
+    ApplicationName:
+      type: string
+      description: The name of the application assigned to the customer
+      example: Awesome Budget App
+    CreatedCustomer:
+      description: A new customer that was just enrolled
+      required:
+      - id
+      - username
+      - createdDate
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/CustomerId'
+        username:
+          $ref: '#/components/schemas/CustomerUsername'
+        createdDate:
+          $ref: '#/components/schemas/UnixDate'
+    FirstName:
+      type: string
+      description: The first name of the account holder
+      example: John
+    UnixDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    CustomerUpdate:
+      description: Represent an update to customer fields
+      type: object
+      properties:
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+    Customer:
+      description: A finicity customer record
+      required:
+      - id
+      - username
+      - type
+      - createdDate
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/CustomerId'
+        username:
+          $ref: '#/components/schemas/CustomerUsername'
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+        type:
+          $ref: '#/components/schemas/CustomerType'
+        createdDate:
+          $ref: '#/components/schemas/StringUnixDate'
+        lastModifiedDate:
+          $ref: '#/components/schemas/StringUnixDate'
+  responses:
+    ModifyCustomerResponse:
+      description: The customer was successfully updated
+    AddCustomerConflictErrorResponse:
+      description: The resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            UsernameNotAvailableExample:
+              $ref: '#/components/examples/UsernameNotAvailableExample'
+    GetCustomerAppDataBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            InvalidCustomerIdExample:
+              $ref: '#/components/examples/InvalidCustomerIdExample'
+    ModifyCustomerBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            UserNameNotAsPerPolicyExample:
+              $ref: '#/components/examples/UserNameNotAsPerPolicyExample'
+            NoDataToUpdateExample:
+              $ref: '#/components/examples/NoDataToUpdateExample'
+            InvalidCharactorExample:
+              $ref: '#/components/examples/InvalidCharactorExample'
+    GetCustomerByIdBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+    GetCustomerAppDataResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            NoRegisteredApplicationExample:
+              $ref: '#/components/examples/NoRegisteredApplicationExample'
+            NoAssignedApplicationExample:
+              $ref: '#/components/examples/NoAssignedApplicationExample'
+    GetCustomerWithAppDataResponse:
+      description: The customer was successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CustomerWithAppData'
+    ModifyCustomerConflictErrorResponse:
+      description: The resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            UsernameNotAvailableExample:
+              $ref: '#/components/examples/UsernameNotAvailableExample'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
+    GetCustomersResponse:
+      description: Customers were successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Customers'
+    ResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ConsumerNotFoundExample:
+              $ref: '#/components/examples/ConsumerNotFoundExample'
+            NoAccountForInstitutionLoginIdExample:
+              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            NoConsumerForCustomerExample:
+              $ref: '#/components/examples/NoConsumerForCustomerExample'
+            ResourceNotFoundExample:
+              $ref: '#/components/examples/ResourceNotFoundExample'
+            NoRegisteredApplicationExample:
+              $ref: '#/components/examples/NoRegisteredApplicationExample'
+            ResellerNoDataForPartnerExample:
+              $ref: '#/components/examples/ResellerNoDataForPartnerExample'
+            ResellerNoReportForPartnerExample:
+              $ref: '#/components/examples/ResellerNoReportForPartnerExample'
+    AddCustomerBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            UserNameNotAsPerPolicyExample:
+              $ref: '#/components/examples/UserNameNotAsPerPolicyExample'
+            InvalidCharactorExample:
+              $ref: '#/components/examples/InvalidCharactorExample'
+    GetCustomerBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            InvalidForesightReportRequestExample:
+              $ref: '#/components/examples/InvalidForesightReportRequestExample'
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            InvalidCustomerTypeExample:
+              $ref: '#/components/examples/InvalidCustomerTypeExample'
+            InvalidStartIndexExample:
+              $ref: '#/components/examples/InvalidStartIndexExample'
+            InvalidLimitExample:
+              $ref: '#/components/examples/InvalidLimitExample'
+    AddCustomerResponse:
+      description: The customer was successfully created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatedCustomer'
+    DeleteCustomerAppDataBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            InvalidCustomerIdExample:
+              $ref: '#/components/examples/InvalidCustomerIdExample'
+            TemporaryCustomerCannotDeletedExample:
+              $ref: '#/components/examples/TemporaryCustomerCannotDeletedExample'
+    DeleteCustomerResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            PartnerNotFoundExample:
+              $ref: '#/components/examples/PartnerNotFoundExample'
+            InstitutionNotFoundExample:
+              $ref: '#/components/examples/InstitutionNotFoundExample'
+            NoActiveSubscriptionFoundExample:
+              $ref: '#/components/examples/NoActiveSubscriptionFoundExample'
+    GetCustomerResponse:
+      description: The customer was successfully retrieved
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/Customer'
+            - type: object
+              properties:
+                applicationId:
+                  $ref: '#/components/schemas/ApplicationId'
+    DeleteCustomerResponse:
+      description: Access to the customer was successfully removed
+    GetCustomerResourceNotFoundResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            AggregationConnectPartnerNotFoundExample:
+              $ref: '#/components/examples/AggregationConnectPartnerNotFoundExample'
+            PartnerNotFoundExample:
+              $ref: '#/components/examples/PartnerNotFoundExample'
+    DisputeStatementErrorResponse:
+      description: The active dispute statement for this consumer exists.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DisputeStatementErrorMessage'
+          examples:
+            SecurityFreezeErrorExample:
+              $ref: '#/components/examples/DisputeStatementErrorExample'
+  parameters:
+    CustomerUsernameParameter:
+      name: username
+      in: query
+      required: false
+      description: Username for exact match (will return 0 or 1 record)
+      schema:
+        $ref: '#/components/schemas/CustomerUsername'
+      example: customerusername1
+    LimitParameter:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results per page
+      schema:
+        type: integer
+        format: int32
+        default: 25
+        minimum: 1
+        maximum: 1000
+        example: 20
+    CustomerSearchParameter:
+      name: search
+      in: query
+      required: false
+      description: 'The text you wish to match. Leave this empty if you wish to return all customers. Must be URL-encoded (see: [Handling Spaces in Queries](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/)).'
+      schema:
+        type: string
+        example: Search Value
+    CustomerTypeParameter:
+      name: type
+      in: query
+      required: false
+      description: '"testing" or "active" to return only customers of that type, or leave empty to return all customers'
+      schema:
+        $ref: '#/components/schemas/CustomerType'
+      example: active
+    CustomerIdParameter:
+      description: A customer ID
+      name: customerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
+    DSAPI_StartParameter:
+      name: start
+      in: query
+      required: false
+      description: "Represents the index of the first record to return within a batch of `limit`.\n\nExample: \n  - `limit=15&start=1`; records 1–15 \n  - `limit=15&start=16`; records 16–30\n"
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+        example: 1
+  securitySchemes:
+    FinicityAppKey:
+      name: Finicity-App-Key
+      type: apiKey
+      in: header
+      description: The "Finicity-App-Key" from the developer dashboard
+    FinicityAppToken:
+      name: Finicity-App-Token
+      type: apiKey
+      in: header
+      description: A token returned by the `/authentication` API

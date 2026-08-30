@@ -1,0 +1,388 @@
+openapi: 3.2.0
+info:
+  title: Open Finance Businesses API
+  description: 'OpenAPI specification for Finicity APIs.
+
+
+    Open Finance (formerly Open Banking) solutions in the US are provided by
+
+    Finicity, a Mastercard company.'
+  contact:
+    name: API Support
+    email: apisupport@mastercard.com
+    url: https://developer.mastercard.com/open-finance-us/documentation/support/
+  version: 1.43.0
+servers:
+- url: https://api.finicity.com
+  description: Production
+security:
+- FinicityAppKey: []
+  FinicityAppToken: []
+tags:
+- name: Businesses API
+  description: Create and manage business associated with customers in order to use Balance Analytics or Cash Flow Analytics
+paths:
+  /business-services/customers/{customer_id}/businesses:
+    post:
+      tags:
+      - Businesses API
+      summary: Create a New Business for a Customer
+      description: 'Create a new business record for the associated customer.
+
+        A customer can have one business record associated.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: AddBusinessDetails
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdPathParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/BusinessDetailRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/BusinessCreatedResponse'
+        '404':
+          $ref: '#/components/responses/CustomerNotFoundErrorResponse'
+        '409':
+          $ref: '#/components/responses/ConflictErrorResponse'
+    get:
+      tags:
+      - Businesses API
+      summary: Get Business for Customer
+      description: 'Retrieve business details associated with a specific customer. By providing the unique customer identifier, details about the associated business can be accessed.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetBusinessByCustomer
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdPathParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/BusinessFoundResponse'
+        '404':
+          $ref: '#/components/responses/CustomerNotFoundErrorResponse'
+  /business-services/businesses/{business_id}:
+    put:
+      tags:
+      - Businesses API
+      summary: Update Business by ID
+      description: 'Update the details of a business based on its unique identifier. By providing the specific business ID and the updated information in the request, modifications can be made to the business''s profile.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: UpdateBusiness
+      parameters:
+      - $ref: '#/components/parameters/BusinessIdParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/BusinessDetailRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/BusinessUpdatedResponse'
+        '404':
+          $ref: '#/components/responses/BusinessNotFoundErrorResponse'
+    get:
+      tags:
+      - Businesses API
+      summary: Get Business by ID
+      description: 'Retrieve business details.
+
+
+        _Supported regions_: ![\U0001F1FA\U0001F1F8](https://flagcdn.com/20x15/us.png)'
+      operationId: GetBusinessById
+      parameters:
+      - $ref: '#/components/parameters/BusinessIdParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/BusinessFoundResponse'
+        '404':
+          $ref: '#/components/responses/BusinessNotFoundErrorResponse'
+components:
+  schemas:
+    ZipCode:
+      type: string
+      description: A ZIP code
+      example: '84123'
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    Business:
+      allOf:
+      - $ref: '#/components/schemas/NewBusiness'
+      - type: object
+        properties:
+          businessId:
+            $ref: '#/components/schemas/BusinessId'
+          createdDate:
+            $ref: '#/components/schemas/NoZoneDateTime'
+          modifiedDate:
+            $ref: '#/components/schemas/NoZoneDateTime'
+    BusinessList:
+      type: array
+      minItems: 1
+      maxItems: 1
+      items:
+        $ref: '#/components/schemas/Business'
+    State:
+      type: string
+      description: State
+      example: UT
+    EmailAddress:
+      type: string
+      description: An email address
+      example: myname@mycompany.com
+    CountryCode:
+      type: string
+      description: Two-letter ISO 3166-1 alpha-2 country code
+      minLength: 2
+      maxLength: 2
+      example: US
+    CountryCodeNumber:
+      type: string
+      description: The country code digit representing the phone number for specific country
+      minLength: 1
+      maxLength: 3
+      example: '1'
+    BusinessId:
+      type: string
+      description: Unique identifier of the business
+      minLength: 1
+      maxLength: 50
+      example: '1112'
+    NewBusiness:
+      type: object
+      required:
+      - name
+      - personallyLiable
+      - address
+      - phoneNumber
+      properties:
+        name:
+          type: string
+          description: The legal name of the business
+          minLength: 1
+          maxLength: 150
+          example: ABC Tires Inc
+        personallyLiable:
+          type: boolean
+          description: Indicates whether a business owner is personally liable for a loan
+          example: true
+        address:
+          $ref: '#/components/schemas/NewAddress'
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumberFormat'
+        url:
+          description: A URL for the business website
+          format: uri
+          maxLength: 2000
+          minLength: 0
+          type: string
+          example: https://www.finicity.com/
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+        type:
+          description: The business type eg LLC, Corp, S Corp, C Corp, B Corp, Sole Proprietorship, Nonprofit, etc.
+          maxLength: 150
+          minLength: 0
+          type: string
+          example: Nonprofit
+        taxId:
+          description: Provide details of the tax id for the business
+          maxLength: 15
+          minLength: 9
+          type: string
+          example: A1234561Z
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    AddressLine2:
+      type: string
+      description: Address line 2
+      example: 'Suite #200'
+    NewPhoneNumber:
+      type: string
+      description: 'A phone number ([E.164](https://en.wikipedia.org/wiki/E.164) format) minLength: 7'
+      maxLength: 12
+      example: '8042221111'
+    NoZoneDateTime:
+      type: string
+      description: A date-time without time zone
+      example: '2022-04-12T11:51:23'
+    AddressLine1:
+      type: string
+      description: Address line 1
+      example: 434 W Ascension Way
+    PhoneNumberFormat:
+      type: object
+      properties:
+        countryCode:
+          $ref: '#/components/schemas/CountryCodeNumber'
+        phoneNo:
+          $ref: '#/components/schemas/NewPhoneNumber'
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    City:
+      type: string
+      description: City
+      example: Murray
+    NewAddress:
+      type: object
+      properties:
+        addressLine1:
+          $ref: '#/components/schemas/AddressLine1'
+        addressLine2:
+          $ref: '#/components/schemas/AddressLine2'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        country:
+          $ref: '#/components/schemas/CountryCode'
+        postalCode:
+          $ref: '#/components/schemas/ZipCode'
+  examples:
+    ConsumerExistsConflictExample:
+      value:
+        code: '11000'
+        message: A consumer already exists for customer 4025024821
+    BusinessIdNotFound:
+      value:
+        code: '10003'
+        message: Business ID was not found.
+        status: '404'
+        title: Business ID was not found.
+        user_message: Business ID was not found.
+    CustomerIdNotFound:
+      value:
+        code: '10002'
+        message: Customer ID was not found.
+        status: '404'
+        title: Customer ID was not found.
+        user_message: Customer ID was not found.
+  responses:
+    CustomerNotFoundErrorResponse:
+      description: The customer does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            CustomerIdNotFoundResponse:
+              $ref: '#/components/examples/CustomerIdNotFound'
+    BusinessUpdatedResponse:
+      description: The business information was updated.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Business'
+    BusinessCreatedResponse:
+      description: The business was successfully created.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Business'
+    ConflictErrorResponse:
+      description: The resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ConsumerExistsConflictExample:
+              $ref: '#/components/examples/ConsumerExistsConflictExample'
+    BusinessFoundResponse:
+      description: The business information was successfully retrieved.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BusinessList'
+    BusinessNotFoundErrorResponse:
+      description: The business does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            BusinessIdNotFoundResponse:
+              $ref: '#/components/examples/BusinessIdNotFound'
+  parameters:
+    CustomerIdPathParameter:
+      description: Unique identifier of the customer
+      name: customer_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
+    BusinessIdParameter:
+      description: Unique identifier of the business
+      name: business_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/BusinessId'
+      example: '192323'
+  requestBodies:
+    BusinessDetailRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NewBusiness'
+  securitySchemes:
+    FinicityAppKey:
+      name: Finicity-App-Key
+      type: apiKey
+      in: header
+      description: The "Finicity-App-Key" from the developer dashboard
+    FinicityAppToken:
+      name: Finicity-App-Token
+      type: apiKey
+      in: header
+      description: A token returned by the `/authentication` API

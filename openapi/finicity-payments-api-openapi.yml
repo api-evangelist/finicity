@@ -1,0 +1,951 @@
+openapi: 3.2.0
+info:
+  title: Open Finance Payments API
+  description: 'OpenAPI specification for Finicity APIs.
+
+
+    Open Finance (formerly Open Banking) solutions in the US are provided by
+
+    Finicity, a Mastercard company.'
+  contact:
+    name: API Support
+    email: apisupport@mastercard.com
+    url: https://developer.mastercard.com/open-finance-us/documentation/support/
+  version: 1.43.0
+servers:
+- url: https://api.finicity.com
+  description: Production
+security:
+- FinicityAppKey: []
+  FinicityAppToken: []
+tags:
+- name: Payments
+  description: Fetch ACH details and account balances
+paths:
+  /aggregation/v2/customers/{customerId}/accounts/{accountId}/loanDetails:
+    get:
+      tags:
+      - Payments
+      summary: Get Loan Payment Details
+      description: 'Return the loan payment details of the customer for a loan-type account.
+
+
+        Note: this is a premium service, billable per every successful API call.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetLoanPaymentDetails
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/AccountIdParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetLoanPaymentDetailsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /aggregation/v1/customers/{customerId}/accounts/{accountId}/details:
+    get:
+      tags:
+      - Payments
+      summary: Get Account ACH Details
+      description: 'Return the real account number and routing number details for an ACH payment.
+
+
+        Note: this is a premium service, billable per every successful API call.
+
+
+        _Supported account types_: "checking", "savings", "moneyMarket","certificateOfDeposit"
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetAccountACHDetails
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/AccountIdParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAccountACHDetailsResponse'
+        '400':
+          $ref: '#/components/responses/GetAccountACHDetailsBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /aggregation/v1/customers/{customerId}/accounts/{accountId}/availableBalance/live:
+    get:
+      tags:
+      - Payments
+      summary: Get Available Balance
+      description: 'Retrieve the available and cleared account balances for a single account in real-time directly from a financial institution.
+
+
+        You can define an additional query parameter `balance_cache_interval` (in minutes) to control cache usage: 1. If not provided, a predefined default interval of 30 minutes is used. 2. If set to `0`, live balance is always retrieved from the financial institution. 3. If set to a value greater than `0`, cached balance is returned only when cache age is within the interval; otherwise live balance is retrieved.
+
+
+        Note: this is a premium service, billable per every successful API call.
+
+
+        _Supported account types_: "checking", "savings", "moneyMarket", "cd"
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetAvailableBalanceLive
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/AccountIdParameter'
+      - $ref: '#/components/parameters/AllowedBalanceCacheIntervalParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAvailableBalanceLiveResponse'
+        '400':
+          $ref: '#/components/responses/GetAvailableBalanceLiveBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /aggregation/v1/customers/{customerId}/accounts/{accountId}/availableBalance:
+    get:
+      tags:
+      - Payments
+      summary: Get Available Balance - Cached
+      deprecated: true
+      description: '_This endpoint will no longer be available after June 2025. You must transition to using the regular Get Available Balance endpoint, which can return either live or cached data depending on your requirements._
+
+
+        Retrieve the latest cached available and cleared account balances for a customer. Since we update and store balances throughout the day, this is the most accurate balance information available when a connection to a financial institution is unavailable or when a faster response is needed. Only deposit account types are supported: Checking, Savings, Money Market, and CD.
+
+
+        Note: this is a premium service, billable per every successful API call. Enrollment is required.
+
+
+        _Supported account types_: "checking", "savings", "moneyMarket", "cd"
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetAvailableBalance
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/AccountIdParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAvailableBalanceResponse'
+        '400':
+          $ref: '#/components/responses/GetAvailableBalanceBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /aggregation/v3/customers/{customerId}/accounts/{accountId}/details:
+    get:
+      tags:
+      - Payments
+      summary: Get Account ACH Details with RTP/FedNow
+      description: 'Return the real account number and routing number details for an ACH payment along with the supported payment instruction details. The response indicates whether the account can receive/send RTP and FedNow instant payments. For each payment type, transferInEnabled is true if the account can receive the payment type and transferOutEnabled is true if the account can send the payment type.
+
+
+        Note: this is a premium service, billable per every successful API call.
+
+
+        _Supported account types_: "checking", "savings", "moneyMarket"
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetAccountPaymentInstructionDetails
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/AccountIdParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAccountPaymentInstructionDetailsResponse'
+        '400':
+          $ref: '#/components/responses/GetAccountPaymentInstructionBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+components:
+  examples:
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    InvalidForesightReportRequestExample:
+      value:
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    ACHDetailsExampleWithoutFedNowV3Example:
+      value:
+        paymentInstruction:
+        - type: ach
+          accountNumber: '1000001111'
+          descriptors:
+          - type: routingNumber
+            value: 091000019
+        - type: rtp
+          accountNumber: '1000001115'
+          tanEnabled: false
+          descriptors:
+          - type: routingNumber
+            value: 091009910
+          transferInEnabled: true
+          transferOutEnabled: true
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    InstitutionLoginIdDetailsNotFoundErrorResponseExample:
+      value:
+        code: '3004'
+        status: '404'
+        message: Resource Not Found.
+        user_message: Institution Login Id details are not found
+    InvalidFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: Customer ID does not exist or does not belong to this partner
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    InvalidConsumerSSNExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    ResellerInvalidDateRangeLessThanZeroExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    NoAccountForInstitutionLoginIdExample:
+      value:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
+    ACHDetailsExampleWithoutFedNowAndWithoutRTPV3Example:
+      value:
+        paymentInstruction:
+        - type: ach
+          accountNumber: '1000001111'
+          descriptors:
+          - type: routingNumber
+            value: 091000019
+    InstitutionLoginIdNotFoundErrorResponseExample:
+      value:
+        code: '3003'
+        status: '404'
+        message: Resource Not Found.
+        user_message: Institution Login Id is not found
+    ResellerNoDataForPartnerExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    InvalidConsumerEmailExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.email.
+    ResellerInvalidDateRangeExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
+    PermissiblePurposeCodeExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: Permissible Purpose Code is required
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    ACHDetailsWithoutRTPDetailsV3Example:
+      value:
+        paymentInstruction:
+        - type: ach
+          accountNumber: '1000001111'
+          descriptors:
+          - type: routingNumber
+            value: 091000019
+        - type: fedNow
+          accountNumber: '1000001111'
+          tanEnabled: false
+          descriptors:
+          - type: routingNumber
+            value: 091009919
+          transferInEnabled: true
+          transferOutEnabled: true
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+    CustomerAuthorizationDetailsExample:
+      value:
+        institutionLoginId: 7008461438
+        authorizationStartDate: 2024-01-01 16:11:23.200000+00:00
+        authorizationEndDate: 2024-12-31 16:11:23.200000+00:00
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    ACHDetailsV3Example:
+      value:
+        paymentInstruction:
+        - type: ach
+          accountNumber: '1000001111'
+          tanEnabled: true
+          descriptors:
+          - type: routingNumber
+            value: 091000019
+        - type: rtp
+          accountNumber: '1000001112'
+          tanEnabled: false
+          descriptors:
+          - type: routingNumber
+            value: 091000019
+          transferInEnabled: true
+          transferOutEnabled: true
+        - type: fedNow
+          accountNumber: '1000001111'
+          tanEnabled: false
+          descriptors:
+          - type: routingNumber
+            value: 091009919
+          transferInEnabled: true
+          transferOutEnabled: true
+    NoConsumerForCustomerExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer for customer with id 5011115315."
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+  schemas:
+    Currency:
+      type: string
+      description: A currency code
+      example: USD
+    AvailableBalance:
+      required:
+      - id
+      - realAccountNumberLast4
+      - availableBalance
+      - availableBalanceDate
+      - clearedBalance
+      - clearedBalanceDate
+      - aggregationStatusCode
+      - currency
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/NumericCustomerId'
+        realAccountNumberLast4:
+          $ref: '#/components/schemas/AccountNumberLast4'
+        availableBalance:
+          type: number
+          description: The available balance of the account
+          example: 173.47
+        availableBalanceDate:
+          $ref: '#/components/schemas/UnixDate'
+        clearedBalance:
+          type: number
+          description: The cleared balance of the account. Also referred as posted balance, current balance, ledger balance
+          example: 222.25
+        clearedBalanceDate:
+          $ref: '#/components/schemas/UnixDate'
+        aggregationStatusCode:
+          $ref: '#/components/schemas/AggregationStatusCode'
+        currency:
+          $ref: '#/components/schemas/Currency'
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    NumericCustomerId:
+      type: integer
+      format: int64
+      description: A customer ID represented as a number. See Add Customer API for how to create a customer ID.
+      example: 1005061234
+    LoanPaymentDetailsAccount:
+      required:
+      - accountId
+      - accountNumber
+      - accountPaymentNumber
+      - accountPaymentAddress
+      type: object
+      properties:
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        accountNumber:
+          type: string
+          description: Institution's ID of the Student Loan Account
+          example: '9876543210'
+        accountPaymentNumber:
+          type: string
+          description: The payment number given by the institution. This number is typically for manual payments. This is not an ACH payment number.
+          example: 00001234895413
+        accountPaymentAddress:
+          type: string
+          description: The payment address to which send manual payments should be sent
+          example: P.O. Box 123 Sioux Falls, IA 51054
+        accountFuturePayoffAmount:
+          type: number
+          description: The payoff amount for the account
+          example: 10000
+        accountFuturePayoffDate:
+          type: string
+          description: The date to which the "Future Payoff Amount" applies
+          format: date-time
+          example: '2022-01-01T00:00:00.000Z'
+        groupDetail:
+          description: Group details
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanPaymentDetailsGroup'
+        loanDetail:
+          description: Loan details
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanPaymentDetailsLoan'
+    PaymentInstructions:
+      description: A list of payment instructions
+      type: object
+      properties:
+        paymentInstruction:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentInstruction'
+          description: List of payment instructions
+    ACHDetails:
+      required:
+      - routingNumber
+      - realAccountNumber
+      type: object
+      properties:
+        routingNumber:
+          type: string
+          description: The routing number of the financial institution for specific customer account
+          example: '123456789'
+        realAccountNumber:
+          type: string
+          description: The account number for initiating ACH transfers for this account
+          example: 002345678901
+      description: The routing and account number information to initiate ACH transfers
+    AllowedBalanceCacheInterval:
+      type: integer
+      format: int32
+      default: 30
+      minimum: 0
+      maximum: 1440
+      description: Cache interval in minutes for available balance retrieval. If omitted, the default interval is 30 minutes. If `0`, always fetch live balance. If greater than `0`, cached balance may be returned when cache age is within interval; otherwise live balance is retrieved.
+      example: 30
+    Descriptor:
+      required:
+      - type
+      - value
+      type: object
+      properties:
+        type:
+          type: string
+          description: Payment Instruction Descriptor Type
+          example: routingNumber
+        value:
+          type: string
+          description: Value that the Descriptor Type Holds
+          example: '2434345'
+    LoanPaymentDetails:
+      description: Loan payment details for a customer account
+      required:
+      - loanNumber
+      - loanPaymentNumber
+      - loanPaymentAddress
+      type: object
+      properties:
+        loanNumber:
+          type: string
+          description: The number of the specific loan under the account.
+          example: '123456789'
+        loanPaymentNumber:
+          type: string
+          description: The payment number given by the institution. This number is typically for manual payments. This is not an ACH payment number.
+          example: '5231123456789'
+        loanPaymentAddress:
+          type: string
+          description: The payment address to send manual payments to
+          example: Heartland ECSI       PO Box 718       Wexford PA 15090
+        accountDetail:
+          $ref: '#/components/schemas/LoanPaymentDetailsAccount'
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    AggregationStatusCode:
+      type: integer
+      description: The status of the most recent aggregation attempt (see [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes)). Won't be present until you have run your first aggregation for the account.
+    LoanPaymentDetailsGroup:
+      description: Group details
+      required:
+      - accountId
+      - groupNumber
+      - groupPaymentNumber
+      - groupPaymentAddress
+      - groupLoanDetail
+      type: object
+      properties:
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        groupNumber:
+          type: string
+          description: Institution's ID of the Student Loan Group
+          example: 3210-Group A
+        groupPaymentNumber:
+          type: string
+          description: The payment number given by the institution. This number is typically for manual payments. This is not an ACH payment number.
+          example: 00001234895413-A
+        groupPaymentAddress:
+          type: string
+          description: The payment address to which send manual payments should be sent
+          example: P.O. Box 123 Sioux Falls, IA 51054
+        groupFuturePayoffAmount:
+          type: number
+          description: The payoff amount for the group
+          example: 7500
+        groupFuturePayoffDate:
+          type: string
+          description: The date to which the "Future Payoff Amount" applies
+          format: date-time
+          example: '2022-01-01T00:00:00.000Z'
+        groupLoanDetail:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanPaymentDetailsLoan'
+    LoanPaymentDetailsLoan:
+      description: Loan details
+      required:
+      - accountId
+      - loanNumber
+      - loanPaymentNumber
+      - loanPaymentAddress
+      type: object
+      properties:
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        loanNumber:
+          type: string
+          description: Institution's ID of the Student Loan
+          example: 3210-Group A-1
+        loanPaymentNumber:
+          type: string
+          description: The payment number given by the institution. This number is typically for manual payments. This is not an ACH payment number.
+          example: 00001234895413-A-1
+        loanPaymentAddress:
+          type: string
+          description: The payment address to which send manual payments should be sent
+          example: P.O. Box 123 Sioux Falls, IA 51054
+        loanFuturePayoffAmount:
+          type: number
+          description: The payoff amount for the loan
+          example: 5000
+        loanFuturePayoffDate:
+          type: string
+          description: The date to which the "Future Payoff Amount" applies
+          format: date-time
+          example: '2022-01-01T00:00:00.000Z'
+    UnixDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    AccountNumberLast4:
+      type: string
+      description: The last 4 digits of the account number, derived by Mastercard from the account number provided by the financial institution. This is only returned for ACH-enabled accounts.
+      example: '5678'
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    PaymentInstruction:
+      required:
+      - accountNumber
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'The type of payment instruction:
+
+            1. ach: when payment instruction type is ACH (Automated Clearing House)
+
+            2. rtp: when payment instruction type is RTP (Real-Time Payments)
+
+            3. fednow: when payment instruction type is FedNow'
+          example: ach
+        accountNumber:
+          type: string
+          description: The account number from the institution
+          example: '124344454'
+        tanEnabled:
+          type: boolean
+          default: false
+          description: This field indicates whether the FI uses a tokenized account number for origination purposes.
+          example: true
+        descriptors:
+          type: array
+          description: List of descriptors
+          items:
+            $ref: '#/components/schemas/Descriptor'
+        transferInEnabled:
+          type: boolean
+          description: Indicates whether transfer to this account is enabled or not. Applicable for "RTP" and "FedNow" type only.
+          example: true
+        transferOutEnabled:
+          type: boolean
+          description: Indicates whether transfer from this account is enabled or not. Applicable for "RTP" and "FedNow" type only.
+          example: true
+  responses:
+    GetAvailableBalanceLiveResponse:
+      description: The live balance was successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AvailableBalance'
+    GetAccountPaymentInstructionDetailsResponse:
+      description: Account ACH details were successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentInstructions'
+          examples:
+            ACHDetailsV3Example:
+              $ref: '#/components/examples/ACHDetailsV3Example'
+            ACHDetailsWithoutRTPDetailsV3Example:
+              $ref: '#/components/examples/ACHDetailsWithoutRTPDetailsV3Example'
+            ACHDetailsExampleWithoutFedNowV3Example:
+              $ref: '#/components/examples/ACHDetailsExampleWithoutFedNowV3Example'
+            ACHDetailsExampleWithoutFedNowAndWithoutRTPV3Example:
+              $ref: '#/components/examples/ACHDetailsExampleWithoutFedNowAndWithoutRTPV3Example'
+            CustomerAuthorizationDetailsExample:
+              $ref: '#/components/examples/CustomerAuthorizationDetailsExample'
+    BadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            PermissiblePurposeCodeExample:
+              $ref: '#/components/examples/PermissiblePurposeCodeExample'
+            InvalidForesightReportRequestExample:
+              $ref: '#/components/examples/InvalidForesightReportRequestExample'
+            BothCraAndFtcPurposeTrueExample:
+              $ref: '#/components/examples/BothCraAndFtcPurposeTrueExample'
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            InvalidExperienceFieldExample:
+              $ref: '#/components/examples/InvalidExperienceFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+            ResellerPartnerNotAuthorizedExample:
+              $ref: '#/components/examples/ResellerPartnerNotAuthorizedExample'
+            ResellerInvalidDateRangeExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeExample'
+            ResellerInvalidDateRangeLessThanZeroExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeLessThanZeroExample'
+            ResellerInvalidDateRangeGreaterThanEndDateExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThanEndDateExample'
+            ResellerInvalidDateRangeGreaterThan31DaysExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThan31DaysExample'
+            CustomerReportLimitExceedExample:
+              $ref: '#/components/examples/CustomerReportLimitExceedExample'
+            InvalidConsumerSSNExample:
+              $ref: '#/components/examples/InvalidConsumerSSNExample'
+            InvalidConsumerPhoneExample:
+              $ref: '#/components/examples/InvalidConsumerPhoneExample'
+            InvalidConsumerEmailExample:
+              $ref: '#/components/examples/InvalidConsumerEmailExample'
+            InvalidValue:
+              $ref: '#/components/examples/InvalidValueExample'
+    GetAvailableBalanceLiveBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+    GetAccountPaymentInstructionBadRequestErrorResponse:
+      description: The request was rejected due to validation failures
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            InstitutionLoginIdNotFoundErrorResponseExample:
+              $ref: '#/components/examples/InstitutionLoginIdNotFoundErrorResponseExample'
+            InstitutionLoginIdDetailsNotFoundErrorResponseExample:
+              $ref: '#/components/examples/InstitutionLoginIdDetailsNotFoundErrorResponseExample'
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+    GetAccountACHDetailsBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+    GetAvailableBalanceResponse:
+      description: The balance was successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AvailableBalance'
+    GetLoanPaymentDetailsResponse:
+      description: The loan payment details were successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoanPaymentDetails'
+    GetAccountACHDetailsResponse:
+      description: Account ACH details were successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ACHDetails'
+    GetAvailableBalanceBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+    ResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ConsumerNotFoundExample:
+              $ref: '#/components/examples/ConsumerNotFoundExample'
+            NoAccountForInstitutionLoginIdExample:
+              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            NoConsumerForCustomerExample:
+              $ref: '#/components/examples/NoConsumerForCustomerExample'
+            ResourceNotFoundExample:
+              $ref: '#/components/examples/ResourceNotFoundExample'
+            NoRegisteredApplicationExample:
+              $ref: '#/components/examples/NoRegisteredApplicationExample'
+            ResellerNoDataForPartnerExample:
+              $ref: '#/components/examples/ResellerNoDataForPartnerExample'
+            ResellerNoReportForPartnerExample:
+              $ref: '#/components/examples/ResellerNoReportForPartnerExample'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
+  parameters:
+    CustomerIdParameter:
+      description: A customer ID
+      name: customerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
+    AccountIdParameter:
+      description: The account ID
+      name: accountId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AccountId'
+      example: '5011648377'
+    AllowedBalanceCacheIntervalParameter:
+      description: '`balance_cache_interval` (in minutes) is used at server side to decide whether to return existing cached balance or retrieve from financial institution in real-time. Details explained below:
+
+        1. If not provided, a predefined default interval of 30 minutes is used.
+
+        2. If set to `0`, live balance is always retrieved from the financial institution.
+
+        3. If set to a value greater than `0`, cached balance is returned only when cache age is within the interval; otherwise live balance is retrieved.'
+      name: balance_cache_interval
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/AllowedBalanceCacheInterval'
+      example: 1
+  securitySchemes:
+    FinicityAppKey:
+      name: Finicity-App-Key
+      type: apiKey
+      in: header
+      description: The "Finicity-App-Key" from the developer dashboard
+    FinicityAppToken:
+      name: Finicity-App-Token
+      type: apiKey
+      in: header
+      description: A token returned by the `/authentication` API

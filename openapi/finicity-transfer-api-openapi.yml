@@ -1,0 +1,1254 @@
+openapi: 3.2.0
+info:
+  title: Open Finance Transfer API
+  description: 'OpenAPI specification for Finicity APIs.
+
+
+    Open Finance (formerly Open Banking) solutions in the US are provided by
+
+    Finicity, a Mastercard company.'
+  contact:
+    name: API Support
+    email: apisupport@mastercard.com
+    url: https://developer.mastercard.com/open-finance-us/documentation/support/
+  version: 1.43.0
+servers:
+- url: https://api.finicity.com
+  description: Production
+security:
+- FinicityAppKey: []
+  FinicityAppToken: []
+tags:
+- name: Transfer
+  description: Fetch details of the deposit and bill pay switches
+paths:
+  /transfer/customers/{customer_id}/deposit-switches:
+    get:
+      tags:
+      - Transfer
+      summary: Get Deposit Switches by Customer ID
+      description: 'Retrieve summary of deposit switches performed by given customer ID.
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: getAllDepositSwitches
+      security:
+      - FinicityAppToken: []
+      - FinicityAppKey: []
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdPathParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/DepositSwitchesSummary'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+  /transfer/externals/{external_id}/deposit-switches:
+    get:
+      tags:
+      - Transfer
+      summary: Get Deposit Switches by External ID
+      description: 'Retrieve summary of deposit switches performed by given external ID.
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: getAllExternalDepositSwitches
+      security:
+      - FinicityAppToken: []
+      - FinicityAppKey: []
+      parameters:
+      - $ref: '#/components/parameters/ExternalIdPathParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/ExternalDepositSwitchesSummary'
+        '400':
+          $ref: '#/components/responses/GetExternalSwitchesBadRequestResponse'
+        '404':
+          $ref: '#/components/responses/ExternalSwitchesResourceNotFoundResponse'
+        '401':
+          $ref: '#/components/responses/ExternalSwitchesUnauthorizedErrorResponse'
+  /transfer/customers/{customer_id}/deposit-switches/{switch_id}:
+    get:
+      tags:
+      - Transfer
+      summary: Get Deposit Switch by ID
+      description: 'Retrieve deposit switch details by switch ID.
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdPathParameter'
+      - $ref: '#/components/parameters/SwitchIdPathParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/DepositSwitchDetails'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/SwitchDetailsNotFoundErrorResponse'
+      operationId: getDepositSwitchDetails
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+  /transfer/customers/{customer_id}/bill-pay-switches:
+    get:
+      tags:
+      - Transfer
+      summary: Get Pay Switches by Customer ID
+      description: 'Retrieve summary of bill pay switches performed by given customer ID.
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: getAllPaySwitches
+      security:
+      - FinicityAppToken: []
+      - FinicityAppKey: []
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdPathParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/PaySwitchesSummary'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+  /transfer/customers/{customer_id}/bill-pay-switches/{switch_id}:
+    get:
+      tags:
+      - Transfer
+      summary: Get Pay Switch by ID
+      description: 'Retrieve bill pay switch details by switch ID.
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdPathParameter'
+      - $ref: '#/components/parameters/SwitchIdPathParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/PaySwitchDetails'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/SwitchDetailsNotFoundErrorResponse'
+      operationId: getBillPaySwitchDetails
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+components:
+  examples:
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    ResourceNotFoundRequest:
+      value:
+        code: '4004'
+        status: '404'
+        message: The requested experience could not be found for the external app name.
+        user_message: The requested entity was not found.
+    DepositSwitchDetailsFailureExample:
+      value:
+        customerId: '1005061234'
+        customerType: testing
+        switchId: 602414d84f9a1980cf5eafcc
+        switchStatus: failed
+        failureReason: distribution-not-supported
+        createdDate: '2023-07-25T08:14:20Z'
+        updatedDate: '2023-07-25T08:30:20Z'
+        authenticated: true
+        provider:
+          id: 607e249736b9f053b536bde0
+          name: Paycom
+        distributions:
+        - type: total
+          bankIdentifier: '110000000'
+          accountNumberEndsWith: '4125'
+    InvalidForesightReportRequestExample:
+      value:
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    SwitchDetailsNotFoundExample:
+      value:
+        status: '404'
+        code: '1643'
+        message: No matching record found for switch_id 65d87d2d8c831ae0f3174ed6
+    GetExternalSwitchesResourceNotFoundErrorExample:
+      value:
+        code: '14001'
+        status: '404'
+        message: Resource not found
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    SwitchesSummaryExample:
+      value:
+        customerId: '1005061234'
+        customerType: testing
+        switches:
+        - id: 602414d84f9a1980cf5eafcc
+          status: completed
+          createdDate: '2024-01-10T11:18:27Z'
+        - id: 65cb40beec86d3bd0e8664cc
+          status: failed
+          failureReason: bad-credentials
+          createdDate: '2024-02-13T10:13:27Z'
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    BadRequest:
+      value:
+        code: 1000
+        status: '400'
+        message: field must be a number
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+    PaySwitchDetailsFailureExample:
+      value:
+        customerId: '1005061234'
+        customerType: testing
+        switchId: 602414d84f9a1980cf5eafcc
+        switchStatus: failed
+        failureReason: connection-error
+        createdDate: '2023-07-25T08:14:20Z'
+        updatedDate: '2023-07-25T08:30:20Z'
+        authenticated: false
+    InvalidFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: Customer ID does not exist or does not belong to this partner
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    InvalidConsumerSSNExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    ResellerInvalidDateRangeLessThanZeroExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    NoMatchingExternalIdFoundErrorResponseExample:
+      value:
+        code: '1643'
+        status: '400'
+        message: No matching record found for external_id 123456789.
+    InvalidConsumerEmailExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.email.
+    ExternalSwitchesSummaryExample:
+      value:
+        externalId: '123456789'
+        switches:
+        - id: 602414d84f9a1980cf5eafcc
+          status: completed
+          createdDate: '2024-01-10T11:18:27Z'
+        - id: 65cb40beec86d3bd0e8664cc
+          status: failed
+          failureReason: bad-credentials
+          createdDate: '2024-02-13T10:13:27Z'
+    ResellerInvalidDateRangeExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
+    PaySwitchDetailsCardSuccessExample:
+      value:
+        customerId: '1005061234'
+        customerType: testing
+        switchId: 602414d84f9a1980cf5eafcc
+        switchStatus: completed
+        createdDate: '2023-07-25T08:14:20Z'
+        updatedDate: '2023-07-25T08:30:20Z'
+        authenticated: true
+        provider:
+          id: 607e249736b9f053b536bde0
+          name: CashApp
+        paymentMethods:
+        - type: card
+          title: Sample Card
+          brand: Mastercard
+          endsWith: '4126'
+    PermissiblePurposeCodeExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: Permissible Purpose Code is required
+    DepositSwitchDetailsSuccessExample:
+      value:
+        customerId: '1005061234'
+        customerType: testing
+        switchId: 602414d84f9a1980cf5eafcc
+        switchStatus: completed
+        createdDate: '2023-07-25T08:14:20Z'
+        updatedDate: '2023-07-25T08:30:20Z'
+        authenticated: true
+        provider:
+          id: 607e249736b9f053b536bde0
+          name: Paycom
+        distributions:
+        - type: percent
+          allocatedValue: 52
+          bankIdentifier: '110000000'
+          accountNumberEndsWith: '4126'
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    PaySwitchDetailsAccountSuccessExample:
+      value:
+        customerId: '1005061234'
+        customerType: testing
+        switchId: 602414d84f9a1980cf5eafcc
+        switchStatus: completed
+        createdDate: '2023-07-25T08:14:20Z'
+        updatedDate: '2023-07-25T08:30:20Z'
+        authenticated: true
+        provider:
+          id: 607e249736b9f053b536bde0
+          name: CashApp
+        paymentMethods:
+        - type: bank
+          title: Sample Account
+          bankIdentifier: '110000000'
+          accountNumberEndsWith: '4126'
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+  responses:
+    GetExternalSwitchesBadRequestResponse:
+      description: The request was rejected.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            NoMatchingExternalIdFoundErrorResponseExample:
+              $ref: '#/components/examples/NoMatchingExternalIdFoundErrorResponseExample'
+    SwitchDetailsNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            SwitchDetailsNotFoundExample:
+              $ref: '#/components/examples/SwitchDetailsNotFoundExample'
+            ResourceNotFoundExample:
+              $ref: '#/components/examples/ResourceNotFoundExample'
+    ExternalSwitchesResourceNotFoundResponse:
+      description: The requested entity was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ResourceNotFoundRequest:
+              $ref: '#/components/examples/GetExternalSwitchesResourceNotFoundErrorExample'
+    DepositSwitchDetails:
+      description: Deposit switch details
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DepositSwitchDetails'
+          examples:
+            DepositSwitchDetailsSuccessExample:
+              $ref: '#/components/examples/DepositSwitchDetailsSuccessExample'
+            DepositSwitchDetailsFailureExample:
+              $ref: '#/components/examples/DepositSwitchDetailsFailureExample'
+    PaySwitchDetails:
+      description: Pay switch details
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaySwitchDetails'
+          examples:
+            PaySwitchDetailsCardSuccessExample:
+              $ref: '#/components/examples/PaySwitchDetailsCardSuccessExample'
+            PaySwitchDetailsAccountSuccessExample:
+              $ref: '#/components/examples/PaySwitchDetailsAccountSuccessExample'
+            PaySwitchDetailsFailureExample:
+              $ref: '#/components/examples/PaySwitchDetailsFailureExample'
+    DepositSwitchesSummary:
+      description: Deposit switches performed by the customer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DepositSwitchesSummary'
+          examples:
+            SwitchesSummaryExample:
+              $ref: '#/components/examples/SwitchesSummaryExample'
+    ExternalSwitchesUnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
+    BadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            PermissiblePurposeCodeExample:
+              $ref: '#/components/examples/PermissiblePurposeCodeExample'
+            InvalidForesightReportRequestExample:
+              $ref: '#/components/examples/InvalidForesightReportRequestExample'
+            BothCraAndFtcPurposeTrueExample:
+              $ref: '#/components/examples/BothCraAndFtcPurposeTrueExample'
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            InvalidExperienceFieldExample:
+              $ref: '#/components/examples/InvalidExperienceFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+            ResellerPartnerNotAuthorizedExample:
+              $ref: '#/components/examples/ResellerPartnerNotAuthorizedExample'
+            ResellerInvalidDateRangeExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeExample'
+            ResellerInvalidDateRangeLessThanZeroExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeLessThanZeroExample'
+            ResellerInvalidDateRangeGreaterThanEndDateExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThanEndDateExample'
+            ResellerInvalidDateRangeGreaterThan31DaysExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThan31DaysExample'
+            CustomerReportLimitExceedExample:
+              $ref: '#/components/examples/CustomerReportLimitExceedExample'
+            InvalidConsumerSSNExample:
+              $ref: '#/components/examples/InvalidConsumerSSNExample'
+            InvalidConsumerPhoneExample:
+              $ref: '#/components/examples/InvalidConsumerPhoneExample'
+            InvalidConsumerEmailExample:
+              $ref: '#/components/examples/InvalidConsumerEmailExample'
+            InvalidValue:
+              $ref: '#/components/examples/InvalidValueExample'
+    PaySwitchesSummary:
+      description: Pay switches performed by the customer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaySwitchesSummary'
+          examples:
+            PaySwitchesSummaryExample:
+              $ref: '#/components/examples/SwitchesSummaryExample'
+    BadRequestResponse:
+      description: The request was rejected.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            BadRequest:
+              $ref: '#/components/examples/BadRequest'
+    ExternalDepositSwitchesSummary:
+      description: In-branch deposit switches performed by the external ID
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExternalDepositSwitchesSummary'
+          examples:
+            SwitchesSummaryExample:
+              $ref: '#/components/examples/ExternalSwitchesSummaryExample'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
+    ResourceNotFoundResponse:
+      description: The requested entity was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ResourceNotFoundRequest:
+              $ref: '#/components/examples/ResourceNotFoundRequest'
+  schemas:
+    PaySwitchDetails:
+      required:
+      - customerId
+      - customerType
+      - switchId
+      - switchStatus
+      - createdDate
+      - updatedDate
+      - provider
+      - paymentMethods
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: A customer ID
+          example: '1005061234'
+        customerType:
+          type: string
+          description: The type of Mastercard Open Finance customer (`active` or `testing`)
+          example: testing
+        switchId:
+          type: string
+          description: Pay switch ID
+          example: 602414d84f9a1980cf5eafcc
+        switchStatus:
+          type: string
+          description: 'Pay switch status. Possible values include `processing`,
+
+            `completed`, or `failed`.
+
+
+            * processing - The pay switch is currently being processed.
+
+            * completed - The pay switch has been completed successfully.
+
+            * failed - The pay switch has failed. Refer to failureReason for more details.
+
+            '
+          example: completed
+        failureReason:
+          type: string
+          description: 'Pay switch failure reason. Possible values include -
+
+            * account-lockout - The account is locked out, most likely the end user has had too many failed attempts.
+
+            * account-unusable - The user''s bank account is unusable for the selected product or use case.
+
+            * bad-credentials - Either the username or password was incorrect. This is our most common fail reason.
+
+            * connection-error - A network error occurred which caused the connection between our
+
+            system and the bank/payroll system to be lost.
+
+            * device-disconnected - The device used to start the task is no longer connected.
+
+            * expired - The user''s password has expired and they must create a new one.
+
+            * no-data-found - No verify data was found for the user.
+
+            * routing-number-not-supported - The account did not support the routing number entered.
+
+            * session-timeout - The user''s session timed out.
+
+            * system-unavailable - The system was unavailable. For example, the site is undergoing
+
+            maintenance or it is outside the window of scheduled availability for the site.
+
+            * transaction-pending - There is an allocation already in progress and additional updates cannot
+
+            be made at this time.
+
+            * unknown-failure - We encountered an unexpected error.
+
+            * user-abandon - The user was asked an MFA question, but did not answer the question.
+
+            '
+          example: unknown-failure
+        createdDate:
+          type: string
+          description: Date and time in ISO 8601 format (YYYY-MM-DDThh:mm:ssZ) when deposit switch was performed
+          example: '2023-07-25T08:14:20Z'
+        updatedDate:
+          type: string
+          description: Date and time in ISO 8601 format (YYYY-MM-DDThh:mm:ssZ) when deposit switch status was updated
+          example: '2023-07-25T08:30:20Z'
+        authenticated:
+          type: boolean
+          description: Indicates whether or not the pay switch task has successfully authenticated against the payroll system
+          example: true
+        provider:
+          type: object
+          required:
+          - id
+          - name
+          properties:
+            id:
+              type: string
+              description: Unique identifier for the service provider
+              example: 607e249736b9f053b536bde0
+            name:
+              type: string
+              description: The name of the service provider
+              example: Netflix
+        paymentMethods:
+          type: array
+          description: Pay switch payment details
+          items:
+            required:
+            - type
+            properties:
+              type:
+                type: string
+                description: The type of payment method used for the bill payment. Possible values include `card` or `bank`.
+                example: card
+              title:
+                type: string
+                description: The title of the card / account
+                example: Sample Card
+              brand:
+                type: string
+                description: The co-branding for customer's card
+                example: Mastercard
+              bankIdentifier:
+                type: string
+                description: The bank routing number
+                example: '110000000'
+              endsWith:
+                type: string
+                description: The trailing portion of customer's bank account number or card
+                example: '4126'
+              bankAccountType:
+                type: string
+                description: The type of account used when payment type is bank
+                example: Checking
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    DepositSwitchesSummary:
+      required:
+      - customerId
+      - customerType
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: A customer ID
+          example: '1005061234'
+        customerType:
+          type: string
+          description: The type of Mastercard Open Finance customer (`active` or `testing`)
+          example: testing
+        switches:
+          type: array
+          description: Deposit switches summary
+          minItems: 0
+          maxItems: 10
+          items:
+            required:
+            - id
+            - status
+            - createdDate
+            properties:
+              id:
+                type: string
+                description: Deposit switch ID
+                example: 602414d84f9a1980cf5eafcc
+              status:
+                type: string
+                description: 'Deposit switch status. Possible values include `processing`,
+
+                  `completed`, or `failed`.
+
+
+                  * processing - The deposit switch is currently being processed.
+
+                  * completed - The deposit switch has been completed successfully.
+
+                  * failed - The deposit switch has failed. Refer to failureReason for more details.
+
+                  '
+                example: completed
+              failureReason:
+                type: string
+                description: 'Deposit switch failure reason. Possible values include -
+
+                  * account-lockout - The account is locked out, most likely the end user has had too many failed attempts.
+
+                  * account-setup-incomplete - The user''s account in the payroll system is not fully set up and will require additional
+
+                  information from the user.
+
+                  * account-unusable - The user''s bank account is unusable for the selected product or use case.
+
+                  * bad-credentials - Either the username or password was incorrect. This is our most common fail reason.
+
+                  * connection-error - A network error occurred which caused the connection between our system and the payroll system to be
+
+                  lost.
+
+                  * distribution-not-supported - The payroll system did not support the type of distribution requested. For example,
+
+                  the user attempted to allocate a percentage of their paycheck, but is only eligible for fixed amounts and remainder/net
+
+                  balance.
+
+                  * device-disconnected - The device used to start the task is no longer connected.
+
+                  * enrolled-in-paycard - The user is enrolled in a paycard program instead of direct deposit via
+
+                  their bank.
+
+                  * expired - The user''s password has expired and they must create a new one.
+
+                  * no-data-found - No verify data was found for the user.
+
+                  * product-not-supported - The payroll system did not allow the action to be taken. Many payroll
+
+                  systems allow HR to customize what is allowed in their system.
+
+                  Direct Deposit may be allowed by a payroll system, but may be disallowed by a specific employer. Therefore, when an employee
+
+                  of that company goes to set up Direct Deposit it is rejected, resulting in this error code.
+
+                  * routing-number-not-supported - The account did not support the routing number entered.
+
+                  * session-timeout - The user''s session timed out.
+
+                  * system-unavailable - The system was unavailable. For example,
+
+                  the site is undergoing maintenance or it is outside the window
+
+                  of scheduled availability for the site.
+
+                  * transaction-pending - There is a deposit allocation already in progress and additional updates cannot be made at this time.
+
+                  For example, if an employer has an approval process in place, they may disallow modifications until the update has been processed.
+
+                  * unknown-failure - We encountered an unexpected error.
+
+                  * user-abandon - The user was asked an MFA question, but did not answer the question.
+
+                  * work-status-terminated - The task could not be completed because the user''s employment has been terminated.
+
+                  '
+                example: bad-credentials
+              createdDate:
+                type: string
+                description: Date and time in ISO 8601 format (YYYY-MM-DDThh:mm:ssZ) when deposit switch was performed
+                example: '2023-07-25T08:14:20Z'
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    ExternalId:
+      type: string
+      description: An external ID that was shared by the partner to distinguish switches. For example, BranchID.
+      example: b73af28c-0878djs3
+    ExternalDepositSwitchesSummary:
+      required:
+      - externalId
+      type: object
+      properties:
+        externalId:
+          type: string
+          description: An external ID
+          example: b73af28c-0878djs3
+        switches:
+          type: array
+          description: Deposit switches summary
+          minItems: 0
+          maxItems: 10
+          items:
+            required:
+            - id
+            - status
+            - createdDate
+            properties:
+              id:
+                type: string
+                description: Deposit switch ID
+                example: 602414d84f9a1980cf5eafcc
+              status:
+                type: string
+                description: 'Deposit switch status. Possible values include `processing`,
+
+                  `completed`, or `failed`.
+
+
+                  * processing - The deposit switch is currently being processed.
+
+                  * completed - The deposit switch has been completed successfully.
+
+                  * failed - The deposit switch has failed. Refer to failureReason for more details.
+
+                  '
+                example: completed
+              failureReason:
+                type: string
+                description: 'Deposit switch failure reason. Possible values include -
+
+                  * account-lockout - The account is locked out, most likely the end user has had too many failed attempts.
+
+                  * account-setup-incomplete - The user''s account in the payroll system is not fully set up and will require additional
+
+                  information from the user.
+
+                  * account-unusable - The user''s bank account is unusable for the selected product or use case.
+
+                  * bad-credentials - Either the username or password was incorrect. This is our most common fail reason.
+
+                  * connection-error - A network error occurred which caused the connection between our system and the payroll system to be
+
+                  lost.
+
+                  * distribution-not-supported - The payroll system did not support the type of distribution requested. For example,
+
+                  the user attempted to allocate a percentage of their paycheck, but is only eligible for fixed amounts and remainder/net
+
+                  balance.
+
+                  * device-disconnected - The device used to start the task is no longer connected.
+
+                  * enrolled-in-paycard - The user is enrolled in a paycard program instead of direct deposit via
+
+                  their bank.
+
+                  * expired - The user''s password has expired and they must create a new one.
+
+                  * no-data-found - No verify data was found for the user.
+
+                  * product-not-supported - The payroll system did not allow the action to be taken. Many payroll
+
+                  systems allow HR to customize what is allowed in their system.
+
+                  Direct Deposit may be allowed by a payroll system, but may be disallowed by a specific employer. Therefore, when an employee
+
+                  of that company goes to set up Direct Deposit it is rejected, resulting in this error code.
+
+                  * routing-number-not-supported - The account did not support the routing number entered.
+
+                  * session-timeout - The user''s session timed out.
+
+                  * system-unavailable - The system was unavailable. For example,
+
+                  the site is undergoing maintenance or it is outside the window
+
+                  of scheduled availability for the site.
+
+                  * transaction-pending - There is a deposit allocation already in progress and additional updates cannot be made at this time.
+
+                  For example, if an employer has an approval process in place, they may disallow modifications until the update has been processed.
+
+                  * unknown-failure - We encountered an unexpected error.
+
+                  * user-abandon - The user was asked an MFA question, but did not answer the question.
+
+                  * work-status-terminated - The task could not be completed because the user''s employment has been terminated.
+
+                  '
+                example: bad-credentials
+              createdDate:
+                type: string
+                description: Date and time in ISO 8601 format (YYYY-MM-DDThh:mm:ssZ) when deposit switch was performed
+                example: '2023-07-25T08:14:20Z'
+    DepositSwitchDetails:
+      required:
+      - customerId
+      - customerType
+      - switchId
+      - switchStatus
+      - createdDate
+      - updatedDate
+      - provider
+      - distributions
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: A customer ID
+          example: '1005061234'
+        customerType:
+          type: string
+          description: The type of Mastercard Open Finance customer (`active` or `testing`)
+          example: testing
+        switchId:
+          type: string
+          description: Deposit switch ID
+          example: 602414d84f9a1980cf5eafcc
+        switchStatus:
+          type: string
+          description: 'Deposit switch status. Possible values include `processing`,
+
+            `completed`, or `failed`.
+
+
+            * processing - The deposit switch is currently being processed.
+
+            * completed - The deposit switch has been completed successfully.
+
+            * failed - The deposit switch has failed. Refer to failureReason for more details.
+
+            '
+          example: completed
+        failureReason:
+          type: string
+          description: 'Deposit switch failure reason. Possible values include -
+
+            * account-lockout - The account is locked out, most likely the end
+
+            user has had too many failed attempts.
+
+            * account-setup-incomplete - The user''s account in the payroll system is not fully set up and
+
+            will require additional information from the user.
+
+            * account-unusable - The user''s bank account is unusable for the
+
+            selected product or use case.
+
+            * bad-credentials - Either the username or password was incorrect. This is our most common fail
+
+            reason.
+
+            * connection-error - A network error occurred which caused
+
+            the connection between our system and the payroll system to be lost.
+
+            * distribution-not-supported - The payroll system did not support
+
+            the type of distribution requested. For example, the user attempted
+
+            to allocate a percentage of their paycheck, but is only eligible for
+
+            fixed amounts and remainder/net balance.
+
+            * device-disconnected - The device used to start the task is no longer connected.
+
+            * enrolled-in-paycard - The user is enrolled in a paycard program
+
+            instead of direct deposit via their bank.
+
+            * expired - The user''s password has expired and they must create a new one. * no-data-found
+
+            - No verify data was found for the user.
+
+            * product-not-supported - The payroll system did not allow the action to be taken. Many
+
+            payroll systems allow HR to customize what is allowed in their
+
+            system. Direct Deposit may be allowed by a payroll system, but may
+
+            be disallowed by a specific employer. Therefore, when an employee of
+
+            that company goes to set up Direct Deposit it is rejected, resulting
+
+            in this error code.
+
+            * routing-number-not-supported - The account did not support the routing number entered.
+
+            * session-timeout - The user''s session timed out.
+
+            * system-unavailable - The system was unavailable. For example, the site is undergoing maintenance or it
+
+            is outside the window of scheduled availability for the site.
+
+            * transaction-pending - There is a deposit allocation already in progress and additional updates cannot be made at this time. For
+
+            example, if an employer has an approval process in place, they may
+
+            disallow modifications until the update has been processed.
+
+            * unknown-failure - We encountered an unexpected error.
+
+            * user-abandon - The user was asked an MFA question, but did not answer the
+
+            question.
+
+            * work-status-terminated - The task could not be completed
+
+            because the user''s employment has been terminated.
+
+            '
+          example: bad-credentials
+        createdDate:
+          type: string
+          description: Date and time in ISO 8601 format (YYYY-MM-DDThh:mm:ssZ) when deposit switch was performed
+          example: '2023-07-25T08:14:20Z'
+        updatedDate:
+          type: string
+          description: Date and time in ISO 8601 format (YYYY-MM-DDThh:mm:ssZ) when deposit switch status was updated
+          example: '2023-07-25T08:30:20Z'
+        authenticated:
+          type: boolean
+          description: Indicates whether or not the deposit switch task has successfully authenticated against the payroll system
+          example: true
+        provider:
+          type: object
+          required:
+          - id
+          - name
+          properties:
+            id:
+              type: string
+              description: Unique identifier for the service provider
+              example: 607e249736b9f053b536bde0
+            name:
+              type: string
+              description: The name of the service provider
+              example: Paycom
+        distributions:
+          type: array
+          description: Deposit switch distribution details
+          items:
+            required:
+            - type
+            - bankIdentifier
+            - accountNumberEndsWith
+            properties:
+              type:
+                type: string
+                description: The type of distribution for the account.  Possible values include `total`, `percent`, or `fixed`.
+                example: percent
+              allocatedValue:
+                type: number
+                description: The amount being distributed to the account. When distribution type is `percent`, this number represents a percentage of the total pay. When distribution type is `fixed`, this number represents a fixed dollar amount. This value is not set when distribution type is `total`.
+                example: 52
+              bankIdentifier:
+                type: string
+                description: The bank routing number
+                example: '110000000'
+              accountNumberEndsWith:
+                type: string
+                description: The trailing portion of customer's bank account number
+                example: '4126'
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    PaySwitchesSummary:
+      required:
+      - customerId
+      - customerType
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: A customer ID
+          example: '1005061234'
+        customerType:
+          type: string
+          description: The type of Mastercard Open Finance customer (`active` or `testing`)
+          example: testing
+        switches:
+          type: array
+          description: Pay switches summary
+          minItems: 0
+          maxItems: 10
+          items:
+            required:
+            - id
+            - status
+            - createdDate
+            properties:
+              id:
+                type: string
+                description: Pay switch ID
+                example: 602414d84f9a1980cf5eafcc
+              status:
+                type: string
+                description: 'Pay switch status. Possible values include `processing`,
+
+                  `completed`, or `failed`.
+
+
+                  * processing - The pay switch is currently being processed.
+
+                  * completed - The pay switch has been completed successfully.
+
+                  * failed - The pay switch has failed. Refer to failureReason for more details.
+
+                  '
+                example: completed
+              failureReason:
+                type: string
+                description: 'Pay switch failure reason. Possible values include -
+
+                  * account-lockout - The account is locked out, most likely the end user has had too many failed attempts.
+
+                  * account-unusable - The user''s bank account is unusable for the selected product or use case.
+
+                  * bad-credentials - Either the username or password was incorrect. This is our most common fail reason.
+
+                  * connection-error - A network error occurred which caused the connection between our system and the bank/payroll system to be lost.
+
+                  * device-disconnected - The device used to start the task is no longer connected.
+
+                  * expired - The user''s password has expired and they must create a new one.
+
+                  * no-data-found - No verify data was found for the user.
+
+                  * routing-number-not-supported - The account did not support the routing number entered.
+
+                  * session-timeout - The user''s session timed out.
+
+                  * system-unavailable - The system was unavailable. For example, the site is undergoing maintenance or it is outside the window of scheduled availability for the site.
+
+                  * transaction-pending - There is an allocation already in progress and additional updates cannot be made at this time.
+
+                  * unknown-failure - We encountered an unexpected error.
+
+                  * user-abandon - The user was asked an MFA question, but did not answer the question.'
+                example: connection-error
+              createdDate:
+                type: string
+                description: Date and time in ISO 8601 format (YYYY-MM-DDThh:mm:ssZ) when deposit switch was performed
+                example: '2023-07-25T08:14:20Z'
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+  parameters:
+    CustomerIdPathParameter:
+      description: Unique identifier of the customer
+      name: customer_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
+    SwitchIdPathParameter:
+      name: switch_id
+      description: Deposit Switch ID
+      in: path
+      required: true
+      schema:
+        type: string
+        example: 65cb40beec86d3bd0e8664cc
+    ExternalIdPathParameter:
+      description: Unique identifier of the external ID
+      name: external_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/ExternalId'
+      example: '123456789'
+  securitySchemes:
+    FinicityAppKey:
+      name: Finicity-App-Key
+      type: apiKey
+      in: header
+      description: The "Finicity-App-Key" from the developer dashboard
+    FinicityAppToken:
+      name: Finicity-App-Token
+      type: apiKey
+      in: header
+      description: A token returned by the `/authentication` API

@@ -1,0 +1,1597 @@
+openapi: 3.2.0
+info:
+  title: Open Finance Bank Statements API
+  description: 'OpenAPI specification for Finicity APIs.
+
+
+    Open Finance (formerly Open Banking) solutions in the US are provided by
+
+    Finicity, a Mastercard company.'
+  contact:
+    name: API Support
+    email: apisupport@mastercard.com
+    url: https://developer.mastercard.com/open-finance-us/documentation/support/
+  version: 1.43.0
+servers:
+- url: https://api.finicity.com
+  description: Production
+security:
+- FinicityAppKey: []
+  FinicityAppToken: []
+tags:
+- name: Bank Statements
+  description: Fetch account statements and generate reports asynchronously
+paths:
+  /aggregation/v1/customers/{customerId}/accounts/{accountId}/statement:
+    get:
+      tags:
+      - Bank Statements
+      summary: Get Customer Account Statement
+      description: 'Retrieve the customer''s bank statements in PDF format. Up to 24 months of history is available depending on the financial institution. Since this is a premium service, charges incur per each successful statement retrieved.
+
+
+        For certified financial institutions, statements are available for the following account types:
+
+        * Checking
+
+        * Savings
+
+        * Money market
+
+        * CDs
+
+        * Investments
+
+        * Mortgage
+
+        * Credit cards
+
+        * Loans
+
+        * Line of credit
+
+        * Student Loans
+
+
+        Note: setting the timeout to 180 seconds is recommended to allow enough time for a response.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetCustomerAccountStatement
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/AccountIdParameter'
+      - $ref: '#/components/parameters/StatementIndexParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCustomerAccountStatementResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /decisioning/v2/customers/{customerId}/statement:
+    post:
+      tags:
+      - Bank Statements
+      summary: Generate Statement Report for Customer
+      description: 'Generate a Statement Report for the given accounts under the given customer.
+
+
+        This is a premium service. A billable event will be created upon the successful generation of the Statement Report.
+
+
+        Before calling this API, a consumer must be created for the given customer ID (see Consumers APIs).
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GenerateStatementReport
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/ReportCallbackUrlParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/GenerateStatementReportRequest'
+      responses:
+        '202':
+          $ref: '#/components/responses/GenerateStatementReportResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/SecurityFreezeErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /aggregation/v3/customers/{customerId}/accounts/{accountId}/statement:
+    get:
+      tags:
+      - Bank Statements
+      summary: Get Customer Account Multiple Statement Details
+      description: 'This endpoint retrieves details of the account statements available for a given customer (up to a maximum of 24 statements).
+
+
+        Use the asset ID of the statement you are interested in to obtain the statement report using Get Asset by Customer and ID.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetCustomerAccountMultipleStatement
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/AccountIdParameter'
+      - $ref: '#/components/parameters/StatementIndexesParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCustomerAccountsMultipleStatementResponse'
+        '400':
+          $ref: '#/components/responses/GenericBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /aggregation/v1/customers/{customerId}/assets/{assetId}:
+    get:
+      tags:
+      - Bank Statements
+      summary: Get Asset by Customer and ID
+      description: 'Retrieve a binary file for the given asset ID.
+
+
+        This is a premium service. The billable event is the successful download of an asset.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetAssetByCustomerID
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/AssetIdParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAssetByCustomerIDResponse'
+        '400':
+          $ref: '#/components/responses/GenericBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/GetAssetNotFoundErrorResponse'
+components:
+  examples:
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    SecurityFreezeErrorExample:
+      value:
+        code: '10405'
+        status: '403'
+        message: The active security freeze for this consumer exists.
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    ResellerInvalidDateRangeLessThanZeroExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
+    InvalidConsumerEmailExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.email.
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    InvalidForesightReportRequestExample:
+      value:
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    InvalidFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: Customer ID does not exist or does not belong to this partner
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    InvalidConsumerSSNExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    NoAccountForInstitutionLoginIdExample:
+      value:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
+    GenerateStatementReportRequestExample:
+      value:
+        statementReportData:
+          accountId: 1000076901
+          statementIndex: 1
+        reportCustomFields:
+        - label: loanID
+          value: '123456'
+          shown: true
+    ResellerNoDataForPartnerExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    ResellerInvalidDateRangeExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    GenerateStatementReportResponseExample:
+      value:
+        id: 38dknche83oh-statement
+        portfolioId: sy7aa68w2ugx-1-port
+        customerType: active
+        customerId: 1010560999
+        requestId: ny7x32stfq
+        requesterName: Demo
+        endUser:
+          name: ABC Apartments
+          address: 123 Main St
+          city: Murray
+          state: UT
+          zip: '84123'
+          phone: 555-2106
+          email: customerservice@example.com
+          url: example.com
+        createdDate: 1596226182
+        title: Mastercard Open Banking Statement Report
+        consumerId: 555595ec74c8ec57adf44dadddb6a35
+        consumerSsn: '1234'
+        consumerDetails:
+          id: 3f7ff2cf0ffb3d0cd59875e070c9b1d4
+          firstName: John
+          middleName: Doe
+          lastName: Jane
+          address: 123 Marple Street
+          city: Anytown
+          state: PA
+          zip: '17101'
+          phone: '5551234567'
+          ssn: '1234'
+          email: john.doe@example.com
+        constraints:
+          statementReportData:
+            accountId: 1000076901
+            statementIndex: 1
+          reportCustomFields:
+          - label: loanID
+            value: '123456'
+            shown: true
+        type: statement
+        status: inProgress
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
+    PermissiblePurposeCodeExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: Permissible Purpose Code is required
+    AssetNotFoundExample:
+      value:
+        code: '13002'
+        message: Asset not found
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    NoConsumerForCustomerExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer for customer with id 5011115315."
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+  schemas:
+    SecurityFreezeErrorMessage:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: integer
+          description: 'An error code for security freeze. Useful links: [API Errors](https://developer.mastercard.com/open-finance-us/documentation/errors/), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/aggregation-status-codes/).'
+          format: int32
+          example: 10405
+        status:
+          type: string
+          description: A status code
+          example: '403'
+        message:
+          type: string
+          description: An error message
+          example: The active security freeze for this consumer exists.
+    CustomerAccountMultipleStatement:
+      description: Statement represents the bank statements for a given customer's account
+      required:
+      - asOfDate
+      - index
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AssetId'
+        description:
+          $ref: '#/components/schemas/Description'
+        asOfDate:
+          type: integer
+          description: 'Displays the time where a client pulls the statement.
+
+            '
+          format: int64
+          example: 1607450357
+        documentDate:
+          $ref: '#/components/schemas/DocumentDate'
+        index:
+          $ref: '#/components/schemas/Index'
+        code:
+          type: string
+          description: Error code for  the bank statement not generated
+        message:
+          type: string
+          description: Error message for the bank statement not generated
+    EndUserUrl:
+      type: string
+      description: Reseller end user URL
+      minLength: 2
+      maximum: 999
+      example: testurl.com
+    ReportType:
+      description: 'A report type. Possible values:
+
+
+        * `voi`
+
+
+        * `voa`
+
+
+        * `voaHistory`
+
+
+        * `history`
+
+
+        * `voieTxVerify`
+
+
+        * `voieWithReport`
+
+
+        * `voieWithInterview`
+
+
+        * `voieWithStatement`
+
+
+        * `paystatement`
+
+
+        * `preQualVoa`
+
+
+        * `assetSummary`
+
+
+        * `voie`
+
+
+        * `transactions`
+
+
+        * `statement`
+
+
+        * `voiePayroll`
+
+
+        * `voeTransactions`
+
+
+        * `farpbfnoncra`
+
+
+        * `voePayroll`
+
+
+        * `cfrp`
+
+
+        * `cfrb`
+
+
+        * `barpcra`
+
+
+        * `barpnoncra`
+
+
+        * `barbcra`
+
+
+        * `barbftc`
+
+
+        * `barbnoncra`
+
+
+        * `cfrpcra`
+
+
+        * `cfrpnoncra`
+
+
+        * `cracfrbcra`
+
+
+        * `cfrbnoncra`
+
+
+        * `cfrbftc`
+
+
+        * `phrbcra`
+
+
+        * `phrbnoncra`
+
+
+        * `phrbftc`
+
+
+        * `sbcaanalyticsnoncra`
+
+
+        * `sbcabenchmarksnoncra`
+
+
+        * `pripcra`
+
+
+        * `pripnoncra`
+
+
+        * `pribcra`
+
+
+        * `pribnoncra`
+
+
+        * `pribftc`
+
+        '
+      type: string
+      example: voi
+    ZipCode:
+      type: string
+      description: A ZIP code
+      example: '84123'
+    ReportCustomField:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The name of the custom field
+          example: loanID
+        value:
+          type: string
+          description: The value of the custom field
+          example: '123456'
+        shown:
+          type: boolean
+          description: If the custom field will show on the PDF or not
+          example: true
+    VOIReportConstraintsOut:
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+        incomeStreamConfidenceMinimum:
+          $ref: '#/components/schemas/IncomeStreamConfidenceMinimum'
+    NumericCustomerId:
+      type: integer
+      format: int64
+      description: A customer ID represented as a number. See Add Customer API for how to create a customer ID.
+      example: 1005061234
+    TransactionsReportConstraintsOut:
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+        toDate:
+          $ref: '#/components/schemas/UnixDate'
+        includePending:
+          $ref: '#/components/schemas/IncludePending'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        findTransaction:
+          $ref: '#/components/schemas/FindTransactionConstraints'
+    ConsumerId:
+      type: string
+      description: A consumer ID. See Create Consumer API for how to create a consumer ID.
+      example: 0bf46322c167b562e6cbed9d40e19a4c
+    BaseReportAckWithPortfolioId:
+      description: Properties shared by all generated reports having a portfolio ID
+      allOf:
+      - $ref: '#/components/schemas/BaseReportAck'
+      - type: object
+        properties:
+          portfolioId:
+            $ref: '#/components/schemas/PortfolioId'
+    PayStatementData:
+      description: Data to be included within the pay statement report
+      required:
+      - assetIds
+      type: object
+      properties:
+        assetIds:
+          description: A list of pay statement asset IDs
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetId'
+        extractEarnings:
+          $ref: '#/components/schemas/ExtractEarnings'
+        extractDeductions:
+          $ref: '#/components/schemas/ExtractDeductions'
+        extractDirectDeposit:
+          $ref: '#/components/schemas/ExtractDirectDeposit'
+    EmailAddress:
+      type: string
+      description: An email address
+      example: myname@mycompany.com
+    VOAIncomeReportIncomeFromDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).
+
+
+        By default, the income history is set to 24 months, however, a partner can change the transaction history by setting the `incomeFromDate` parameter.'
+      format: int64
+      example: 1607450357
+    FindTransactionDescriptionMemo:
+      type: string
+      description: "A string to return transactions that have an exact match to Description/Memo.</br>\n- Description/Memo</br>\n  - Found in the PDF report for reach transactions.</br>\n  - A combination of **description** and **memo** from the JSON version\nof the report.</br>\n"
+      example: Paycheck
+    FindTransactionAmountTo:
+      type: number
+      description: 'A decimal value to return transactions with **amount** less than or equal to **findTransactionAmountTo**.</br>
+
+        - If both **findTransactionAmountFrom** and **findTransactionAmountTo** are present. Then transactions with  **amount** between (inclusive) both values will be returned.
+
+        '
+      example: 100
+    Age:
+      type: integer
+      description: Age is an optional parameter. This data is used to determine the age band the customer falls into.
+      format: int64
+      example: 25
+      minimum: 0
+      maximum: 125
+    GeoLocation:
+      type: array
+      items:
+        $ref: '#/components/schemas/GeoLocationItems'
+      description: Geolocation array of objects;
+    TimeIntervalType:
+      description: Possible values for strategies in which attributes may be aggregated and reported across varying time intervals. Allowed Values - MONTHLY_CALENDAR - MONTHLY_ROLLING_30
+      example: MONTHLY_CALENDAR
+      type: string
+      default: MONTHLY_CALENDAR
+    PayStatementReportConstraints:
+      required:
+      - paystatementReport
+      type: object
+      properties:
+        paystatementReport:
+          $ref: '#/components/schemas/PayStatementData'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+    VOAReportConstraintsOut:
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        toDate:
+          $ref: '#/components/schemas/UnixDate'
+        showNsf:
+          $ref: '#/components/schemas/ShowNsf'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+    AddressLine1:
+      type: string
+      description: Address line 1
+      example: 434 W Ascension Way
+    PortfolioId:
+      type: string
+      description: A unique identifier that will be consistent across all reports created for the same customer
+      example: y4zsgccj4xpw-6-port
+    ReportAccountIds:
+      description: An array of account IDs to be included in the report (all accounts will be included if not set)
+      type: array
+      items:
+        $ref: '#/components/schemas/AccountId'
+      example:
+      - '5011648377'
+      - '5011648378'
+      - '5011648379'
+    PrequalificationReportConstraintsOut:
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        showNsf:
+          $ref: '#/components/schemas/ShowNsf'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+    VOIEWithStatementData:
+      required:
+      - assetIds
+      type: object
+      properties:
+        assetIds:
+          description: A list of pay statement asset IDs
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetId'
+        extractEarnings:
+          $ref: '#/components/schemas/ExtractEarnings'
+        extractDeductions:
+          $ref: '#/components/schemas/ExtractDeductions'
+        extractDirectDeposit:
+          $ref: '#/components/schemas/ExtractDirectDeposit'
+    StatementReportConstraints:
+      required:
+      - statementReportData
+      type: object
+      properties:
+        statementReportData:
+          $ref: '#/components/schemas/StatementData'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+    IncomeStreamConfidenceMinimum:
+      type: integer
+      description: Include income streams in the report, based on the income stream's confidence score. For example, Use the value 50 to include only income streams with a confidence score of 50 or higher.
+      format: int32
+      example: 50
+    MiddleName:
+      type: string
+      description: The middle name of the account holder
+      example: L
+    IncludePending:
+      type: boolean
+      description: If pending transactions must be included
+      example: true
+      default: false
+    PhoneNumber:
+      type: string
+      description: A phone number (max length 15).
+      example: 1-801-984-4200
+    ForesightAnalyticsReportData:
+      description: Parameters supplied by the client requesting the analytics.
+      properties:
+        forCraPurpose:
+          type: boolean
+          description: Field to indicate if the requested report is for CRA or NONCRA. For small business lending or other similar business use cases, pass the value as “true” for purposes of this field.
+          example: true
+        segments:
+          type: object
+          description: Requested segments for attribute values.
+          properties:
+            geolocation:
+              $ref: '#/components/schemas/GeoLocation'
+        analytics:
+          description: Analytics information for the requested report. The allowed values are benchmarking & forecasting. If it is null, default to benchmarking and forecasting
+          example:
+          - benchmarking
+          - forecasting
+          minItems: 2
+          maxItems: 2
+          items:
+            $ref: '#/components/schemas/AnalyticsType'
+          type: array
+        timeIntervalTypes:
+          description: Requested time interval for attribute values.
+          example:
+          - MONTHLY_CALENDAR
+          maxItems: 2
+          items:
+            $ref: '#/components/schemas/TimeIntervalType'
+          type: array
+        income:
+          $ref: '#/components/schemas/Income'
+        age:
+          $ref: '#/components/schemas/Age'
+      type: object
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    GeoLocationItems:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The name of the Geolocation details. Possible values are POSTAL_CODE
+          example: POSTAL_CODE
+        value:
+          type: string
+          description: The value of the Geolocation field
+          example: '85123'
+    SocialSecurityNumberLastDigits:
+      type: string
+      description: Last 4 digits of a SSN
+      example: '9999'
+    ReportCustomFields:
+      type: array
+      items:
+        $ref: '#/components/schemas/ReportCustomField'
+      description: 'The `reportCustomFields` parameter is used when experiences are associated with a credit decisioning report.
+
+
+        Designate up to 5 custom fields that you''d like associated with the report when it''s generated. Every custom field consists of three variables: `label`, `value`, and `shown`. The `shown` variable is "true" or "false".
+
+        * "true": (default) display the custom field in the PDF report
+
+        * "false": don''t display the custom field in the PDF report
+
+
+        For an experience that generates multiple reports, the `reportCustomFields` parameter gets passed to all reports.
+
+
+        All custom fields display in the Reseller Billing API.'
+    ShowNsf:
+      type: boolean
+      description: 'Include the non-sufficient funds (NSF) summary JSON and the NSF summary PDF section in the report. Data included:
+
+        * Account
+
+
+        * Total number of NSF funds
+
+
+        * Days since the most recent NFS funds fee'
+      example: false
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    PayrollDataRetrievalId:
+      type: string
+      description: An ID to identify the data retrieved from the payroll providers for the report.
+      example: hahvhe2k0000
+    VOAWithIncomeReportConstraintsOut:
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        showNsf:
+          $ref: '#/components/schemas/ShowNsf'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+        incomeFromDate:
+          $ref: '#/components/schemas/VOAIncomeReportIncomeFromDate'
+        voaiPdfDepositView:
+          type:
+          - boolean
+          - 'null'
+          description: Provide an alternate PDF view of deposit transactions group by income stream in PDF.
+          example: true
+        incomeStreamConfidenceMinimum:
+          $ref: '#/components/schemas/IncomeStreamConfidenceMinimum'
+    Index:
+      type: string
+      description: The index for the statement. This can range from 1 to 24 statement indexes.
+    ReportRequestId:
+      type: string
+      description: Finicity indicator to track all activity associated with this report
+      example: cjqm4wtdcn
+    ExtractDeductions:
+      type: boolean
+      description: Field to indicate whether to extract the deductions on all pay statements
+      default: false
+      example: true
+    EmploymentId:
+      type: string
+      description: This is a Mastercard assigned ID to the employment record. It remains consistent for that employment record, even if the report is refreshed. It can be used to limit the employment records that are returned in the report.
+      example: 123v3bv2s5n
+    VOIEWithTXVerifyReportConstraintsOut:
+      required:
+      - voieWithInterviewData
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        voieWithInterviewData:
+          $ref: '#/components/schemas/VOIEWithInterviewData'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+        incomeStreamConfidenceMinimum:
+          $ref: '#/components/schemas/IncomeStreamConfidenceMinimum'
+    CashFlowReportConstraintsOut:
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        showNsf:
+          $ref: '#/components/schemas/ShowNsf'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+        incomeStreamConfidenceMinimum:
+          $ref: '#/components/schemas/IncomeStreamConfidenceMinimum'
+    AnalyticsReportData:
+      description: Parameters supplied by the client requesting the analytics.
+      properties:
+        forCraPurpose:
+          type: boolean
+          description: Field to indicate if the requested report is for CRA or NONCRA. For small business lending or other similar business use cases, pass the value as “true” for purposes of this field.
+          example: true
+        applicantIsPersonalGuarantor:
+          type: boolean
+          description: Field to indicate if the business owner will personally guarantee the loan. If true, a consumer record will be required.
+          example: true
+        forFtcPurpose:
+          type: boolean
+          description: Field to indicate if the requested report is for FTC purpose. Only applicable to business reports.
+          example: false
+        timeIntervalTypes:
+          description: Requested time interval for attribute values.
+          example:
+          - MONTHLY_CALENDAR
+          maxItems: 2
+          items:
+            $ref: '#/components/schemas/TimeIntervalType'
+          type: array
+      type: object
+    FindTransactionAmountFrom:
+      type: number
+      description: 'A decimal value to return transactions with **amount** greater than or equal to **findTransactionAmountFrom**.</br>
+
+        - If both **findTransactionAmountFrom** and **findTransactionAmountTo** are present. Then transactions with  **amount** between (inclusive) both values will be returned.
+
+        '
+      example: 100
+    LastName:
+      type: string
+      description: The last name of the account holder
+      example: Smith
+    Income:
+      type: integer
+      description: "Income is an optional parameter. It is the dollar amount for the customer's annual\n        household income and is used to determine the income band the\ncustomer falls into."
+      format: int64
+      example: 1000
+      minimum: 0
+    TxVerifyInterview:
+      required:
+      - assetId
+      type: object
+      properties:
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accounts:
+          $ref: '#/components/schemas/ReportAccountIds'
+    VOETransactionsReportConstraintsOut:
+      type: object
+      properties:
+        reportId:
+          $ref: '#/components/schemas/ReportId'
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+        incomeStreamConfidenceMinimum:
+          $ref: '#/components/schemas/IncomeStreamConfidenceMinimum'
+    PayrollDataOut:
+      type: object
+      properties:
+        payrollDataRetrievalId:
+          $ref: '#/components/schemas/PayrollDataRetrievalId'
+        payrollAggregatorResponseId:
+          $ref: '#/components/schemas/PayrollDataRetrievalId'
+        consentMethod:
+          type: string
+          description: Client-collected consent payroll report tagging.
+          example: Written Generic - Finicity Set
+        employmentIds:
+          type: array
+          description: An array of employmentIds
+          items:
+            $ref: '#/components/schemas/EmploymentId'
+        payrollAccountIds:
+          type: array
+          description: An array of payrollAccountIds
+          items:
+            $ref: '#/components/schemas/PayrollAccountId'
+        reportId:
+          $ref: '#/components/schemas/ReportId'
+    ConsumerEndUser:
+      description: Reseller end user information. This is populated only when the report requires a consumer record to be generated and the consumer object includes end user details. The partner is expected to include endUser details when creating a consumer if the end user of the consumer reports is another entity than the partner generating the report.
+      required:
+      - name
+      - address
+      - city
+      - state
+      - zip
+      - phone
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/FirstName'
+        address:
+          $ref: '#/components/schemas/AddressLine1'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        zip:
+          $ref: '#/components/schemas/ZipCode'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+        url:
+          $ref: '#/components/schemas/EndUserUrl'
+    FindTransactionConstraints:
+      description: Parameters used to return transactions matching the given criteria. The presence of multiple parameters will be treated as an **AND**  function.
+      type: object
+      properties:
+        findTransactionDescriptionMemo:
+          $ref: '#/components/schemas/FindTransactionDescriptionMemo'
+        findTransactionAmountFrom:
+          $ref: '#/components/schemas/FindTransactionAmountFrom'
+        findTransactionAmountTo:
+          $ref: '#/components/schemas/FindTransactionAmountTo'
+        findTransactionCategory:
+          $ref: '#/components/schemas/FindTransactionCategory'
+    DisputeStatement:
+      description: A consumer-provided statement describing the nature of an unresolved dispute. This field is populated only if a consumer dispute remains unresolved, and the consumer has requested that a statement be included in their report.
+      type: string
+      minLength: 1
+      maxLength: 2000
+      example: Statement dispute text
+    ReportStatus:
+      type: string
+      description: 'A report generation status. Possible values:
+
+
+        * `inProgress`
+
+
+        * `success`
+
+
+        * `failure`
+
+        '
+      example: inProgress
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    CustomerAccountMultipleStatements:
+      description: A list of customer account statements
+      required:
+      - statements
+      type: object
+      properties:
+        statements:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerAccountMultipleStatement'
+          description: List of customer account statements
+          example:
+          - index: '1'
+            id: a9e96186-2896-4a21-8759-450403dadf47-1063025272
+            asOfDate: 1669036741
+            description: 08/28/2020 - 09/27/2020
+            documentDate: '2020-09-27'
+          - index: '2'
+            asOfDate: 1669036741
+            code: '960'
+            message: statement not found.
+    AnalyticsType:
+      description: Analytics type. Allowed Values are benchmarking and forecasting.
+      example: benchmarking
+      type: string
+    Description:
+      type: string
+      description: Date range representing the period for when the statement data is generated.
+    ForesightAnalyticsReportConstraints:
+      type: object
+      properties:
+        analyticsReportData:
+          $ref: '#/components/schemas/ForesightAnalyticsReportData'
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIdsString'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+    VOIEWithInterviewData:
+      required:
+      - txVerifyInterview
+      type: object
+      properties:
+        txVerifyInterview:
+          description: An array of `TxVerifyInterview` objects
+          type: array
+          items:
+            $ref: '#/components/schemas/TxVerifyInterview'
+        extractEarnings:
+          $ref: '#/components/schemas/ExtractEarnings'
+        extractDeductions:
+          $ref: '#/components/schemas/ExtractDeductions'
+        extractDirectDeposit:
+          $ref: '#/components/schemas/ExtractDirectDeposit'
+    CustomerType:
+      type: string
+      description: The type of customer ("active" or "testing" or "" for all types)
+      example: active
+    NumericAccountId:
+      type: integer
+      format: int64
+      description: An account ID represented as a number
+      example: 5011648377
+    ExtractDirectDeposit:
+      type: boolean
+      description: Field to indicate whether to extract the direct deposits on all pay statements
+      default: true
+      example: true
+    PartnerName:
+      type: string
+      description: Name of a Finicity partner
+      example: Finicity Test API
+    PayrollReportConstraintsOut:
+      required:
+      - payrollData
+      type: object
+      properties:
+        payrollData:
+          $ref: '#/components/schemas/PayrollDataOut'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        payStatementsFromDate:
+          $ref: '#/components/schemas/UnixDate'
+    VOIEReportConstraints:
+      required:
+      - voieWithStatementData
+      type: object
+      properties:
+        voieWithStatementData:
+          $ref: '#/components/schemas/VOIEWithStatementData'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+      description: The request details from the report generation that were used to generate the report
+    AnalyticsReportConstraintsOut:
+      type: object
+      properties:
+        analyticsReportData:
+          $ref: '#/components/schemas/AnalyticsReportData'
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+    FindTransactionCategory:
+      type: array
+      description: 'An array of **categories** to return transactions with an exact match to the array of **category**. Limit of 10.
+
+        '
+      maxItems: 10
+      items:
+        type: string
+      example:
+      - Paycheck
+      - Groceries
+    PayrollAccountId:
+      type: string
+      description: "The payrollAccountIds for the Credentialed Payroll accounts the consumer\n        has connected.  Will be used to constrain the report to only\ninclude the\n        specified accounts.  Required if the consumer has connected\ntheir\n        accounts previously and report generation was intentionally\ndelayed for\n        later."
+      example: 018b8f10-fdf8-0ef7-ded5-34a17c34d86f
+    ConsumerDetails:
+      description: Details about the consumer. Populated if the report requires a consumer record to be generated.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ConsumerId'
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        middleName:
+          $ref: '#/components/schemas/MiddleName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        address:
+          $ref: '#/components/schemas/AddressLine1'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        zip:
+          $ref: '#/components/schemas/ZipCode'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        ssn:
+          $ref: '#/components/schemas/SocialSecurityNumberLastDigits'
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+    ExtractEarnings:
+      type: boolean
+      description: Field to indicate whether to extract the earnings on all pay statements
+      default: true
+      example: true
+    ReportTitle:
+      type: string
+      description: Title of the report
+      example: Finicity Asset Ready Report (CRA)
+    State:
+      type: string
+      description: State
+      example: UT
+    FirstName:
+      type: string
+      description: The first name of the account holder
+      example: John
+    ReportId:
+      type: string
+      description: A report ID
+      example: u4hstnnak45g
+    StatementData:
+      required:
+      - accountId
+      type: object
+      properties:
+        accountId:
+          $ref: '#/components/schemas/NumericAccountId'
+        statementIndex:
+          type: integer
+          description: Index of the statement to include in the report. Request statements from 1-24. By default, 1 is the most recent statement. Increase the index value to count back (by month) and retrieve its most recent statement.
+          format: int32
+          example: 1
+          default: 1
+          maximum: 24
+    ReportAccountIdsString:
+      type: string
+      description: A whitespace-separated list of account IDs to be included in the report (all accounts will be included if not set)
+      example: 5011648377 5011648378 5011648379
+    DocumentDate:
+      type: string
+      description: The date when the statement was generated.
+    ReportCreatedDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/). Note: If the report is retrieved on a day other than the day it was generated, on the header of the PDF version of the report there will be a "Retrieved Date" populated.'
+      format: int64
+      example: 1607450357
+    BaseReportAck:
+      description: Properties shared by all generated reports
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ReportId'
+        customerType:
+          $ref: '#/components/schemas/CustomerType'
+        customerId:
+          $ref: '#/components/schemas/NumericCustomerId'
+        requestId:
+          $ref: '#/components/schemas/ReportRequestId'
+        requesterName:
+          $ref: '#/components/schemas/PartnerName'
+        endUser:
+          $ref: '#/components/schemas/ConsumerEndUser'
+        createdDate:
+          $ref: '#/components/schemas/ReportCreatedDate'
+        title:
+          $ref: '#/components/schemas/ReportTitle'
+        consumerId:
+          $ref: '#/components/schemas/ConsumerId'
+        consumerSsn:
+          $ref: '#/components/schemas/SocialSecurityNumberLastDigits'
+        consumerDetails:
+          $ref: '#/components/schemas/ConsumerDetails'
+        disputeStatement:
+          $ref: '#/components/schemas/DisputeStatement'
+        type:
+          $ref: '#/components/schemas/ReportType'
+        status:
+          $ref: '#/components/schemas/ReportStatus'
+        constraints:
+          anyOf:
+          - $ref: '#/components/schemas/AnalyticsReportConstraintsOut'
+          - $ref: '#/components/schemas/ForesightAnalyticsReportConstraints'
+          - $ref: '#/components/schemas/CashFlowReportConstraintsOut'
+          - $ref: '#/components/schemas/VOIEWithTXVerifyReportConstraintsOut'
+          - $ref: '#/components/schemas/VOIEReportConstraints'
+          - $ref: '#/components/schemas/StatementReportConstraints'
+          - $ref: '#/components/schemas/TransactionsReportConstraintsOut'
+          - $ref: '#/components/schemas/VOAReportConstraintsOut'
+          - $ref: '#/components/schemas/VOAWithIncomeReportConstraintsOut'
+          - $ref: '#/components/schemas/PrequalificationReportConstraintsOut'
+          - $ref: '#/components/schemas/VOIReportConstraintsOut'
+          - $ref: '#/components/schemas/PayrollReportConstraintsOut'
+          - $ref: '#/components/schemas/VOETransactionsReportConstraintsOut'
+          - $ref: '#/components/schemas/PayStatementReportConstraints'
+        errors:
+          description: In case errors occurred during the report generation
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorMessage'
+    UnixDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    StatementReportAck:
+      description: A Statement report being generated
+      required:
+      - id
+      - portfolioId
+      - customerType
+      - customerId
+      - requestId
+      - requesterName
+      - createdDate
+      - title
+      - consumerId
+      - consumerSsn
+      - type
+      - status
+      - constraints
+      allOf:
+      - $ref: '#/components/schemas/BaseReportAckWithPortfolioId'
+      - type: object
+        properties:
+          constraints:
+            $ref: '#/components/schemas/StatementReportConstraints'
+    City:
+      type: string
+      description: City
+      example: Murray
+  responses:
+    GenericBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+    BadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            PermissiblePurposeCodeExample:
+              $ref: '#/components/examples/PermissiblePurposeCodeExample'
+            InvalidForesightReportRequestExample:
+              $ref: '#/components/examples/InvalidForesightReportRequestExample'
+            BothCraAndFtcPurposeTrueExample:
+              $ref: '#/components/examples/BothCraAndFtcPurposeTrueExample'
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            InvalidExperienceFieldExample:
+              $ref: '#/components/examples/InvalidExperienceFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+            ResellerPartnerNotAuthorizedExample:
+              $ref: '#/components/examples/ResellerPartnerNotAuthorizedExample'
+            ResellerInvalidDateRangeExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeExample'
+            ResellerInvalidDateRangeLessThanZeroExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeLessThanZeroExample'
+            ResellerInvalidDateRangeGreaterThanEndDateExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThanEndDateExample'
+            ResellerInvalidDateRangeGreaterThan31DaysExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThan31DaysExample'
+            CustomerReportLimitExceedExample:
+              $ref: '#/components/examples/CustomerReportLimitExceedExample'
+            InvalidConsumerSSNExample:
+              $ref: '#/components/examples/InvalidConsumerSSNExample'
+            InvalidConsumerPhoneExample:
+              $ref: '#/components/examples/InvalidConsumerPhoneExample'
+            InvalidConsumerEmailExample:
+              $ref: '#/components/examples/InvalidConsumerEmailExample'
+            InvalidValue:
+              $ref: '#/components/examples/InvalidValueExample'
+    GetAssetByCustomerIDResponse:
+      description: The asset was successfully downloaded
+      content:
+        application/octet-stream:
+          schema:
+            type: string
+            format: binary
+    GetAssetNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            AssetNotFoundExample:
+              $ref: '#/components/examples/AssetNotFoundExample'
+    GenerateStatementReportResponse:
+      description: 'The report is being generated. When finished, a notification will be sent to the specified callback URL (Report Listener Service) and the report can be fetched using Get Report APIs. If you don''t use a callback URL, Get Report returns a minimal report with the following status: ''inProgress''. Repeat the call every 20 seconds until Get Report returns a different status.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StatementReportAck'
+          examples:
+            GenerateStatementReportResponseExample:
+              $ref: '#/components/examples/GenerateStatementReportResponseExample'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
+    GetCustomerAccountStatementResponse:
+      description: The statement was successfully downloaded as a PDF file
+      content:
+        application/octet-stream:
+          schema:
+            type: string
+            format: binary
+    GetCustomerAccountsMultipleStatementResponse:
+      description: The account statements were successfully retrieved.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CustomerAccountMultipleStatements'
+    ResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ConsumerNotFoundExample:
+              $ref: '#/components/examples/ConsumerNotFoundExample'
+            NoAccountForInstitutionLoginIdExample:
+              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            NoConsumerForCustomerExample:
+              $ref: '#/components/examples/NoConsumerForCustomerExample'
+            ResourceNotFoundExample:
+              $ref: '#/components/examples/ResourceNotFoundExample'
+            NoRegisteredApplicationExample:
+              $ref: '#/components/examples/NoRegisteredApplicationExample'
+            ResellerNoDataForPartnerExample:
+              $ref: '#/components/examples/ResellerNoDataForPartnerExample'
+            ResellerNoReportForPartnerExample:
+              $ref: '#/components/examples/ResellerNoReportForPartnerExample'
+    SecurityFreezeErrorResponse:
+      description: The active security freeze for this consumer exists.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SecurityFreezeErrorMessage'
+          examples:
+            SecurityFreezeErrorExample:
+              $ref: '#/components/examples/SecurityFreezeErrorExample'
+  parameters:
+    ReportCallbackUrlParameter:
+      name: callbackUrl
+      in: query
+      required: false
+      description: A Report Listener URL to receive notifications. The webhook must respond to the Finicity API with a 2xx HTTP status code.
+      schema:
+        type: string
+        example: https://finicity-test/webhook
+    AssetIdParameter:
+      description: The asset ID
+      name: assetId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AssetId'
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    AccountIdParameter:
+      description: The account ID
+      name: accountId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AccountId'
+      example: '5011648377'
+    CustomerIdParameter:
+      description: A customer ID
+      name: customerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
+    StatementIndexesParameter:
+      name: index
+      in: query
+      required: false
+      description: Request details of statements with comma-separated indexes between 1-24. The default value is 1 which will return details of the most recent statement. Increasing the index will return details of older statements, for example, setting the index value to 2 will return data on the second most recent statement.
+      schema:
+        type: string
+        default: '1'
+        example: 1,2
+    StatementIndexParameter:
+      name: index
+      in: query
+      required: false
+      description: Request statements from 1-24. By default, 1 is the most recent statement. Increase the index value to count back (by month) and retrieve its most recent statement.
+      schema:
+        type: integer
+        format: int32
+        default: 1
+        example: 1
+        maximum: 24
+  requestBodies:
+    GenerateStatementReportRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StatementReportConstraints'
+          examples:
+            GenerateStatementReportRequestExample:
+              $ref: '#/components/examples/GenerateStatementReportRequestExample'
+  securitySchemes:
+    FinicityAppKey:
+      name: Finicity-App-Key
+      type: apiKey
+      in: header
+      description: The "Finicity-App-Key" from the developer dashboard
+    FinicityAppToken:
+      name: Finicity-App-Token
+      type: apiKey
+      in: header
+      description: A token returned by the `/authentication` API

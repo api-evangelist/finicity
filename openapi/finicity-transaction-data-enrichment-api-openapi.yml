@@ -1,0 +1,878 @@
+openapi: 3.2.0
+info:
+  title: Open Finance Transaction Data Enrichment API
+  description: 'OpenAPI specification for Finicity APIs.
+
+
+    Open Finance (formerly Open Banking) solutions in the US are provided by
+
+    Finicity, a Mastercard company.'
+  contact:
+    name: API Support
+    email: apisupport@mastercard.com
+    url: https://developer.mastercard.com/open-finance-us/documentation/support/
+  version: 1.43.0
+servers:
+- url: https://api.finicity.com
+  description: Production
+security:
+- FinicityAppKey: []
+  FinicityAppToken: []
+tags:
+- name: Transaction Data Enrichment
+  description: Enhance the transaction data set
+paths:
+  /data-enrichment/transactions:
+    post:
+      tags:
+      - Transaction Data Enrichment
+      summary: Performs Enrichment of the Provided Transactions
+      description: The operation processes the enclosed transactions for enrichment with categorization and entity recognition. Accepts a batch of 1000 transactions.
+      operationId: enrichTransactions
+      requestBody:
+        $ref: '#/components/requestBodies/EnrichTransactionsPayload'
+      responses:
+        '200':
+          $ref: '#/components/responses/EnrichedTransactions'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorTransactionResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+components:
+  examples:
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    DataNotFoundError:
+      value:
+        code: 14001
+        message: Resource not found.
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+    GenericBadRequestError:
+      value:
+        code: '14020'
+        message: Bad request.
+        externalTransactionId: MAC1005061234
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    EnrichedTransactionsExample:
+      value:
+        transactions:
+        - externalCustomerId: '1005061234'
+          externalAccountId: '1005061234'
+          accountType: checking
+          externalTransactionId: MAC1005061233
+          postedTimestamp: '2024-07-26T11:00:00Z'
+          transactionTimestamp: '2024-07-26T11:00:00Z'
+          description: STARBUCKS STORE 06565 LITTLETON CO 07/26
+          memo: debit
+          amount: -13.26
+          transactionFee: 0.0
+          transactionCategory: Coffee Shops
+          transactionCategoryScore: 45.0
+          transactionCategoryGroup: Groceries & Dining
+          type: DEBIT
+          directionIndicator: Debit
+          entities:
+          - id: 'MTc1ODA5NDU0MTYwNjM1OTA0MA== '
+            name: Starbucks
+            category: Coffee Shops
+            group: Cafe
+            website: https://starbucks.com
+            logoUrl: https://institution-branding-assets-cf.openbanking.mastercard.com/MTc1ODA5NDU0MTYwNjM1OTA0MA==/logo.svg
+            entityStandardizationConfidenceScore: 91.0
+          address:
+            line1: 10278 W
+            line2: Centennial Rd
+            city: Littleton
+            state: CO
+            postalCode: '80127'
+            country: US
+            latitude: 39.567229
+            longitude: -105.11126
+            phoneNumber: '8017339340'
+          additionalDetails:
+            key1: value1
+        - externalCustomerId: '10050612345'
+          externalAccountId: '10050612345'
+          accountType: checking
+          externalTransactionId: MAC1005061234
+          postedTimestamp: '2024-07-26T11:00:00Z'
+          transactionTimestamp: '2024-07-26T11:00:00Z'
+          description: CHECKCARD 07/26 MCDONALDS F10649 CLINTON SC
+          memo: debit
+          amount: -37.52
+          transactionFee: 0.0
+          transactionCategory: Food & Dining
+          transactionCategoryScore: 39.87
+          transactionCategoryGroup: Groceries & Dining
+          type: DEBIT
+          directionIndicator: Debit
+          entities:
+          - id: MTc1ODA5Mzc1Mzc1MjQ4OTk4NA==
+            name: McDonald's
+            category: Fast Food
+            website: https://mcdonalds.com
+            logoUrl: https://institution-branding-assets-cf.openbanking.mastercard.com/MTc1ODA5Mzc1Mzc1MjQ4OTk4NA==/logo.svg
+            entityStandardizationConfidenceScore: 96.77
+          address:
+            line1: 101 S Broad St
+            line2: ''
+            city: Clinton
+            state: SC
+            postalCode: '29325'
+            country: US
+            latitude: 34.47237
+            longitude: -81.880344
+            phoneNumber: '8648334816'
+          additionalDetails:
+            key1: value1
+            key2: value2
+          cardAcceptorId: 006952800649MDF
+          inputIsRecurringTransaction: false
+          inputMerchantInformation:
+            merchantDescriptor: MCDONALDS10649CLINTONSC
+            name: McDonalds
+            line1: 101 S Broad St
+            city: Clinton
+            state: SC
+            postalCode: '29325'
+            country: US
+            phoneNumber: '8648334816'
+            website: https://www.mcdonalds.com
+            merchantCategoryCode: '5814'
+            merchantCategoryName: FAST FOOD RESTAURANTS
+          isRecurringTransaction: false
+          locationId: 876875444777
+          isEcommerce: false
+          isBrickAndMortar: true
+          matchConfidenceScore: 97
+    EnrichTransactionsPayloadExample:
+      value:
+        transactions:
+        - externalCustomerId: '1005061234'
+          externalAccountId: '1005061234'
+          accountType: checking
+          externalTransactionId: MAC1005061233
+          postedTimestamp: '2024-07-26T11:00:00Z'
+          transactionTimestamp: '2024-07-26T11:00:00Z'
+          description: STARBUCKS STORE 06565 LITTLETON CO 07/26
+          memo: debit
+          amount: -13.26
+          transactionFee: 0.0
+          type: DEBIT
+          directionIndicator: Debit
+          additionalDetails:
+            key1: value1
+        - externalCustomerId: '10050612345'
+          externalAccountId: '10050612345'
+          accountType: checking
+          externalTransactionId: MAC1005061234
+          postedTimestamp: '2024-07-26T11:00:00Z'
+          transactionTimestamp: '2024-07-26T11:00:00Z'
+          description: CHECKCARD 07/26 MCDONALDS F10649 CLINTON SC
+          memo: debit
+          amount: -37.52
+          transactionFee: 0.0
+          type: DEBIT
+          directionIndicator: Debit
+          additionalDetails:
+            key1: value1
+            key2: value2
+          cardAcceptorId: 006952800649MDF
+          inputIsRecurringTransaction: false
+          inputMerchantInformation:
+            merchantDescriptor: MCDONALDS10649CLINTONSC
+            name: McDonalds
+            line1: 101 S Broad St
+            city: Clinton
+            state: SC
+            postalCode: '29325'
+            country: US
+            phoneNumber: '8648334816'
+            website: https://www.mcdonalds.com
+            merchantCategoryCode: '5814'
+            merchantCategoryName: FAST FOOD RESTAURANTS
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+  schemas:
+    InputMerchantInformation:
+      description: InputMerchantInformation is an object containing merchant details in the request body.
+      type: object
+      properties:
+        merchantDescriptor:
+          type: string
+          description: This is a concatenated combination of DE43 merchant name, DE43 merchant city and DE43 merchant state. Spaces should be excluded when concatenating these fields. If merchant state is not provided by the acquirer, use merchant name and city only. If the acquirer provides a country code instead of a state, use a combination of merchant name, city, and country.
+          minLength: 0
+          maxLength: 50
+          example: MCDONALDS10649CLINTONSC
+        name:
+          type: string
+          description: Name of the merchant.
+          minLength: 0
+          maxLength: 256
+          example: McDonalds
+        line1:
+          type: string
+          description: Line 1 of the transaction address.
+          minLength: 0
+          maxLength: 100
+          example: 101 S Broad St
+        city:
+          type: string
+          description: City of the transaction.
+          minLength: 0
+          maxLength: 50
+          example: Clinton
+        state:
+          type: string
+          description: State of the transaction.
+          minLength: 0
+          maxLength: 3
+          example: SC
+        postalCode:
+          type: string
+          description: PostalCode of the transaction.
+          minLength: 0
+          maxLength: 10
+          example: '29325'
+        country:
+          type: string
+          description: Country of the transaction.
+          minLength: 0
+          maxLength: 3
+          example: US
+        phoneNumber:
+          type: string
+          description: The phone number of the merchant
+          minLength: 0
+          maxLength: 20
+          example: '8648334816'
+        website:
+          type: string
+          description: Website of the involved entity.
+          minLength: 0
+          maxLength: 256
+          example: https://www.mcdonalds.com
+        merchantCategoryCode:
+          type: string
+          description: This code represents the category that a merchant location may be under and is supported by most payment providers.
+          minLength: 0
+          maxLength: 128
+          example: '5814'
+        merchantCategoryName:
+          type: string
+          description: This is the name of the Merchant Category that accompanies the MCC Code which identifies the category a merchant falls under.
+          minLength: 0
+          maxLength: 256
+          example: FAST FOOD RESTAURANTS
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    AdditionalDetails:
+      type: string
+    EnrichedTransactions:
+      type: object
+      description: Request body that contains transactions to be enriched.
+      properties:
+        transactions:
+          type: array
+          description: List of input transactions to be enriched.
+          items:
+            $ref: '#/components/schemas/EnrichedTransaction'
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    DESAddress:
+      description: Address source of the transactions.
+      type: object
+      properties:
+        line1:
+          type: string
+          description: Line 1 of the transaction address.
+          minLength: 1
+          maxLength: 100
+          example: 10278 W
+        line2:
+          type: string
+          description: Line 2 of the transaction address.
+          minLength: 1
+          maxLength: 100
+          example: Centennial Rd
+        city:
+          type: string
+          description: City of the transaction.
+          minLength: 1
+          maxLength: 100
+          example: Littleton
+        state:
+          type: string
+          description: State of the transaction.
+          minLength: 1
+          maxLength: 100
+          example: CO
+        postalCode:
+          type: string
+          description: Postal Code of the transaction.
+          minLength: 1
+          maxLength: 100
+          example: '80127'
+        country:
+          type: string
+          description: Country of the transaction.
+          minLength: 1
+          maxLength: 100
+          example: USA
+        latitude:
+          type: number
+          description: Latitude of the transaction.
+          format: double
+          minimum: -90
+          maximum: 90
+          example: 39.56722
+        longitude:
+          type: number
+          description: Longitude of the transaction.
+          format: double
+          minimum: -180
+          maximum: 180
+          example: -105.11126
+        phoneNumber:
+          type: string
+          description: Phone number of the transaction.
+          minimum: 0
+          maximum: 20
+          example: '8017339340'
+    TransactionPayload:
+      type: object
+      properties:
+        externalCustomerId:
+          type: string
+          description: 'A unique identifier assigned to the customer for a particular institution.
+
+            __Note:__ The externalCustomerId and externalAccountId fields are to allow you to map the transactions back to your data. __Do not send Mastercard plaintext representations of customer or account IDs.__ The representative IDs must be obfuscated through cryptographically strong hashing (we recommend using SHA-2 or SHA-3 methods).'
+          minLength: 1
+          maxLength: 100
+          example: '1005061234'
+        externalAccountId:
+          type: string
+          description: 'A unique identifier assigned to the accounts for a particular institution.
+
+            __Note:__ The externalCustomerId and externalAccountId fields are to allow you to map the transactions back to your data. __Do not send Mastercard plaintext representations of customer or account IDs.__ The representative IDs must be obfuscated through cryptographically strong hashing (we recommend using SHA-2 or SHA-3 methods).'
+          minLength: 1
+          maxLength: 100
+          example: '1005061234'
+        accountType:
+          type: string
+          description: 'Indicates the type of account associated with the transaction.
+
+            Listed below are the current account types supported:
+
+
+            "checking",
+
+            "savings",
+
+            "creditCard",
+
+            "brokerageAccount",
+
+            "healthSavingsAccount",
+
+            "unknown"
+
+
+            NOTE : If "unknown" is provided, the enrichment service will assume it is a "checking" account. An incorrect assumption could impact the results from the enrichment service.
+
+            '
+          minLength: 1
+          maxLength: 511
+          example: checking
+        externalTransactionId:
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          type: string
+          minLength: 1
+          maxLength: 100
+          example: MAC1005061233
+        postedTimestamp:
+          type: string
+          description: 'The date and time when the transaction was officially recorded in the account.
+
+
+            Supported formats are yyyy-MM-dd''T''HH:mm:ss.SSS''Z'', yyyy-MM-dd''T''HH:mm:ss''Z'', yyyy-MM-dd HH:mm:ss.0, yyyy-MM-dd.
+
+            '
+          minLength: 3
+          maxLength: 32
+          example: '2024-07-26T11:00:00Z'
+        transactionTimestamp:
+          type: string
+          description: 'The exact date and time when the transaction was initiated or occurred.
+
+
+            Supported formats are yyyy-MM-dd''T''HH:mm:ss.SSS''Z'', yyyy-MM-dd''T''HH:mm:ss''Z'', yyyy-MM-dd HH:mm:ss.0, yyyy-MM-dd.
+
+            '
+          minLength: 3
+          maxLength: 32
+          example: '2024-07-26T11:00:00Z'
+        description:
+          type: string
+          description: Description of the transaction.
+          minLength: 1
+          maxLength: 1024
+          example: STARBUCKS STORE 06565 LITTLETON CO 07/26
+        memo:
+          type: string
+          description: Memo of the transaction.
+          minLength: 0
+          maxLength: 511
+          example: debit
+        amount:
+          type: number
+          format: double
+          description: Value amount for transaction.
+          minimum: -1.7976931348623157e+308
+          maximum: 1.7976931348623157e+308
+          example: -13.26
+        transactionFee:
+          type: number
+          format: double
+          description: A charge applied to the transaction.
+          minimum: -1.7976931348623157e+308
+          maximum: 1.7976931348623157e+308
+          example: 0
+        type:
+          type: string
+          description: Type of the transaction.
+          minLength: 0
+          maxLength: 32
+          example: DEBIT
+        directionIndicator:
+          type: string
+          description: "- The directionIndicator should be from the perspective of the account holder.\n- If you always send us positive amount values, you MUST send us corresponding directionIndicator values to ensure the categorization logic works as intended.\n- If you have internal logic to provide the amount field as either positive or negative, do not send us data in the directionIndicator.\n\n- Listed below are the current directionIndicator types supported:\n  - \"Debit\"\n  - \"Credit\"\n"
+          minLength: 0
+          maxLength: 32
+          example: Debit
+        additionalDetails:
+          type: object
+          description: 'A dictionary containing additional details of the transaction
+
+            being returned in the enrichment response.
+
+            - This object should not contain any PII.
+
+            - The max number of allowed keys are 30.
+
+            - The key max length should be 100.
+
+            - The value max length should be 255.
+
+            '
+          additionalProperties:
+            $ref: '#/components/schemas/AdditionalDetails'
+          example:
+            key1: value1
+            key2: value2
+        cardAcceptorId:
+          type: string
+          description: Also known as CAID, Merchant ID, or DE42, cardAcceptorId is an alphanumeric string assigned by the acquiring bank (Acquirer) to a merchant or merchant location. It serves as a unique identifier for the point of transaction origin, such as a physical store, payment terminal, or online checkout page.
+          minLength: 0
+          maxLength: 15
+          example: '234523095820935'
+        inputIsRecurringTransaction:
+          type: boolean
+          description: A flag indicating whether the transaction is recurring or not.
+          example: false
+        inputMerchantInformation:
+          $ref: '#/components/schemas/InputMerchantInformation'
+      required:
+      - externalCustomerId
+      - accountType
+      - description
+      - amount
+      - externalTransactionId
+      - transactionTimestamp
+      - externalAccountId
+    Entities:
+      description: Entities refer to the distinct parties involved in the transaction.
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: ID of the entity (entities).
+            minLength: 1
+            maxLength: 100
+            example: MTc1ODA5NDU0MTYwNjM1OTA0MA==
+          name:
+            type: string
+            description: Name of the entity (entities).
+            minLength: 1
+            maxLength: 100
+            example: Starbucks
+          group:
+            type: string
+            description: Group of the entity (entities).
+            minLength: 1
+            maxLength: 100
+            example: Cafe
+          category:
+            type: string
+            description: Category of the entity (entities).
+            minLength: 1
+            maxLength: 100
+            example: Coffee Shops
+          website:
+            type: string
+            description: Website of the involved entity.
+            minLength: 1
+            maxLength: 100
+            example: https://starbucks.com
+          logoUrl:
+            type: string
+            description: Logo of the involved entity.
+            minLength: 1
+            maxLength: 500
+            example: https://institution-branding-assets-cf.openbanking.mastercard.com/MTc1ODA5NDU0MTYwNjM1OTA0MA==/logo.svg
+    EnrichedTransaction:
+      type: object
+      properties:
+        externalCustomerId:
+          type: string
+          description: A unique identifier assigned to the customer for a particular institution.
+          minLength: 1
+          maxLength: 100
+          example: '1005061234'
+        externalAccountId:
+          type: string
+          description: A unique identifier assigned to the accounts for a particular institution.
+          minLength: 1
+          maxLength: 100
+          example: '1005061234'
+        accountType:
+          type: string
+          description: 'Indicates the type of account associated with the transaction.
+
+            Listed below are the current account types supported:
+
+
+            "checking",
+
+            "savings",
+
+            "creditCard",
+
+            "brokerageAccount",
+
+            "investment",
+
+            "healthSavingsAccount",
+
+            "unknown"
+
+
+            NOTE : If "unknown" is provided, the enrichment service will assume it is a "checking" account. An incorrect assumption could impact the results from the enrichment service.
+
+            '
+          minLength: 1
+          maxLength: 511
+          example: checking
+        externalTransactionId:
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          type: string
+          minLength: 1
+          maxLength: 100
+          example: MAC1005061233
+        postedTimestamp:
+          type: string
+          description: 'The date and time when the transaction was officially recorded in the account.
+
+
+            Supported formats are yyyy-MM-dd''T''HH:mm:ss.SSS''Z'', yyyy-MM-dd''T''HH:mm:ss''Z'', yyyy-MM-dd HH:mm:ss.0, yyyy-MM-dd.
+
+            '
+          minLength: 3
+          maxLength: 32
+          example: '2024-07-26T11:00:00Z'
+        transactionTimestamp:
+          type: string
+          description: 'The exact date and time when the transaction was initiated or occurred.
+
+
+            Supported formats are yyyy-MM-dd''T''HH:mm:ss.SSS''Z'', yyyy-MM-dd''T''HH:mm:ss''Z'', yyyy-MM-dd HH:mm:ss.0, yyyy-MM-dd.
+
+            '
+          minLength: 3
+          maxLength: 32
+          example: '2024-07-26T11:00:00Z'
+        description:
+          type: string
+          description: Description of the transaction.
+          minLength: 1
+          maxLength: 1024
+          example: STARBUCKS STORE 06565 LITTLETON CO 07/26
+        memo:
+          type: string
+          description: Memo of the transaction.
+          minLength: 0
+          maxLength: 511
+          example: debit
+        amount:
+          type: number
+          format: double
+          description: Value amount for transaction.
+          minimum: -1.7976931348623157e+308
+          maximum: 1.7976931348623157e+308
+          example: -13.26
+        transactionFee:
+          type: number
+          format: double
+          description: A charge applied to the transaction.
+          minimum: -1.7976931348623157e+308
+          maximum: 1.7976931348623157e+308
+          example: 0
+        transactionCategory:
+          type: string
+          description: Transaction Category for the transaction.
+          minLength: 0
+          maxLength: 256
+          example: Coffee Shops
+        transactionCategoryScore:
+          type: number
+          format: double
+          description: A confidence score between 0 – 100.0 for the transaction category.
+          minimum: 0
+          maximum: 100.0
+          example: 16
+        transactionCategoryGroup:
+          type: string
+          description: The parent group that a transaction category belongs to.
+          minLength: 0
+          maxLength: 256
+          example: Dining
+        type:
+          type: string
+          description: Type for transaction.
+          minLength: 0
+          maxLength: 32
+          example: DEBIT
+        directionIndicator:
+          type: string
+          description: "- The directionIndicator should be from the perspective of the account holder.\n- If you always send us positive amount values, you MUST send us corresponding directionIndicator values to ensure the categorization logic works as intended.\n- If you have internal logic to provide the amount field as either positive or negative, do not send us data in the directionIndicator.\n\n- Listed below are the current directionIndicator types supported:\n  - \"Debit\"\n  - \"Credit\"\n"
+          minLength: 0
+          maxLength: 32
+          example: Debit
+        entities:
+          $ref: '#/components/schemas/Entities'
+        address:
+          $ref: '#/components/schemas/DESAddress'
+        additionalDetails:
+          type: object
+          description: 'A dictionary containing additional details of the transaction
+
+            being returned in the enrichment response.
+
+            - This object should not contain any PII.
+
+            - The max number of allowed keys are 30.
+
+            - The key max length should be 100.
+
+            - The value max length should be 255.
+
+            '
+          additionalProperties:
+            $ref: '#/components/schemas/AdditionalDetails'
+          example:
+            key1: value1
+            key2: value2
+        cardAcceptorId:
+          type: string
+          description: Also known as CAID, Merchant ID, or DE42, cardAcceptorId is an alphanumeric string assigned by the acquiring bank (Acquirer) to a merchant or merchant location. It serves as a unique identifier for the point of transaction origin, such as a physical store, payment terminal, or online checkout page.
+          minLength: 0
+          maxLength: 15
+          example: '234523095820935'
+        inputIsRecurringTransaction:
+          type: boolean
+          description: A flag in the input indicating whether the transaction is recurring or not.
+          example: false
+        inputMerchantInformation:
+          $ref: '#/components/schemas/InputMerchantInformation'
+        isRecurringTransaction:
+          type: boolean
+          description: A flag indicating whether the transaction is recurring or not.
+          example: false
+        locationId:
+          type: number
+          description: The Mastercard assigned location id representing this merchant location.
+          example: 876875444777
+          minLength: 0
+          maxLength: 32
+        isEcommerce:
+          type: boolean
+          description: A flag indicating whether the business location is ecommerce or not.
+          example: false
+        isBrickAndMortar:
+          type: boolean
+          description: A boolean value indicating if the identified merchant is a brick and mortar location.
+          example: false
+        matchConfidenceScore:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: If the merchantDescriptor is used to select the locationId and location details, a matchConfidenceScore is returned, indicating the score between the merchantDescriptor and the selected information from our internal data on merchants.
+          example: 97
+    EnrichTransactionsPayload:
+      type: object
+      description: Request body that contains transactions to be enriched.
+      properties:
+        transactions:
+          type: array
+          description: A list of transactions requested to be enriched.
+          items:
+            $ref: '#/components/schemas/TransactionPayload'
+          minItems: 1
+          maxItems: 1000
+      required:
+      - transactions
+  responses:
+    EnrichedTransactions:
+      description: Enriched Transactions Response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EnrichedTransactions'
+          examples:
+            EnrichedTransactionsExample:
+              $ref: '#/components/examples/EnrichedTransactionsExample'
+    NotFoundErrorResponse:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            DataNotFoundError:
+              $ref: '#/components/examples/DataNotFoundError'
+    BadRequestErrorTransactionResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            GenericBadRequestError:
+              $ref: '#/components/examples/GenericBadRequestError'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
+  requestBodies:
+    EnrichTransactionsPayload:
+      required: true
+      description: A list of maximum of 1000 transactions to submit for transaction enrichment
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EnrichTransactionsPayload'
+          examples:
+            EnrichTransactionsPayload:
+              $ref: '#/components/examples/EnrichTransactionsPayloadExample'
+  securitySchemes:
+    FinicityAppKey:
+      name: Finicity-App-Key
+      type: apiKey
+      in: header
+      description: The "Finicity-App-Key" from the developer dashboard
+    FinicityAppToken:
+      name: Finicity-App-Token
+      type: apiKey
+      in: header
+      description: A token returned by the `/authentication` API

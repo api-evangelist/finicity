@@ -1,0 +1,850 @@
+openapi: 3.2.0
+info:
+  title: Open Finance Consumers API
+  description: 'OpenAPI specification for Finicity APIs.
+
+
+    Open Finance (formerly Open Banking) solutions in the US are provided by
+
+    Finicity, a Mastercard company.'
+  contact:
+    name: API Support
+    email: apisupport@mastercard.com
+    url: https://developer.mastercard.com/open-finance-us/documentation/support/
+  version: 1.43.0
+servers:
+- url: https://api.finicity.com
+  description: Production
+security:
+- FinicityAppKey: []
+  FinicityAppToken: []
+tags:
+- name: Consumers
+  description: Create and manage consumers associated with customers in order to use report services
+paths:
+  /decisioning/v1/customers/{customerId}/consumer:
+    post:
+      tags:
+      - Consumers
+      summary: Create Consumer for the Customer
+      description: "Create a consumer record associated with the given customer. A consumer persists as the owner of any reports that are generated, even after the original customer is deleted from the system.\n\nAlong with the required fields, the following fields are conditionally required:\n1. **SSN & Birthday(DOB):** \n    - Either `ssn` or `birthday` must be provided. Both can also be\nprovided together.\n2. **Phone & Email:** \n    - Either `phone` or `email` must be provided. Both can also be\nprovided together.\n\nA consumer must be created for the given customer before creating a CRA report through our Generate Report services.\n\n_Supported regions_: ![\U0001F1FA\U0001F1F8](https://flagcdn.com/20x15/us.png)"
+      operationId: CreateConsumer
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateConsumerRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateConsumerResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+        '409':
+          $ref: '#/components/responses/ConflictErrorResponse'
+    get:
+      tags:
+      - Consumers
+      summary: Get the Consumer Record for the Given Customer
+      description: 'Get the details of a consumer record by customer ID.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetConsumerForCustomer
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetConsumerForCustomerResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /decisioning/v1/consumers/{consumerId}:
+    get:
+      tags:
+      - Consumers
+      summary: Get Consumer by ID
+      description: 'Get the details of a consumer record by consumer ID.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetConsumer
+      parameters:
+      - $ref: '#/components/parameters/ConsumerIdParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetConsumerResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+    put:
+      tags:
+      - Consumers
+      summary: Modify Consumer by ID
+      description: 'Modify an existing consumer. Fields that are not specified will be left unchanged.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: ModifyConsumer
+      parameters:
+      - $ref: '#/components/parameters/ConsumerIdParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/ModifyConsumerRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/ModifyConsumerResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+components:
+  examples:
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    ConsumerExistsConflictExample:
+      value:
+        code: '11000'
+        message: A consumer already exists for customer 4025024821
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    ResellerInvalidDateRangeLessThanZeroExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
+    InvalidConsumerEmailExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.email.
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    InvalidForesightReportRequestExample:
+      value:
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    ConsumerWithSsnEmailExample:
+      value:
+        firstName: Jane
+        lastName: Smith
+        address: 456 Oak Ave
+        city: Salt Lake City
+        state: UT
+        zip: '84111'
+        ssn: '987654321'
+        email: jane.smith@example.com
+    ConsumerWithBirthdayPhoneEmailExample:
+      value:
+        firstName: Eve
+        lastName: Blue
+        address: 159 Elm St
+        city: St. George
+        state: UT
+        zip: '84770'
+        birthday:
+          year: 1995
+          month: 9
+          dayOfMonth: 30
+        phone: 1-212-555-1234
+        email: eve.blue@example.com
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    InvalidFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: Customer ID does not exist or does not belong to this partner
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    InvalidConsumerSSNExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    NoAccountForInstitutionLoginIdExample:
+      value:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
+    ResellerNoDataForPartnerExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    ResellerInvalidDateRangeExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+    ConsumerWithBirthdayPhoneExample:
+      value:
+        firstName: Alice
+        lastName: Brown
+        address: 789 Pine Rd
+        city: Provo
+        state: UT
+        zip: '84601'
+        birthday:
+          year: 1985
+          month: 5
+          dayOfMonth: 15
+        phone: 1-212-555-1234
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    ConsumerWithAllValuesExample:
+      value:
+        firstName: John
+        lastName: Doe
+        address: 434 W Ascension Way
+        city: Murray
+        state: UT
+        zip: '84123'
+        phone: 1-3-1234-1234
+        ssn: '989898989'
+        birthday:
+          year: '1989'
+          month: '12'
+          dayOfMonth: '13'
+        email: someone@test.com
+        suffix: Mr
+        middleName: Doe
+        endUser:
+          name: Jane
+          address: 434 W Ascension Way
+          city: Murray
+          state: UT
+          zip: '84123'
+          phone: 1-3-1234-123
+          email: someone@test.com
+          url: testurl.com
+    ConsumerWithSsnPhoneEmailExample:
+      value:
+        firstName: Frank
+        lastName: Yellow
+        address: 753 Willow Ln
+        city: Orem
+        state: UT
+        zip: '84057'
+        ssn: '111223333'
+        phone: 1-212-555-1234
+        email: frank.yellow@example.com
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
+    PermissiblePurposeCodeExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: Permissible Purpose Code is required
+    ConsumerWithBirthdayEmailExample:
+      value:
+        firstName: Bob
+        lastName: White
+        address: 321 Maple St
+        city: Ogden
+        state: UT
+        zip: '84401'
+        birthday:
+          year: 1975
+          month: 12
+          dayOfMonth: 25
+        email: bob.white@example.com
+    ConsumerWithSsnBirthdayPhoneExample:
+      value:
+        firstName: Carol
+        lastName: Green
+        address: 654 Cedar Ave
+        city: Layton
+        state: UT
+        zip: '84041'
+        ssn: '555443333'
+        birthday:
+          year: 1992
+          month: 7
+          dayOfMonth: 4
+        phone: 1-212-555-1234
+    ConsumerWithSsnBirthdayEmailExample:
+      value:
+        firstName: Dave
+        lastName: Black
+        address: 987 Spruce Dr
+        city: Logan
+        state: UT
+        zip: '84321'
+        ssn: '222334444'
+        birthday:
+          year: 1980
+          month: 3
+          dayOfMonth: 10
+        email: dave.black@example.com
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    ConsumerWithSsnPhoneExample:
+      value:
+        firstName: John
+        lastName: Doe
+        address: 434 W Ascension Way
+        city: Murray
+        phone: 1-212-555-1234
+        ssn: '989898989'
+        suffix: Mr
+        endUser:
+          name: John
+          address: 434 W Ascension Way
+          city: Murray
+          state: UT
+          zip: '84123'
+          phone: 1-212-555-1234
+          email: someone@test.com
+          url: testurl.com
+    NoConsumerForCustomerExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer for customer with id 5011115315."
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+  schemas:
+    EndUserUrl:
+      type: string
+      description: Reseller end user URL
+      minLength: 2
+      maximum: 999
+      example: testurl.com
+    ZipCode:
+      type: string
+      description: A ZIP code
+      example: '84123'
+    NumericCustomerId:
+      type: integer
+      format: int64
+      description: A customer ID represented as a number. See Add Customer API for how to create a customer ID.
+      example: 1005061234
+    ConsumerId:
+      type: string
+      description: A consumer ID. See Create Consumer API for how to create a consumer ID.
+      example: 0bf46322c167b562e6cbed9d40e19a4c
+    EmailAddress:
+      type: string
+      description: An email address
+      example: myname@mycompany.com
+    Consumer:
+      description: A Mastercard Open Finance consumer record
+      required:
+      - id
+      - firstName
+      - lastName
+      - customerId
+      - address
+      - city
+      - state
+      - zip
+      - phone
+      - ssn
+      - birthday
+      - email
+      - createdDate
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ConsumerId'
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        customerId:
+          $ref: '#/components/schemas/NumericCustomerId'
+        address:
+          $ref: '#/components/schemas/Address'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        zip:
+          $ref: '#/components/schemas/ZipCode'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        ssn:
+          $ref: '#/components/schemas/SocialSecurityNumberLastDigits'
+        birthday:
+          $ref: '#/components/schemas/Birthday'
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+        createdDate:
+          $ref: '#/components/schemas/UnixDate'
+        suffix:
+          $ref: '#/components/schemas/Suffix'
+        endUser:
+          $ref: '#/components/schemas/ConsumerEndUser'
+    AddressLine1:
+      type: string
+      description: Address line 1
+      example: 434 W Ascension Way
+    ConsumerUpdate:
+      type: object
+      properties:
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        address:
+          $ref: '#/components/schemas/Address'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        zip:
+          $ref: '#/components/schemas/ZipCode'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        ssn:
+          $ref: '#/components/schemas/SocialSecurityNumber'
+        birthday:
+          $ref: '#/components/schemas/Birthday'
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+        suffix:
+          $ref: '#/components/schemas/Suffix'
+        endUser:
+          $ref: '#/components/schemas/ConsumerEndUser'
+    PhoneNumber:
+      type: string
+      description: A phone number (max length 15).
+      example: 1-801-984-4200
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    SocialSecurityNumberLastDigits:
+      type: string
+      description: Last 4 digits of a SSN
+      example: '9999'
+    NewConsumer:
+      description: "A new consumer to be created. Along with the required fields, the following fields are conditionally required: \n1. **SSN & Birthday(DOB):** \n    - Either `ssn` or `birthday` must be provided. Both can also be provided together.\n\n2. **Phone & Email:** \n    - Either `phone` or `email` must be provided. Both can also be provided together."
+      required:
+      - firstName
+      - lastName
+      - state
+      type: object
+      properties:
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        address:
+          $ref: '#/components/schemas/Address'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        zip:
+          $ref: '#/components/schemas/ZipCode'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        ssn:
+          $ref: '#/components/schemas/SocialSecurityNumber'
+        birthday:
+          $ref: '#/components/schemas/Birthday'
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+        suffix:
+          $ref: '#/components/schemas/Suffix'
+        endUser:
+          $ref: '#/components/schemas/ConsumerEndUser'
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    SocialSecurityNumber:
+      type: string
+      description: A full SSN with or without hyphens
+      example: 999-99-9999
+    CreatedConsumer:
+      description: A consumer that was just created
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ConsumerId'
+        createdDate:
+          $ref: '#/components/schemas/UnixDate'
+        customerId:
+          $ref: '#/components/schemas/NumericCustomerId'
+    LastName:
+      type: string
+      description: The last name of the account holder
+      example: Smith
+    ConsumerEndUser:
+      description: Reseller end user information. This is populated only when the report requires a consumer record to be generated and the consumer object includes end user details. The partner is expected to include endUser details when creating a consumer if the end user of the consumer reports is another entity than the partner generating the report.
+      required:
+      - name
+      - address
+      - city
+      - state
+      - zip
+      - phone
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/FirstName'
+        address:
+          $ref: '#/components/schemas/AddressLine1'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        zip:
+          $ref: '#/components/schemas/ZipCode'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+        url:
+          $ref: '#/components/schemas/EndUserUrl'
+    Address:
+      type: string
+      description: A street address
+      example: '434 W Ascension Way Suite #200 Murray UT 84123'
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    Suffix:
+      type: string
+      description: A generational or academic suffix
+      example: PhD
+    State:
+      type: string
+      description: State
+      example: UT
+    FirstName:
+      type: string
+      description: The first name of the account holder
+      example: John
+    Birthday:
+      type: object
+      properties:
+        year:
+          type: integer
+          description: The birthday 4-digit year
+          format: int32
+          example: 1989
+        month:
+          type: integer
+          description: The birthday 2-digit month (1 is January)
+          format: int32
+          example: 8
+        dayOfMonth:
+          type: integer
+          description: The birthday 2-digit day-of-month
+          format: int32
+          example: 13
+      description: A birth date
+    UnixDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    City:
+      type: string
+      description: City
+      example: Murray
+  responses:
+    BadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            PermissiblePurposeCodeExample:
+              $ref: '#/components/examples/PermissiblePurposeCodeExample'
+            InvalidForesightReportRequestExample:
+              $ref: '#/components/examples/InvalidForesightReportRequestExample'
+            BothCraAndFtcPurposeTrueExample:
+              $ref: '#/components/examples/BothCraAndFtcPurposeTrueExample'
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            InvalidExperienceFieldExample:
+              $ref: '#/components/examples/InvalidExperienceFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+            ResellerPartnerNotAuthorizedExample:
+              $ref: '#/components/examples/ResellerPartnerNotAuthorizedExample'
+            ResellerInvalidDateRangeExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeExample'
+            ResellerInvalidDateRangeLessThanZeroExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeLessThanZeroExample'
+            ResellerInvalidDateRangeGreaterThanEndDateExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThanEndDateExample'
+            ResellerInvalidDateRangeGreaterThan31DaysExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThan31DaysExample'
+            CustomerReportLimitExceedExample:
+              $ref: '#/components/examples/CustomerReportLimitExceedExample'
+            InvalidConsumerSSNExample:
+              $ref: '#/components/examples/InvalidConsumerSSNExample'
+            InvalidConsumerPhoneExample:
+              $ref: '#/components/examples/InvalidConsumerPhoneExample'
+            InvalidConsumerEmailExample:
+              $ref: '#/components/examples/InvalidConsumerEmailExample'
+            InvalidValue:
+              $ref: '#/components/examples/InvalidValueExample'
+    CreateConsumerResponse:
+      description: The consumer was successfully created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatedConsumer'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
+    GetConsumerResponse:
+      description: The consumer was successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Consumer'
+    ResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ConsumerNotFoundExample:
+              $ref: '#/components/examples/ConsumerNotFoundExample'
+            NoAccountForInstitutionLoginIdExample:
+              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            NoConsumerForCustomerExample:
+              $ref: '#/components/examples/NoConsumerForCustomerExample'
+            ResourceNotFoundExample:
+              $ref: '#/components/examples/ResourceNotFoundExample'
+            NoRegisteredApplicationExample:
+              $ref: '#/components/examples/NoRegisteredApplicationExample'
+            ResellerNoDataForPartnerExample:
+              $ref: '#/components/examples/ResellerNoDataForPartnerExample'
+            ResellerNoReportForPartnerExample:
+              $ref: '#/components/examples/ResellerNoReportForPartnerExample'
+    GetConsumerForCustomerResponse:
+      description: The consumer was successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Consumer'
+    ModifyConsumerResponse:
+      description: The consumer was successfully updated
+    ConflictErrorResponse:
+      description: The resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ConsumerExistsConflictExample:
+              $ref: '#/components/examples/ConsumerExistsConflictExample'
+  parameters:
+    CustomerIdParameter:
+      description: A customer ID
+      name: customerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
+    ConsumerIdParameter:
+      description: The consumer ID
+      name: consumerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/ConsumerId'
+      example: 0bf46322c167b562e6cbed9d40e19a4c
+  requestBodies:
+    CreateConsumerRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NewConsumer'
+          examples:
+            ConsumerWithAllValues:
+              $ref: '#/components/examples/ConsumerWithAllValuesExample'
+            ConsumerWithSsnAndPhone:
+              $ref: '#/components/examples/ConsumerWithSsnPhoneExample'
+            ConsumerWithSsnEmail:
+              $ref: '#/components/examples/ConsumerWithSsnEmailExample'
+            ConsumerWithBirthdayPhone:
+              $ref: '#/components/examples/ConsumerWithBirthdayPhoneExample'
+            ConsumerWithBirthdayEmail:
+              $ref: '#/components/examples/ConsumerWithBirthdayEmailExample'
+            ConsumerWithSsnBirthdayPhone:
+              $ref: '#/components/examples/ConsumerWithSsnBirthdayPhoneExample'
+            ConsumerWithSsnBirthdayEmail:
+              $ref: '#/components/examples/ConsumerWithSsnBirthdayEmailExample'
+            ConsumerWithBirthdayPhoneEmail:
+              $ref: '#/components/examples/ConsumerWithBirthdayPhoneEmailExample'
+            ConsumerWithSsnPhoneEmail:
+              $ref: '#/components/examples/ConsumerWithSsnPhoneEmailExample'
+    ModifyConsumerRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConsumerUpdate'
+  securitySchemes:
+    FinicityAppKey:
+      name: Finicity-App-Key
+      type: apiKey
+      in: header
+      description: The "Finicity-App-Key" from the developer dashboard
+    FinicityAppToken:
+      name: Finicity-App-Token
+      type: apiKey
+      in: header
+      description: A token returned by the `/authentication` API

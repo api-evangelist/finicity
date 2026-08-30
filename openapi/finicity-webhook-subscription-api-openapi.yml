@@ -1,0 +1,1043 @@
+openapi: 3.2.0
+info:
+  title: Open Finance Webhook Subscription API
+  description: 'OpenAPI specification for Finicity APIs.
+
+
+    Open Finance (formerly Open Banking) solutions in the US are provided by
+
+    Finicity, a Mastercard company.'
+  contact:
+    name: API Support
+    email: apisupport@mastercard.com
+    url: https://developer.mastercard.com/open-finance-us/documentation/support/
+  version: 1.43.0
+servers:
+- url: https://api.finicity.com
+  description: Production
+security:
+- FinicityAppKey: []
+  FinicityAppToken: []
+tags:
+- name: Webhook Subscription
+  description: APIs for Managing Partner Webhook Event Subscriptions
+paths:
+  /notification-subscriptions/webhooks:
+    post:
+      tags:
+      - Webhook Subscription
+      summary: Create Webhook Subscription
+      deprecated: true
+      description: '_The OBWMS endpoints will be replaced by a new standalone service during 2026. Speak to your Customer Service Manager for details._
+
+
+        Creates a new webhook subscription for receiving event notifications. You can specify the URL for receiving notifications and select the events to subscribe to, including any conditions for filtering. Each partner can have multiple subscriptions, and each subscription can cover multiple events. The API supports URL overrides at the event level, ensuring that each subscription is tailored to specific events and their respective requirements.
+
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: createWebhookSubscription
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+      parameters:
+      - $ref: '#/components/parameters/RequestIdHeader'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateSubscriptionRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/SubscriptionCreatedResponse'
+        '400':
+          $ref: '#/components/responses/ObwmsBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/ObwmsUnauthorizedErrorResponse'
+    get:
+      tags:
+      - Webhook Subscription
+      summary: List Webhook Subscriptions
+      deprecated: true
+      description: '_The OBWMS endpoints will be replaced by a new standalone service during 2026. Speak to your Customer Service Manager for details._
+
+
+        Retrieves a list of all webhook subscriptions. The response includes details of each subscription, such as the subscription ID, URL, events, and their conditions. This API provides an overview of all active and inactive subscriptions.
+
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: listWebhookSubscriptions
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+      parameters:
+      - $ref: '#/components/parameters/RequestIdHeader'
+      - $ref: '#/components/parameters/ObwmsOffsetParameter'
+      - $ref: '#/components/parameters/ObwmsLimitParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SubscriptionsResponse'
+        '400':
+          $ref: '#/components/responses/ObwmsBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/ObwmsUnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ObwmsResourceNotFounderrorResponse'
+  /notification-subscriptions/webhooks/{subscription_id}:
+    get:
+      tags:
+      - Webhook Subscription
+      summary: Get Webhook Subscription Details
+      deprecated: true
+      description: '_The OBWMS endpoints will be replaced by a new standalone service during 2026. Speak to your Customer Service Manager for details._
+
+
+        Retrieves detailed information about a specific webhook subscription using the provided subscription ID. The response includes subscription details such as the events, conditions, and current status.
+
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: getWebhookSubscriptionById
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+      parameters:
+      - $ref: '#/components/parameters/RequestIdHeader'
+      - $ref: '#/components/parameters/SubscriptionIdPathParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SubscriptionDetail'
+        '400':
+          $ref: '#/components/responses/ObwmsBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/ObwmsUnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ObwmsResourceNotFounderrorResponse'
+    put:
+      tags:
+      - Webhook Subscription
+      summary: Update Webhook Subscription
+      deprecated: true
+      description: '_The OBWMS endpoints will be replaced by a new standalone service during 2026. Speak to your Customer Service Manager for details._
+
+
+        Updates an existing webhook subscription with the specified subscription ID. You can modify the subscription URL and the events associated with it.
+
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: updateWebhookSubscription
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+      parameters:
+      - $ref: '#/components/parameters/RequestIdHeader'
+      - $ref: '#/components/parameters/SubscriptionIdPathParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateSubscriptionRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SubscriptionUpdatedResponse'
+        '400':
+          $ref: '#/components/responses/ObwmsBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/ObwmsUnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ObwmsResourceNotFounderrorResponse'
+    delete:
+      tags:
+      - Webhook Subscription
+      summary: Delete Webhook Subscription
+      deprecated: true
+      description: '_The OBWMS endpoints will be replaced by a new standalone service during 2026. Speak to your Customer Service Manager for details._
+
+
+        Deletes a subscription specified by its ID. Once deleted, the subscription and its associated events will no longer be active or receive notifications
+
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: deleteWebhookSubscription
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+      parameters:
+      - $ref: '#/components/parameters/RequestIdHeader'
+      - $ref: '#/components/parameters/SubscriptionIdPathParameter'
+      responses:
+        '204':
+          $ref: '#/components/responses/SubscriptionDeletedResponse'
+        '401':
+          $ref: '#/components/responses/ObwmsUnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ObwmsResourceNotFounderrorResponse'
+  /notification-subscriptions/webhooks/{subscription_id}/events/{webhook_event_id}:
+    put:
+      tags:
+      - Webhook Subscription
+      summary: Update Webhook Subscription Event
+      deprecated: true
+      description: '_The OBWMS endpoints will be replaced by a new standalone service during 2026. Speak to your Customer Service Manager for details._
+
+
+        Updates a specific webhook event in a subscription. Use subscription Id and webhook Event Id to identify the event and modify its details.
+
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: updateWebhookSubscriptionEvent
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+      parameters:
+      - $ref: '#/components/parameters/RequestIdHeader'
+      - $ref: '#/components/parameters/SubscriptionIdPathParameter'
+      - $ref: '#/components/parameters/WebhookEventIdPathParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateEventRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/EventUpdatedResponse'
+        '400':
+          $ref: '#/components/responses/ObwmsBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/ObwmsUnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ObwmsResourceNotFounderrorResponse'
+    delete:
+      tags:
+      - Webhook Subscription
+      summary: Delete Webhook Subscription Event
+      deprecated: true
+      description: '_The OBWMS endpoints will be replaced by a new standalone service during 2026. Speak to your Customer Service Manager for details._
+
+
+        Deletes a specific webhook event from a subscription identified by subscription Id and webhook Event Id.
+
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: deleteWebhookSubscriptionEvent
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+      parameters:
+      - $ref: '#/components/parameters/RequestIdHeader'
+      - $ref: '#/components/parameters/SubscriptionIdPathParameter'
+      - $ref: '#/components/parameters/WebhookEventIdPathParameter'
+      responses:
+        '204':
+          $ref: '#/components/responses/EventDeletedResponse'
+        '400':
+          $ref: '#/components/responses/ObwmsBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/ObwmsUnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ObwmsResourceNotFounderrorResponse'
+  /notification-subscriptions/webhooks/{subscription_id}/events/{webhook_event_id}/status:
+    put:
+      tags:
+      - Webhook Subscription
+      summary: Enable or Disable Webhook Subscription Event
+      deprecated: true
+      description: '_The OBWMS endpoints will be replaced by a new standalone service during 2026. Speak to your Customer Service Manager for details._
+
+
+        Enables or disables a specific webhook event within a subscription identified by subscription ID and webhook event ID. Update the event''s status to either active or inactive.
+
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: changeWebhookSubscriptionEventStatus
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+      parameters:
+      - $ref: '#/components/parameters/RequestIdHeader'
+      - $ref: '#/components/parameters/SubscriptionIdPathParameter'
+      - $ref: '#/components/parameters/WebhookEventIdPathParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/EventStatusUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/EventStatusUpdatedResponse'
+        '400':
+          $ref: '#/components/responses/ObwmsBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/ObwmsUnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ObwmsResourceNotFounderrorResponse'
+  /notification-subscriptions/webhooks/events:
+    get:
+      tags:
+      - Webhook Subscription
+      summary: List Available Webhook Subscription Events
+      deprecated: true
+      description: '_The OBWMS endpoints will be replaced by a new standalone service during 2026. Speak to your Customer Service Manager for details._
+
+
+        Allows partners to retrieve a list of all event subscriptions supported by the Open Finance system.  This endpoint provides information about each subscription, including the webhook URL and associated events, enabling partners to understand all available subscription options.
+
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: listAvailableWebhookSubscriptionEvents
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+      parameters:
+      - $ref: '#/components/parameters/RequestIdHeader'
+      responses:
+        '200':
+          $ref: '#/components/responses/AvailableEventsResponse'
+        '401':
+          $ref: '#/components/responses/ObwmsUnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ObwmsResourceNotFounderrorResponse'
+  /notification-subscriptions/webhooks/{subscription_id}/status:
+    put:
+      tags:
+      - Webhook Subscription
+      summary: Enable or Disable All Webhook Events Under a Given Webhook Subscription
+      deprecated: true
+      description: '_The OBWMS endpoints will be replaced by a new standalone service during 2026. Speak to your Customer Service Manager for details._
+
+
+        Enables or disables all webhook subscription event for partner. Update the  status to either active or inactive. _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: changeWebhookSubscriptionStatus
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+      parameters:
+      - $ref: '#/components/parameters/RequestIdHeader'
+      - $ref: '#/components/parameters/SubscriptionIdPathParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/EventStatusUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/EventStatusUpdatedResponse'
+        '400':
+          $ref: '#/components/responses/ObwmsBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/ObwmsUnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ObwmsResourceNotFounderrorResponse'
+  /notification-subscriptions/webhooks/{subscription_id}/test-subscriptions:
+    get:
+      tags:
+      - Webhook Subscription
+      summary: Test Webhook Subscription Based on Subscription ID
+      deprecated: true
+      description: '_The OBWMS endpoints will be replaced by a new standalone service during 2026. Speak to your Customer Service Manager for details._
+
+
+        Test all the webhook event under the given webhook subscription using subscription_id. _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: testWebhookSubscription
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+      parameters:
+      - $ref: '#/components/parameters/RequestIdHeader'
+      - $ref: '#/components/parameters/SubscriptionIdPathParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/TestWebhookSubscriptionResponse'
+        '400':
+          $ref: '#/components/responses/ObwmsBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/ObwmsUnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ObwmsResourceNotFounderrorResponse'
+  /notification-subscriptions/webhooks/{subscription_id}/events/{webhook_event_id}/test-subscriptions:
+    get:
+      tags:
+      - Webhook Subscription
+      summary: Test Webhook Subscription Based on Subscription ID and Webhook Event ID
+      deprecated: true
+      description: '_The OBWMS endpoints will be replaced by a new standalone service during 2026. Speak to your Customer Service Manager for details._
+
+
+        Test the webhook event under the given webhook subscription using subscription_id & webhook event id. _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: testWebhookSubscriptionBasedOnEventId
+      security:
+      - FinicityAppKey: []
+        FinicityAppToken: []
+      parameters:
+      - $ref: '#/components/parameters/RequestIdHeader'
+      - $ref: '#/components/parameters/SubscriptionIdPathParameter'
+      - $ref: '#/components/parameters/WebhookEventIdPathParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/TestWebhookSubscriptionResponse'
+        '400':
+          $ref: '#/components/responses/ObwmsBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/ObwmsUnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ObwmsResourceNotFounderrorResponse'
+components:
+  schemas:
+    WebhookEvent:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: The name of the webhook subscription event.
+          minLength: 1
+          maxLength: 255
+          example: authorization.accesstoken.expiry
+        url:
+          $ref: '#/components/schemas/WebhookUrl'
+        condition:
+          $ref: '#/components/schemas/Condition'
+    WebhookUrl:
+      type: string
+      description: The webhook Url where the event notifications will be sent. The URL must be aligned with RFC 2396.
+      minLength: 1
+      maxLength: 2048
+      example: https://example.com/example_webhook
+    Event:
+      type: object
+      required:
+      - webhookEventId
+      - name
+      - status
+      properties:
+        webhookEventId:
+          type: string
+          description: A unique UUID identifier for the webhook event.
+          minLength: 36
+          maxLength: 36
+          example: 661f3c48-f596-423b-81f5-d275d4dd1346
+        name:
+          type: string
+          description: The name of the event.
+          minLength: 1
+          maxLength: 255
+          example: authorization.accesstoken.expiry
+        url:
+          $ref: '#/components/schemas/WebhookUrl'
+        status:
+          $ref: '#/components/schemas/Status'
+        condition:
+          $ref: '#/components/schemas/Condition'
+    LimitResults:
+      type: integer
+      description: The number of items you asked the list to be limited.
+      minimum: 1
+      maximum: 2147483647
+      example: 10
+    ErrorWrapper:
+      description: A top level object for errors.
+      type: object
+      required:
+      - Errors
+      properties:
+        Errors:
+          $ref: '#/components/schemas/Errors'
+    CountResults:
+      type: integer
+      description: The number of subscriptions currently displayed in the response.
+      minimum: 1
+      maximum: 2147483647
+      example: 10
+    Status:
+      type: string
+      description: The status of the event (e.g. active, inactive, pending, removed).
+      minLength: 1
+      maxLength: 10
+      example: active
+    AvailableEvent:
+      type: object
+      required:
+      - name
+      - description
+      - status
+      properties:
+        name:
+          type: string
+          description: The name of the event that is available for subscription.
+          minLength: 1
+          maxLength: 100
+          example: manage.txpush.account.created
+        description:
+          type: string
+          description: A brief description of the event.
+          minLength: 1
+          maxLength: 500
+          example: Triggered when an account is created.
+        conditionalSubscription:
+          type: object
+          required:
+          - applicable
+          - mandatory
+          properties:
+            applicable:
+              type: boolean
+              description: Indicates whether conditional subscription is applicable for this event.
+              example: true
+            fields:
+              type: string
+              description: The fields that are applicable for conditional subscription, such as `accountId` or `customerId`.
+              minLength: 1
+              maxLength: 200
+              example: accountId, customerId
+            mandatory:
+              type: boolean
+              description: Indicates whether the fields in the conditional subscription are mandatory.
+              example: false
+    Subscription:
+      type: object
+      required:
+      - events
+      description: Request body to create or update a subscription.
+      properties:
+        url:
+          $ref: '#/components/schemas/WebhookUrl'
+        events:
+          $ref: '#/components/schemas/WebhookEvents'
+    Errors:
+      description: Object that contains the list of errors.
+      type: object
+      required:
+      - Error
+      properties:
+        Error:
+          $ref: '#/components/schemas/ErrorList'
+    Condition:
+      type: object
+      required:
+      - subscribeFor
+      properties:
+        subscribeFor:
+          type: string
+          description: The field or entity that the event is subscribed for, such as an institution or account ID.
+          minLength: 1
+          maxLength: 50
+          example: institutionId
+        includes:
+          type: array
+          description: A list of specific IDs or values to include in the subscription condition.
+          items:
+            type: string
+          example:
+          - '100010'
+          - '100011'
+        excludes:
+          type: array
+          description: A list of specific IDs or values to exclude from the subscription condition.
+          items:
+            type: string
+          example:
+          - '170718'
+          - '170788'
+    EventStatusUpdate:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          type: string
+          description: The status to set for the event. Can be `active`,`inactive` , `pending` or `removed`.
+          minLength: 1
+          maxLength: 10
+          example: active
+    WebhookEvents:
+      type: array
+      description: List of webhook subscription event.
+      items:
+        $ref: '#/components/schemas/WebhookEvent'
+    Error:
+      description: A single error.
+      type: object
+      properties:
+        Source:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: The application that generated this error
+          example: Event Subscription Service
+        ReasonCode:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: A unique constant identifying the error case encountered during transaction processing
+          example: '10001'
+        Description:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: Description of the ReasonCode field with additional details.
+          example: Resource Not Found.
+        Recoverable:
+          type: boolean
+          description: Indicates whether this error will always be returned for this request, or retrying could change the outcome
+          example: false
+        Details:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: Details for backwards compatibility.
+          example: Invalid JSON payload
+    SubscriptionDetail:
+      type: object
+      required:
+      - subscriptionId
+      - events
+      - status
+      - createdDate
+      - lastUpdatedDate
+      properties:
+        subscriptionId:
+          type: string
+          description: A unique UUID identifier for the subscription.
+          minLength: 36
+          maxLength: 36
+          example: 661f3c48-f596-423b-81f5-d275d4dd1345
+        url:
+          $ref: '#/components/schemas/WebhookUrl'
+        events:
+          $ref: '#/components/schemas/Events'
+        status:
+          $ref: '#/components/schemas/Status'
+        createdDate:
+          type: string
+          format: date-time
+          minLength: 1
+          maxLength: 255
+          description: Subscription creation date.
+          example: '2024-01-01T11:18:50Z'
+        lastUpdatedDate:
+          type: string
+          format: date-time
+          minLength: 1
+          maxLength: 255
+          description: Subscription last updated date.
+          example: '2024-01-01T11:18:50Z'
+    Subscriptions:
+      type: object
+      required:
+      - count
+      - offset
+      - limit
+      - total
+      - subscriptions
+      properties:
+        count:
+          $ref: '#/components/schemas/CountResults'
+        offset:
+          $ref: '#/components/schemas/OffsetResults'
+        limit:
+          $ref: '#/components/schemas/LimitResults'
+        total:
+          $ref: '#/components/schemas/TotalResults'
+        subscriptions:
+          type: array
+          description: List of subscription objects returned by the API.
+          items:
+            $ref: '#/components/schemas/SubscriptionDetail'
+    Events:
+      type: array
+      description: List of events for the subscription.
+      items:
+        $ref: '#/components/schemas/Event'
+    ErrorList:
+      description: The list of errors.
+      type: array
+      minItems: 1
+      items:
+        $ref: '#/components/schemas/Error'
+    TotalResults:
+      type: integer
+      description: The total number of items in the collection.
+      minimum: 1
+      maximum: 2147483647
+      example: 10
+    OffsetResults:
+      type: integer
+      description: The number of items you asked the start of the list to be offset.
+      minimum: 1
+      maximum: 2147483647
+      example: 5
+  examples:
+    MissingAppKeyExample:
+      value:
+        Errors:
+          Error:
+          - source: Event Subscription Service
+            reasonCode: 1504
+            description: Missing parameter (App-Key)
+            recoverable: false
+            details: null
+    SubscriptionsResponseExample:
+      value:
+        count: 3
+        offset: 0
+        limit: 10
+        total: 3
+        subscriptions:
+        - subscriptionId: 661f3c48-f596-423b-81f5-d275d4dd1345
+          url: https://example.com/example_webhook/token
+          events:
+          - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1346
+            name: authorization.accesstoken.expiry
+            condition:
+              subscribeFor: institutionId
+              excludes:
+              - '170718'
+              - '170788'
+              - '188797'
+            status: active
+          - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1347
+            name: manage.txpush.account.created
+            condition:
+              subscribeFor: accountId
+              includes:
+              - '100010'
+              - '100011'
+            status: active
+          - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1348
+            name: mastercard.openbanking.customer.consent
+            status: active
+          status: active
+          createdDate: '2024-03-16T06:06:20Z'
+          lastUpdatedDate: '2024-03-16T06:06:20Z'
+    ObmwsResourceNotFoundExample:
+      value:
+        Errors:
+          Error:
+          - source: Event Subscription Service
+            reasonCode: 1501
+            description: Resource not found.
+            recoverable: false
+            details: null
+    BadRequestErrorResponseExample:
+      value:
+        Errors:
+          Error:
+          - source: Event Subscription Service
+            reasonCode: 1502
+            description: Bad Request.
+            recoverable: false
+            details: null
+    ObwmsExpiredTokenExample:
+      value:
+        Errors:
+          Error:
+          - source: Event Subscription Service
+            reasonCode: 1503
+            description: Expired (App-Token)
+            recoverable: false
+            details: null
+    AvailableEventsResponseExample:
+      value:
+        events:
+        - name: manage.txpush.account.created
+          description: notification will be sent when accounts are created
+          conditionalSubscription:
+            applicable: true
+            fields: accountid,customerId
+            mandatory: false
+        - name: mastercard.openbanking.customer.consent
+          description: Customer consent information
+          conditionalSubscription:
+            applicable: false
+    UpdateEventRequestExample:
+      summary: Example of updating an event in a subscription
+      value:
+        name: authorization.accesstoken.expiry
+        condition:
+          subscribeFor: institutionId
+          excludes:
+          - '170718'
+          - '170788'
+          - '188797'
+    SubscriptionCreatedResponseExample:
+      value:
+        subscriptionId: 661f3c48-f596-423b-81f5-d275d4dd1345
+        url: https://example.com/example_webhook
+        events:
+        - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1346
+          name: authorization.accesstoken.expiry
+          condition:
+            subscribeFor: institutionId
+            excludes:
+            - '170718'
+            - '170788'
+            - '188797'
+          status: pending
+        - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1347
+          name: manage.txpush.account.created
+          condition:
+            subscribeFor: accountId
+            includes:
+            - '100010'
+            - '100011'
+            - '100012'
+          status: pending
+        - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1348
+          url: https://example.com/overridden_webhookurl
+          name: mastercard.openbanking.customer.consent
+          status: pending
+        status: pending
+        createdDate: '2024-03-16T06:06:20Z'
+        lastUpdatedDate: '2024-03-16T06:06:20Z'
+    EventUpdatedResponseExample:
+      value:
+        name: authorization.accesstoken.expiry
+        condition:
+          subscribeFor: institutionId
+          excludes:
+          - '170718'
+          - '170788'
+          - '188797'
+    SubscriptionRequestExample:
+      value:
+        url: https://example.com/example_webhook/expiry
+        events:
+        - name: authorization.accesstoken.expiry
+          condition:
+            subscribeFor: institutionId
+            excludes:
+            - '170718'
+            - '170788'
+            - '188797'
+        - name: manage.txpush.account.created
+          condition:
+            subscribeFor: accountId
+            includes:
+            - '100010'
+            - '100011'
+            - '100012'
+        - url: https://example.com/overridden_webhookurl
+          name: mastercard.openbanking.customer.consent
+    SubscriptionDetailResponseExample:
+      value:
+        subscriptionId: 661f3c48-f596-423b-81f5-d275d4dd1345
+        url: https://example.com/example_webhook/token
+        events:
+        - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1346
+          name: authorization.accesstoken.expiry
+          condition:
+            subscribeFor: institutionId
+            excludes:
+            - '170718'
+            - '170788'
+            - '188797'
+          status: active
+        - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1347
+          name: manage.txpush.account.created
+          condition:
+            subscribeFor: accountId
+            includes:
+            - '100010'
+            - '100011'
+            - '100012'
+          status: active
+        - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1348
+          name: mastercard.openbanking.customer.consent
+          status: active
+        status: active
+        createdDate: '2024-03-16T06:06:20Z'
+        lastUpdatedDate: '2024-03-16T06:06:20Z'
+  responses:
+    SubscriptionUpdatedResponse:
+      description: Subscription updated successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SubscriptionDetail'
+          examples:
+            SubscriptionCreatedResponseExample:
+              $ref: '#/components/examples/SubscriptionCreatedResponseExample'
+    EventStatusUpdatedResponse:
+      description: Event updated successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventStatusUpdate'
+    TestWebhookSubscriptionResponse:
+      description: test subscription submitted successfully.
+    ObwmsUnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "App-Key" or "App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorWrapper'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ObwmsExpiredTokenExample'
+            MissingAppKeyExample:
+              $ref: '#/components/examples/MissingAppKeyExample'
+    AvailableEventsResponse:
+      description: List of all available events.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - events
+            properties:
+              events:
+                type: array
+                description: List of available events.
+                items:
+                  $ref: '#/components/schemas/AvailableEvent'
+          examples:
+            AvailableEventsResponseExample:
+              $ref: '#/components/examples/AvailableEventsResponseExample'
+    ObwmsResourceNotFounderrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorWrapper'
+          examples:
+            ResourceNotFoundExample:
+              $ref: '#/components/examples/ObmwsResourceNotFoundExample'
+    SubscriptionDetail:
+      description: Subscription detail by ID
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SubscriptionDetail'
+          examples:
+            SubscriptionDetailExample:
+              $ref: '#/components/examples/SubscriptionDetailResponseExample'
+    EventUpdatedResponse:
+      description: Event updated successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WebhookEvent'
+          examples:
+            SubscriptionCreatedResponseExample:
+              $ref: '#/components/examples/EventUpdatedResponseExample'
+    EventDeletedResponse:
+      description: Event deleted successfully
+    SubscriptionCreatedResponse:
+      description: Subscription created successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SubscriptionDetail'
+          examples:
+            SubscriptionCreatedResponseExample:
+              $ref: '#/components/examples/SubscriptionCreatedResponseExample'
+    ObwmsBadRequestErrorResponse:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorWrapper'
+          examples:
+            BadRequestErrorResponseExample:
+              $ref: '#/components/examples/BadRequestErrorResponseExample'
+    SubscriptionsResponse:
+      description: List of all subscriptions with pagination and availability details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Subscriptions'
+          examples:
+            SubscriptionsResponseExample:
+              $ref: '#/components/examples/SubscriptionsResponseExample'
+    SubscriptionDeletedResponse:
+      description: Subscription deleted successfully
+  parameters:
+    WebhookEventIdPathParameter:
+      name: webhook_event_id
+      in: path
+      description: A unique UUID identifier of a webhook event.
+      required: true
+      schema:
+        type: string
+      example: 661f3c48-f596-423b-81f5-d275d4dd1346
+    ObwmsLimitParameter:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results per page.
+      schema:
+        type: integer
+        format: int32
+        default: 10
+        minimum: 1
+        maximum: 100
+        example: 20
+    SubscriptionIdPathParameter:
+      name: subscription_id
+      in: path
+      description: A unique UUID identifier of a webhook subscription.
+      required: true
+      schema:
+        type: string
+      example: 661f3c48-f596-423b-81f5-d275d4dd1345
+    ObwmsOffsetParameter:
+      name: offset
+      in: query
+      required: false
+      description: Index of the page of results to return.
+      schema:
+        type: integer
+        format: int32
+        default: 1
+        minimum: 1
+        example: 1
+    RequestIdHeader:
+      in: header
+      name: X-External-Request-Id
+      required: false
+      description: A unique identifier for the request.
+      schema:
+        type: string
+        example: f6250b41-8632-4fe1-9353-899f419ae67b
+  requestBodies:
+    UpdateEventRequest:
+      description: Request body to update Event
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WebhookEvent'
+          examples:
+            UpdateEventRequestExample:
+              $ref: '#/components/examples/UpdateEventRequestExample'
+    EventStatusUpdateRequest:
+      description: Request body to an event active or inactive.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventStatusUpdate'
+    UpdateSubscriptionRequest:
+      description: Request body for updating event subscription.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Subscription'
+          examples:
+            CreateSubscriptionRequestExample:
+              $ref: '#/components/examples/SubscriptionRequestExample'
+    CreateSubscriptionRequest:
+      description: Request body for creating event subscription.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Subscription'
+          examples:
+            CreateSubscriptionRequestExample:
+              $ref: '#/components/examples/SubscriptionRequestExample'
+  securitySchemes:
+    FinicityAppKey:
+      name: Finicity-App-Key
+      type: apiKey
+      in: header
+      description: The "Finicity-App-Key" from the developer dashboard
+    FinicityAppToken:
+      name: Finicity-App-Token
+      type: apiKey
+      in: header
+      description: A token returned by the `/authentication` API

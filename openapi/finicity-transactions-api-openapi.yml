@@ -1,0 +1,3050 @@
+openapi: 3.2.0
+info:
+  title: Open Finance Transactions API
+  description: 'OpenAPI specification for Finicity APIs.
+
+
+    Open Finance (formerly Open Banking) solutions in the US are provided by
+
+    Finicity, a Mastercard company.'
+  contact:
+    name: API Support
+    email: apisupport@mastercard.com
+    url: https://developer.mastercard.com/open-finance-us/documentation/support/
+  version: 1.43.0
+servers:
+- url: https://api.finicity.com
+  description: Production
+security:
+- FinicityAppKey: []
+  FinicityAppToken: []
+tags:
+- name: Transactions
+  description: Fetch customer and account transactions and generate reports asynchronously
+paths:
+  /aggregation/v1/customers/{customerId}/accounts/{accountId}/transactions/historic:
+    post:
+      tags:
+      - Transactions
+      summary: Load Historic Transactions for Customer Account
+      description: 'Connect to the account''s financial institution and load up to 24 months of historic transactions for the account. Length of history varies by institution.
+
+
+        This is a premium service. The billable event is a call to this service specifying a customer ID that has not been seen before by this service. (If this service is called multiple times with the same customer ID, to load transactions from multiple accounts, only one billable event has occurred.)
+
+
+        The recommended timeout setting for this request is 180 seconds in order to receive a response. However, you can terminate the connection after making the call the operation will still complete. You will have to pull the account records to check for an updated aggregation attempt date to know when the refresh is complete.
+
+
+        The date range sent to the institution is calculated from the account''s `createdDate`. This means that calling this service a second time for the same account normally will not add any new transactions for the account. For this reason, a second call to this service for a known account ID will usually return immediately.
+
+
+        In a few specific scenarios, it may be desirable to force a second connection to the institution for a known account ID. Some examples are:
+
+
+        * The institution''s policy has changed, making more transactions available
+
+        * Finicity has now added a longer transaction history support for the institution
+
+        * The first call encountered an error, and the resulting Aggregation Ticket has now been fixed by the Finicity Support Team
+
+
+        In these cases, the POST request can contain the parameter `force=true` in the request body to force the second connection.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: LoadHistoricTransactionsForCustomerAccount
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/AccountIdParameter'
+      responses:
+        '203':
+          $ref: '#/components/responses/MFAChallengeNeededResponse'
+        '204':
+          $ref: '#/components/responses/LoadHistoricTransactionsForCustomerAccountResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /aggregation/v3/customers/{customerId}/transactions:
+    get:
+      tags:
+      - Transactions
+      summary: Get All Customer Transactions
+      description: 'Get all transactions available for this customer within the given date range, across all accounts. This service supports paging and sorting by `transactionDate` (or `postedDate` if no transaction date is provided), with a maximum of 1000 transactions per request.
+
+
+        Standard consumer aggregation provides up to 180 days of transactions prior to the date each account was added to the Finicity system. To access older transactions, you must first call the service Load Historic Transactions for Account.
+
+
+        There is no limit for the size of the window between `fromDate` and `toDate`, however, the maximum number of transactions returned on one page is 1000.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetAllCustomerTransactions
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/RequiredFromDateParameter'
+      - $ref: '#/components/parameters/RequiredToDateParameter'
+      - $ref: '#/components/parameters/DSAPI_StartParameter'
+      - $ref: '#/components/parameters/LimitParameter'
+      - $ref: '#/components/parameters/SortParameter'
+      - $ref: '#/components/parameters/IncludePendingParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCustomerTransactionsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /aggregation/customers/{customerId}/transactions/{uniqueTransactionId}:
+    get:
+      tags:
+      - Transactions
+      summary: Get Transaction by UniqueTransactionId
+      description: Retrieve a transaction for the given customer using uniqueTransactionId.
+      operationId: GetTransactionByUniqueTransactionId
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/UniqueTransactionIdParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCustomerTransactionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /aggregation/v2/customers/{customerId}/transactions/{transactionId}:
+    get:
+      tags:
+      - Transactions
+      summary: Get Customer Transaction by ID
+      description: 'Get details for the given transaction.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetCustomerTransaction
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/TransactionIdParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCustomerTransactionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /aggregation/v4/customers/{customerId}/accounts/{accountId}/transactions:
+    get:
+      tags:
+      - Transactions
+      summary: Get Customer Account Transactions
+      description: 'Get all transactions available for this customer account within the given date range. This service supports paging and sorting by `transactionDate` (or `postedDate` if no transaction date is provided), with a maximum of 1000 transactions per request.
+
+
+        Standard consumer aggregation provides up to 180 days of transactions prior to the date each account was added to the Finicity system.
+
+        There is no limit for the size of the window between `fromDate` and `toDate`, however, the maximum number of transactions returned on one page is 1000.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetCustomerAccountTransactions
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/AccountIdParameter'
+      - $ref: '#/components/parameters/RequiredFromDateParameter'
+      - $ref: '#/components/parameters/RequiredToDateParameter'
+      - $ref: '#/components/parameters/DSAPI_StartParameter'
+      - $ref: '#/components/parameters/LimitParameter'
+      - $ref: '#/components/parameters/SortParameter'
+      - $ref: '#/components/parameters/IncludePendingParameter'
+      - $ref: '#/components/parameters/ShowDailyBalanceParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCustomerTransactionsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /decisioning/v2/customers/{customerId}/transactions:
+    post:
+      tags:
+      - Transactions
+      summary: Generate Transactions Report for the Customer
+      description: 'Generate a Transaction Report for the given accounts under the given customer. This service retrieves up to 24 months of transaction history for the given customer. It then uses this information to generate the Transaction Report.
+
+
+        This is a premium service. A billable event will be created upon the successful generation of the Transactions Report.
+
+
+        Before calling this API, a consumer must be created for the given customer ID (see Consumers APIs).
+
+
+        There cannot be more than 24 months between `fromDate` and `toDate`.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GenerateTransactionsReport
+      parameters:
+      - $ref: '#/components/parameters/ReportCallbackUrlParameter'
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/RequiredTransactionReportFromDateParameter'
+      - $ref: '#/components/parameters/RequiredTransactionReportToDateParameter'
+      - $ref: '#/components/parameters/IncludePendingParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/GenerateTransactionsReportRequest'
+      responses:
+        '202':
+          $ref: '#/components/responses/GenerateTransactionsReportResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/SecurityFreezeErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /aggregation/customers/{customerId}/recurring-transactions:
+    post:
+      tags:
+      - Transactions
+      summary: Get Recurring Transactions for Customer
+      description: 'Identify recurring debit and credit transactions within an account or set of accounts
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GetRecurringTransactions
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/GetRecurringTransactionRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetRecurringTransactionsResponse'
+        '400':
+          $ref: '#/components/responses/GetRecurringTransactionsBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticationUnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/GetRecurringTransactionsResourceNotFoundErrorResponse'
+  /aggregation/customers/{customerId}/transactions/refreshes:
+    post:
+      tags:
+      - Transactions
+      summary: Trigger Customer Account Refresh
+      description: "This API asynchronously initiates either a standard refresh or a historical data load using the provided `institutionLoginId` or specific `accountIds`. It supports default durations of 6 months for standard refresh and 24 months for historical load or a custom date range for targeted data retrieval. The behavior depends on the provided `mode` value.  \nClient apps are not permitted to automate calls to the Refresh services. Active accounts are automatically refreshed by Finicity once per day. Because many financial institutions only post transactions once per day, calling Refresh repeatedly is usually a waste of resources and is not recommended.  \nApps may call Refresh services for a specific customer when there is a specific business case for the need of data that is up to date as of the moment. Please discuss with your account manager and systems engineer for further clarification.        \n\n_Supported regions_: ![\U0001F1FA\U0001F1F8](https://flagcdn.com/20x15/us.png)"
+      operationId: refreshTransactions
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/TransactionRefreshRequest'
+      responses:
+        '202':
+          $ref: '#/components/responses/TransactionRefreshResponse'
+        '400':
+          $ref: '#/components/responses/TransactionRefreshBadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/TransactionRefreshNotFoundErrorResponse'
+  /aggregation/customers/{customerId}/transactions/refreshes/{refreshId}:
+    get:
+      tags:
+      - Transactions
+      summary: Get Customer Account Refresh Status
+      description: "Fetch the current status of the transaction refresh request by refreshId.  \nStatus can also be received through webhook notification by subscribing to the `data-refresh.transaction.status-changed` event (see [OBWMS](https://developer.mastercard.com/open-finance-us/documentation/webhooks/obwms/#overview-of-obwms) documentation for more details)  \n\n_Supported regions_: ![\U0001F1FA\U0001F1F8](https://flagcdn.com/20x15/us.png)"
+      operationId: getTransactionRefreshStatus
+      parameters:
+      - $ref: '#/components/parameters/CustomerIdParameter'
+      - $ref: '#/components/parameters/TransactionRefreshIDParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/TransactionRefreshStatusResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/TransactionRefreshStatusNotFoundErrorResponse'
+components:
+  examples:
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    SecurityFreezeErrorExample:
+      value:
+        code: '10405'
+        status: '403'
+        message: The active security freeze for this consumer exists.
+    TransactionNotFoundExample:
+      value:
+        code: 24553
+        message: Transaction not found.
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    TransactionRefreshStatusFailedResponse:
+      value:
+        refreshId: bec83f1a-5f65-44f5-8f00-b4a0fc60c2ee
+        customerId: '5000902316'
+        accounts:
+        - accountId: '5011648377'
+          institutionLoginId: '1007302745'
+          institutionId: '4222'
+          code: 325
+          message: Your data is currently being aggregated and is inaccessible at the moment. Please wait several minutes and keep trying.
+        - accountId: '5011648378'
+          institutionLoginId: '1007302755'
+          institutionId: '4233'
+          code: 44000
+          message: The request has been accepted for processing.
+        mode: standard
+        status: FAILED
+        totalCount: 2
+        successCount: 0
+        failedCount: 2
+    ResellerInvalidDateRangeLessThanZeroExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
+    NoAccountForCustomerIdExample:
+      value:
+        code: 38003
+        message: Customer does not have any accounts
+    InvalidConsumerEmailExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.email.
+    NotAuthorizedExample:
+      value:
+        code: '10021'
+        message: You are not authorized.
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    GenerateTransactionsReportRequestExample:
+      value:
+        accountIds: 1027339038 1027339039
+        reportCustomFields:
+        - label: loanID
+          value: '12345'
+          shown: true
+        - label: trackingID
+          value: '5555'
+          shown: true
+        - label: loanType
+          value: car
+          shown: false
+        - label: vendorID
+          value: 1613aa23
+          shown: true
+        - label: vendorName
+          value: PSC Finance
+          shown: false
+        fromDate: 1580558400
+        toDate: 1643720017
+        findTransaction:
+          findTransactionDescriptionMemo: Payment to PSC Finance
+          findTransactionAmountFrom: 100.0
+          findTransactionAmountTo: 200.0
+          findTransactionCategory:
+          - Payment
+          - Transfer
+    TransactionRefreshStatusCompletedResponse:
+      value:
+        refreshId: bec83f1a-5f65-44f5-8f00-b4a0fc60c2cc
+        customerId: '5000902316'
+        accounts:
+        - accountId: '5011648377'
+          institutionLoginId: '1007302745'
+          institutionId: '4222'
+          aggregationStatusCode: 0
+          aggregationSuccessDate: '2025-09-10T06:06:20.042Z'
+        - accountId: '5011648378'
+          institutionLoginId: '1007302755'
+          institutionId: '4233'
+          code: 325
+          message: Your data is currently being aggregated and is inaccessible at the moment. Please wait several minutes and keep trying.
+        mode: standard
+        status: COMPLETED
+        totalCount: 2
+        successCount: 1
+        failedCount: 1
+    InvalidForesightReportRequestExample:
+      value:
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    GenerateTransactionsReportResponseExample:
+      value:
+        id: dnuru2ua2trs-transactions
+        portfolioId: hupvwpdzr9dq-16-port
+        customerType: testing
+        customerId: 1000018865
+        requestID: ky2nhsufhv
+        requesterName: Decisioning API Tests
+        endUser:
+          name: ABC Apartments
+          address: 123 Main St
+          city: Murray
+          state: UT
+          zip: '84123'
+          phone: 555-2106
+          email: customerservice@example.com
+          url: example.com
+        createdDate: 1594678007
+        title: Mastercard Open Banking Transactions Report
+        consumerId: a925b07c9e028c680ad9c1d18d2e7199
+        consumerSsn: '6789'
+        consumerDetails:
+          id: 3f7ff2cf0ffb3d0cd59875e070c9b1d4
+          firstName: John
+          middleName: Doe
+          lastName: Jane
+          address: 123 Marple Street
+          city: Anytown
+          state: PA
+          zip: '17101'
+          phone: '5551234567'
+          ssn: '1234'
+          email: john.doe@example.com
+        constraints:
+          accountIds:
+          - '1000075473'
+          fromDate: 1578952809
+          toDate: 1594677609
+          includePending: true
+          reportCustomFields:
+          - label: loanID
+            value: '12345'
+            shown: true
+          - label: trackingID
+            value: '5555'
+            shown: true
+          - label: loanType
+            value: car
+            shown: false
+          - label: vendorID
+            value: 1613aa23
+            shown: true
+          - label: vendorName
+            value: PSC Finance
+            shown: false
+          findTransaction:
+            findTransactionDescriptionMemo: Payment to PSC Finance
+            findTransactionAmountFrom: 100.01
+            findTransactionAmountTo: 200.0
+            findTransactionCategory:
+            - Payment
+            - Transfer
+        type: transactions
+        status: inProgress
+    TransactionRefreshStatusInProgressResponse:
+      value:
+        refreshId: bec83f1a-5f65-44f5-8f00-b4a0fc60c2dd
+        customerId: '5000902316'
+        accounts:
+        - accountId: '5011648377'
+          institutionLoginId: '1007302745'
+          institutionId: '4222'
+          aggregationStatusCode: 0
+          aggregationSuccessDate: '2025-09-10T06:06:20.042Z'
+        - accountId: '5011648378'
+          institutionLoginId: '1007302745'
+          institutionId: '4222'
+        mode: standard
+        status: IN_PROGRESS
+        totalCount: 2
+        successCount: 1
+        failedCount: 0
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    InvalidFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: Customer ID does not exist or does not belong to this partner
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    InvalidConsumerSSNExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    NoAccountForInstitutionLoginIdExample:
+      value:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
+    ResellerNoDataForPartnerExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    NoDataFoundExample:
+      value:
+        code: 10008
+        message: data not found
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    ResellerInvalidDateRangeExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
+    InvalidInputParameterExample:
+      value:
+        code: 10100
+        message: Invalid parameter (<parameter name>)
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    NoAccountForCustomerExample:
+      value:
+        code: 10005
+        message: Customer does not have the specified account (<message>)
+    InvalidDateRangeExample:
+      value:
+        code: 41002
+        message: 'Invalid date range: <message>'
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+    MissingParameterExample:
+      value:
+        code: 10005
+        message: Missing parameter (<parameter name>)
+    InvalidCredentialsExample:
+      value:
+        code: '10001'
+        message: Invalid credentials
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
+    PermissiblePurposeCodeExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: Permissible Purpose Code is required
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    NoConsumerForCustomerExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer for customer with id 5011115315."
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+  schemas:
+    SecurityFreezeErrorMessage:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: integer
+          description: 'An error code for security freeze. Useful links: [API Errors](https://developer.mastercard.com/open-finance-us/documentation/errors/), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/aggregation-status-codes/).'
+          format: int32
+          example: 10405
+        status:
+          type: string
+          description: A status code
+          example: '403'
+        message:
+          type: string
+          description: An error message
+          example: The active security freeze for this consumer exists.
+    EndUserUrl:
+      type: string
+      description: Reseller end user URL
+      minLength: 2
+      maximum: 999
+      example: testurl.com
+    ReportType:
+      description: 'A report type. Possible values:
+
+
+        * `voi`
+
+
+        * `voa`
+
+
+        * `voaHistory`
+
+
+        * `history`
+
+
+        * `voieTxVerify`
+
+
+        * `voieWithReport`
+
+
+        * `voieWithInterview`
+
+
+        * `voieWithStatement`
+
+
+        * `paystatement`
+
+
+        * `preQualVoa`
+
+
+        * `assetSummary`
+
+
+        * `voie`
+
+
+        * `transactions`
+
+
+        * `statement`
+
+
+        * `voiePayroll`
+
+
+        * `voeTransactions`
+
+
+        * `farpbfnoncra`
+
+
+        * `voePayroll`
+
+
+        * `cfrp`
+
+
+        * `cfrb`
+
+
+        * `barpcra`
+
+
+        * `barpnoncra`
+
+
+        * `barbcra`
+
+
+        * `barbftc`
+
+
+        * `barbnoncra`
+
+
+        * `cfrpcra`
+
+
+        * `cfrpnoncra`
+
+
+        * `cracfrbcra`
+
+
+        * `cfrbnoncra`
+
+
+        * `cfrbftc`
+
+
+        * `phrbcra`
+
+
+        * `phrbnoncra`
+
+
+        * `phrbftc`
+
+
+        * `sbcaanalyticsnoncra`
+
+
+        * `sbcabenchmarksnoncra`
+
+
+        * `pripcra`
+
+
+        * `pripnoncra`
+
+
+        * `pribcra`
+
+
+        * `pribnoncra`
+
+
+        * `pribftc`
+
+        '
+      type: string
+      example: voi
+    ZipCode:
+      type: string
+      description: A ZIP code
+      example: '84123'
+    TransactionRefreshStatusDetails:
+      type: object
+      description: Transaction refresh status
+      properties:
+        refreshId:
+          $ref: '#/components/schemas/TransactionRefreshID'
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        accounts:
+          type: array
+          description: List of account refresh status details for the transaction refresh request.
+          items:
+            type: object
+            properties:
+              accountId:
+                $ref: '#/components/schemas/AccountId'
+              institutionLoginId:
+                $ref: '#/components/schemas/InstitutionLoginId'
+              institutionId:
+                $ref: '#/components/schemas/InstitutionId'
+              aggregationStatusCode:
+                $ref: '#/components/schemas/AggregationStatusCode'
+              aggregationSuccessDate:
+                $ref: '#/components/schemas/DateTimeWithZone'
+        mode:
+          $ref: '#/components/schemas/TransactionRefreshMode'
+        status:
+          $ref: '#/components/schemas/TransactionRefreshRequestStatus'
+        totalCount:
+          $ref: '#/components/schemas/AccountCount'
+        successCount:
+          $ref: '#/components/schemas/TransactionRefreshSuccessCount'
+        failedCount:
+          $ref: '#/components/schemas/TransactionRefreshFailedCount'
+    TransactionPostedDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). Represents the timestamp of the transaction when it was posted or cleared by the institution. This value isn''t required for student loan transaction data. See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    ReportCustomField:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The name of the custom field
+          example: loanID
+        value:
+          type: string
+          description: The value of the custom field
+          example: '123456'
+        shown:
+          type: boolean
+          description: If the custom field will show on the PDF or not
+          example: true
+    AccountIds:
+      description: A list of account IDs
+      type: object
+      properties:
+        accountIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountId'
+          description: List of account IDs
+    VOIReportConstraintsOut:
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+        incomeStreamConfidenceMinimum:
+          $ref: '#/components/schemas/IncomeStreamConfidenceMinimum'
+    RecurringTransactionsDetails:
+      description: Recurring transactions details
+      type: object
+      properties:
+        customerRecurringTransactions:
+          $ref: '#/components/schemas/CustomerRecurringTransactions'
+        accountRecurringTransactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountRecurringTransactions'
+    Transactions:
+      description: A list of transactions
+      required:
+      - found
+      - displaying
+      - moreAvailable
+      - fromDate
+      - toDate
+      - sort
+      - transactions
+      type: object
+      properties:
+        found:
+          $ref: '#/components/schemas/FoundResults'
+        displaying:
+          $ref: '#/components/schemas/DisplayingResults'
+        moreAvailable:
+          $ref: '#/components/schemas/MoreResultsAvailableForTransactions'
+        fromDate:
+          $ref: '#/components/schemas/TransactionsFromDate'
+        toDate:
+          $ref: '#/components/schemas/TransactionsToDate'
+        sort:
+          type: string
+          description: Value of the sort request parameter that generated this response
+          example: desc
+        transactions:
+          description: The array of transactions
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+        dailyBalances:
+          description: Array of daily beginning and ending account balances for each day that transactions are recorded
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyBalance'
+    NumericCustomerId:
+      type: integer
+      format: int64
+      description: A customer ID represented as a number. See Add Customer API for how to create a customer ID.
+      example: 1005061234
+    TransactionsReportConstraintsOut:
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+        toDate:
+          $ref: '#/components/schemas/UnixDate'
+        includePending:
+          $ref: '#/components/schemas/IncludePending'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        findTransaction:
+          $ref: '#/components/schemas/FindTransactionConstraints'
+    DisplayingResults:
+      type: integer
+      description: The number of results returned
+      example: 1
+    ConsumerId:
+      type: string
+      description: A consumer ID. See Create Consumer API for how to create a consumer ID.
+      example: 0bf46322c167b562e6cbed9d40e19a4c
+    BaseReportAckWithPortfolioId:
+      description: Properties shared by all generated reports having a portfolio ID
+      allOf:
+      - $ref: '#/components/schemas/BaseReportAck'
+      - type: object
+        properties:
+          portfolioId:
+            $ref: '#/components/schemas/PortfolioId'
+    PayStatementData:
+      description: Data to be included within the pay statement report
+      required:
+      - assetIds
+      type: object
+      properties:
+        assetIds:
+          description: A list of pay statement asset IDs
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetId'
+        extractEarnings:
+          $ref: '#/components/schemas/ExtractEarnings'
+        extractDeductions:
+          $ref: '#/components/schemas/ExtractDeductions'
+        extractDirectDeposit:
+          $ref: '#/components/schemas/ExtractDirectDeposit'
+    EmailAddress:
+      type: string
+      description: An email address
+      example: myname@mycompany.com
+    VOAIncomeReportIncomeFromDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).
+
+
+        By default, the income history is set to 24 months, however, a partner can change the transaction history by setting the `incomeFromDate` parameter.'
+      format: int64
+      example: 1607450357
+    FindTransactionDescriptionMemo:
+      type: string
+      description: "A string to return transactions that have an exact match to Description/Memo.</br>\n- Description/Memo</br>\n  - Found in the PDF report for reach transactions.</br>\n  - A combination of **description** and **memo** from the JSON version\nof the report.</br>\n"
+      example: Paycheck
+    FindTransactionAmountTo:
+      type: number
+      description: 'A decimal value to return transactions with **amount** less than or equal to **findTransactionAmountTo**.</br>
+
+        - If both **findTransactionAmountFrom** and **findTransactionAmountTo** are present. Then transactions with  **amount** between (inclusive) both values will be returned.
+
+        '
+      example: 100
+    Age:
+      type: integer
+      description: Age is an optional parameter. This data is used to determine the age band the customer falls into.
+      format: int64
+      example: 25
+      minimum: 0
+      maximum: 125
+    GeoLocation:
+      type: array
+      items:
+        $ref: '#/components/schemas/GeoLocationItems'
+      description: Geolocation array of objects;
+    TransactionEffectiveDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). Represents the timestamp of the transaction when it became effective on an account by an institution. See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    TransactionRefreshSuccessCount:
+      type: integer
+      format: int32
+      description: Total number of successful accounts refreshed.
+      example: 1
+    TimeIntervalType:
+      description: Possible values for strategies in which attributes may be aggregated and reported across varying time intervals. Allowed Values - MONTHLY_CALENDAR - MONTHLY_ROLLING_30
+      example: MONTHLY_CALENDAR
+      type: string
+      default: MONTHLY_CALENDAR
+    PayStatementReportConstraints:
+      required:
+      - paystatementReport
+      type: object
+      properties:
+        paystatementReport:
+          $ref: '#/components/schemas/PayStatementData'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+    VOAReportConstraintsOut:
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        toDate:
+          $ref: '#/components/schemas/UnixDate'
+        showNsf:
+          $ref: '#/components/schemas/ShowNsf'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+    AddressLine1:
+      type: string
+      description: Address line 1
+      example: 434 W Ascension Way
+    PortfolioId:
+      type: string
+      description: A unique identifier that will be consistent across all reports created for the same customer
+      example: y4zsgccj4xpw-6-port
+    ReportAccountIds:
+      description: An array of account IDs to be included in the report (all accounts will be included if not set)
+      type: array
+      items:
+        $ref: '#/components/schemas/AccountId'
+      example:
+      - '5011648377'
+      - '5011648378'
+      - '5011648379'
+    PrequalificationReportConstraintsOut:
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        showNsf:
+          $ref: '#/components/schemas/ShowNsf'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+    Categorization:
+      required:
+      - normalizedPayeeName
+      - category
+      - country
+      type: object
+      properties:
+        normalizedPayeeName:
+          type: string
+          description: A normalized payee, derived from the transaction's description and memo fields
+          example: Mad Science Research
+        category:
+          $ref: '#/components/schemas/Categories'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        postalCode:
+          $ref: '#/components/schemas/ZipCode'
+        country:
+          $ref: '#/components/schemas/Country'
+        bestRepresentation:
+          description: Combines the `description` and `memo` data together, removing duplicated information and numbers and special characters
+          type: string
+          example: VERIZON WIRELESS PAYMENTS
+        entityStandardizationConfidenceScore:
+          type: number
+          format: double
+          description: A confidence score indicating the entity name returned is correctly standardized to a standard entity name. If no score is returned, the entity has not been standardized.
+          minimum: 0
+          maximum: 100.0
+          example: 18.95
+      description: Categorization Record
+    VOIEWithStatementData:
+      required:
+      - assetIds
+      type: object
+      properties:
+        assetIds:
+          description: A list of pay statement asset IDs
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetId'
+        extractEarnings:
+          $ref: '#/components/schemas/ExtractEarnings'
+        extractDeductions:
+          $ref: '#/components/schemas/ExtractDeductions'
+        extractDirectDeposit:
+          $ref: '#/components/schemas/ExtractDirectDeposit'
+    IncomeStreamConfidenceMinimum:
+      type: integer
+      description: Include income streams in the report, based on the income stream's confidence score. For example, Use the value 50 to include only income streams with a confidence score of 50 or higher.
+      format: int32
+      example: 50
+    MiddleName:
+      type: string
+      description: The middle name of the account holder
+      example: L
+    StatementReportConstraints:
+      required:
+      - statementReportData
+      type: object
+      properties:
+        statementReportData:
+          $ref: '#/components/schemas/StatementData'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+    TransactionDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). Represents the timestamp of the transaction when it occurred. See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    Ending:
+      type: number
+      description: Ending daily account balance.
+      example: 983.96
+    IncludePending:
+      type: boolean
+      description: If pending transactions must be included
+      example: true
+      default: false
+    PhoneNumber:
+      type: string
+      description: A phone number (max length 15).
+      example: 1-801-984-4200
+    ForesightAnalyticsReportData:
+      description: Parameters supplied by the client requesting the analytics.
+      properties:
+        forCraPurpose:
+          type: boolean
+          description: Field to indicate if the requested report is for CRA or NONCRA. For small business lending or other similar business use cases, pass the value as “true” for purposes of this field.
+          example: true
+        segments:
+          type: object
+          description: Requested segments for attribute values.
+          properties:
+            geolocation:
+              $ref: '#/components/schemas/GeoLocation'
+        analytics:
+          description: Analytics information for the requested report. The allowed values are benchmarking & forecasting. If it is null, default to benchmarking and forecasting
+          example:
+          - benchmarking
+          - forecasting
+          minItems: 2
+          maxItems: 2
+          items:
+            $ref: '#/components/schemas/AnalyticsType'
+          type: array
+        timeIntervalTypes:
+          description: Requested time interval for attribute values.
+          example:
+          - MONTHLY_CALENDAR
+          maxItems: 2
+          items:
+            $ref: '#/components/schemas/TimeIntervalType'
+          type: array
+        income:
+          $ref: '#/components/schemas/Income'
+        age:
+          $ref: '#/components/schemas/Age'
+      type: object
+    UniqueTransactionId:
+      type: string
+      description: A globally unique transaction identifier derived from accountId and transactionId.
+      example: 87529-543210
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    GeoLocationItems:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The name of the Geolocation details. Possible values are POSTAL_CODE
+          example: POSTAL_CODE
+        value:
+          type: string
+          description: The value of the Geolocation field
+          example: '85123'
+    ReportCustomFields:
+      type: array
+      items:
+        $ref: '#/components/schemas/ReportCustomField'
+      description: 'The `reportCustomFields` parameter is used when experiences are associated with a credit decisioning report.
+
+
+        Designate up to 5 custom fields that you''d like associated with the report when it''s generated. Every custom field consists of three variables: `label`, `value`, and `shown`. The `shown` variable is "true" or "false".
+
+        * "true": (default) display the custom field in the PDF report
+
+        * "false": don''t display the custom field in the PDF report
+
+
+        For an experience that generates multiple reports, the `reportCustomFields` parameter gets passed to all reports.
+
+
+        All custom fields display in the Reseller Billing API.'
+    ShowNsf:
+      type: boolean
+      description: 'Include the non-sufficient funds (NSF) summary JSON and the NSF summary PDF section in the report. Data included:
+
+        * Account
+
+
+        * Total number of NSF funds
+
+
+        * Days since the most recent NFS funds fee'
+      example: false
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    SocialSecurityNumberLastDigits:
+      type: string
+      description: Last 4 digits of a SSN
+      example: '9999'
+    TransactionsFromDate:
+      type: string
+      description: Value of the `fromDate` request parameter that generated this response. This date is in Unix epoch time (in seconds).
+      example: '1607450357'
+    TransactionsToDate:
+      type: string
+      description: Value of the `toDate` request parameter that generated this response. This date is in Unix epoch time (in seconds).
+      example: '1607450357'
+    TransactionRefreshFailedCount:
+      type: integer
+      format: int32
+      description: Total number of accounts failed to refresh.
+      example: 1
+    PayrollDataRetrievalId:
+      type: string
+      description: An ID to identify the data retrieved from the payroll providers for the report.
+      example: hahvhe2k0000
+    VOAWithIncomeReportConstraintsOut:
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        showNsf:
+          $ref: '#/components/schemas/ShowNsf'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+        incomeFromDate:
+          $ref: '#/components/schemas/VOAIncomeReportIncomeFromDate'
+        voaiPdfDepositView:
+          type:
+          - boolean
+          - 'null'
+          description: Provide an alternate PDF view of deposit transactions group by income stream in PDF.
+          example: true
+        incomeStreamConfidenceMinimum:
+          $ref: '#/components/schemas/IncomeStreamConfidenceMinimum'
+    TransactionId:
+      type: integer
+      description: A transaction ID
+      format: int64
+      example: 21284820852
+    ReportRequestId:
+      type: string
+      description: Finicity indicator to track all activity associated with this report
+      example: cjqm4wtdcn
+    EmploymentId:
+      type: string
+      description: This is a Mastercard assigned ID to the employment record. It remains consistent for that employment record, even if the report is refreshed. It can be used to limit the employment records that are returned in the report.
+      example: 123v3bv2s5n
+    ExtractDeductions:
+      type: boolean
+      description: Field to indicate whether to extract the deductions on all pay statements
+      default: false
+      example: true
+    Beginning:
+      type: number
+      description: Beginning daily account balance
+      example: 1000.0
+    TransactionRefreshMode:
+      type: string
+      description: "Specifies the type of transaction refresh to perform, defaults to 'standard'. Supported modes are,  \n  * standard - Triggers a standard refresh. The system will fetch\ntransactions for a default period (6 months), fromDate and toDate will be ignored if provided  \n  * historic - Triggers a historic load. The system will fetch\ntransactions for an extended period (2 years), fromDate and toDate will be ignored if provided  \n  * custom - Triggers a refresh for a custom period starting from the\nprovided fromDate. The fromDate field must be provided in the request if this mode is selected and the current date will be set as toDate if no value is provided for toDate field"
+      example: standard
+    InitiateNewTransactionRefresh:
+      type: object
+      description: "New transaction refresh request:  \n * Request must contain at least `institutionLoginId` OR\n`accountIds`  \n * If both are provided, `accountIds` takes preference  \n * \"standard\" is default mode  \n * `fromDate` & `toDate` are only required and considered when mode is\n\"custom\""
+      properties:
+        institutionLoginId:
+          $ref: '#/components/schemas/InstitutionLoginId'
+        accountIds:
+          type: array
+          description: A list of specific account IDs to refresh
+          items:
+            $ref: '#/components/schemas/AccountId'
+        mode:
+          $ref: '#/components/schemas/TransactionRefreshMode'
+        fromDate:
+          $ref: '#/components/schemas/DateTimeWithZone'
+        toDate:
+          $ref: '#/components/schemas/DateTimeWithZone'
+    FoundResults:
+      type: integer
+      description: The total number of results matching search criteria
+      example: 200
+    VOIEWithTXVerifyReportConstraintsOut:
+      required:
+      - voieWithInterviewData
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        voieWithInterviewData:
+          $ref: '#/components/schemas/VOIEWithInterviewData'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+        incomeStreamConfidenceMinimum:
+          $ref: '#/components/schemas/IncomeStreamConfidenceMinimum'
+    CashFlowReportConstraintsOut:
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        showNsf:
+          $ref: '#/components/schemas/ShowNsf'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+        incomeStreamConfidenceMinimum:
+          $ref: '#/components/schemas/IncomeStreamConfidenceMinimum'
+    AnalyticsReportData:
+      description: Parameters supplied by the client requesting the analytics.
+      properties:
+        forCraPurpose:
+          type: boolean
+          description: Field to indicate if the requested report is for CRA or NONCRA. For small business lending or other similar business use cases, pass the value as “true” for purposes of this field.
+          example: true
+        applicantIsPersonalGuarantor:
+          type: boolean
+          description: Field to indicate if the business owner will personally guarantee the loan. If true, a consumer record will be required.
+          example: true
+        forFtcPurpose:
+          type: boolean
+          description: Field to indicate if the requested report is for FTC purpose. Only applicable to business reports.
+          example: false
+        timeIntervalTypes:
+          description: Requested time interval for attribute values.
+          example:
+          - MONTHLY_CALENDAR
+          maxItems: 2
+          items:
+            $ref: '#/components/schemas/TimeIntervalType'
+          type: array
+      type: object
+    FindTransactionAmountFrom:
+      type: number
+      description: 'A decimal value to return transactions with **amount** greater than or equal to **findTransactionAmountFrom**.</br>
+
+        - If both **findTransactionAmountFrom** and **findTransactionAmountTo** are present. Then transactions with  **amount** between (inclusive) both values will be returned.
+
+        '
+      example: 100
+    TransactionType:
+      type: string
+      description: 'If provided by the institution, the following values may be returned in the field of a record:
+
+        * "atm"
+
+
+        * "cash"
+
+
+        * "check"
+
+
+        * "credit"
+
+
+        * "debit"
+
+
+        * "deposit"
+
+
+        * "directDebit"
+
+
+        * "directDeposit"
+
+
+        * "dividend"
+
+
+        * "fee"
+
+
+        * "interest"
+
+
+        * "other"
+
+
+        * "payment"
+
+
+        * "pointOfSale"
+
+
+        * "repeatPayment"
+
+
+        * "serviceCharge"
+
+
+        * "transfer"'
+      example: atm
+    InstitutionLoginId:
+      type: string
+      description: An institution login ID (from the account record)
+      example: '1007302745'
+    LastName:
+      type: string
+      description: The last name of the account holder
+      example: Smith
+    Transaction:
+      required:
+      - id
+      - amount
+      - accountId
+      - customerId
+      - status
+      - description
+      - createdDate
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/TransactionId'
+        amount:
+          type: number
+          description: The total amount of the transaction. Transactions for deposits are positive values, withdrawals and debits are negative values.
+          example: -828.9
+        uniqueTransactionId:
+          $ref: '#/components/schemas/UniqueTransactionId'
+        accountId:
+          $ref: '#/components/schemas/NumericAccountId'
+        customerId:
+          $ref: '#/components/schemas/NumericCustomerId'
+        status:
+          type: string
+          description: One of "active", "pending", or "shadow" (see [Transaction Status](https://developer.mastercard.com/open-finance-us/documentation/products/manage/transaction-data/understanding-transaction-data/#transaction-status))
+          example: active
+        description:
+          type: string
+          description: The description value is from the financial institution (FI), often known as the payee. The value "No description provided by institution" is returned when the FI doesn't provide one
+          example: Buy Stock
+        memo:
+          type: string
+          description: The institution must provide either a description, a memo, or both. We recommended concatenating the two fields into a single value.
+          example: UWM HOLDINGS CORPORATION - CLASS A COMMON STOCK
+        type:
+          $ref: '#/components/schemas/TransactionType'
+        transactionDate:
+          $ref: '#/components/schemas/TransactionDate'
+        postedDate:
+          $ref: '#/components/schemas/TransactionPostedDate'
+        createdDate:
+          $ref: '#/components/schemas/TransactionCreatedDate'
+        firstEffectiveDate:
+          $ref: '#/components/schemas/TransactionFirstEffectiveDate'
+        effectiveDate:
+          $ref: '#/components/schemas/TransactionEffectiveDate'
+        optionExpireDate:
+          $ref: '#/components/schemas/TransactionOptionExpireDate'
+        checkNum:
+          type: string
+          description: The reference for the transaction provided by the originating institution.
+          example: 299
+        escrowAmount:
+          type: number
+          description: The portion of the transaction allocated to escrow
+          example: 2534
+        feeAmount:
+          type: number
+          description: The portion of the overall transaction amount applied to fees
+          example: 0.51
+        suspenseAmount:
+          type: number
+          description: Temporarily hold funds if you overpay or underpay your monthly payment
+          example: 0.25
+        interestAmount:
+          type: number
+          description: The portion of the transaction allocated to interest
+          example: 132
+        principalAmount:
+          type: number
+          description: The portion of the transaction allocated to principal
+          example: 32560
+        optionStrikePrice:
+          type: number
+          description: The strike price of the option contract
+          example: 32560
+        unitQuantity:
+          type: number
+          description: The number of units (individual shares) in the transaction
+          format: int32
+          example: 150.42
+        unitPrice:
+          type: number
+          description: 'Share price for the investment unit: stocks, mutual funds, ETFs'
+          example: 5.53
+        categorization:
+          $ref: '#/components/schemas/Categorization'
+        runningBalanceAmount:
+          description: The ending balance after the transaction was posted
+          type: number
+          example: 1000
+        subaccountSecurityType:
+          type: string
+          description: The type of sub account the funds came from
+          example: MARGIN
+        commissionAmount:
+          type: integer
+          description: Transaction commission
+          format: int32
+          example: 0
+        ticker:
+          type: string
+          description: Ticker symbol for the investment related to the transaction
+          example: UWMC
+        investmentTransactionType:
+          $ref: '#/components/schemas/InvestmentTransactionTypes'
+        taxesAmount:
+          type: integer
+          description: Taxes applicable to the investment trade
+          format: int32
+          example: 0
+        currencySymbol:
+          type: string
+          description: If the foreign amount value is present then this is the currency code of that foreign amount
+          example: USD
+        incomeType:
+          type: string
+          description: Capital gains applied in short, long, or miscellaneous terms for tax purposes
+          example: DIV
+        splitDenominator:
+          type: number
+          description: Denominator of the stock split for the transaction
+          example: 152
+        splitNumerator:
+          type: number
+          description: Numerator of the stock split for the transaction
+          example: 20
+        sharesPerContract:
+          type: number
+          description: Shares per contract of the underlying stock option
+          example: 100
+        subAccountFund:
+          type: string
+          description: The sub account where the funds came from
+          example: MARGIN
+        securityId:
+          type: string
+          description: The security ID of the transaction
+          example: 91823B109
+        securityIdType:
+          $ref: '#/components/schemas/SecurityIdType'
+    SecurityIdType:
+      type: string
+      description: 'The security type. This field is related to the `securityId` field. Possible values:
+
+        * "CUSIP"
+
+
+        * "ISIN"
+
+
+        * "SEDOL"
+
+
+        * "SICC"
+
+
+        * "VALOR"
+
+
+        * "WKN"'
+      example: CUSIP
+    TransactionRefreshID:
+      type: string
+      format: uuid
+      description: Unique identifier for refresh request
+      example: bec83f1a-5f65-44f5-8f00-b4a0fc60c2cc
+    Income:
+      type: integer
+      description: "Income is an optional parameter. It is the dollar amount for the customer's annual\n        household income and is used to determine the income band the\ncustomer falls into."
+      format: int64
+      example: 1000
+      minimum: 0
+    TxVerifyInterview:
+      required:
+      - assetId
+      type: object
+      properties:
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accounts:
+          $ref: '#/components/schemas/ReportAccountIds'
+    Country:
+      type: string
+      description: Country code is Iso3166-1 Alpha-2 code and Alpha 3 standard (max length 3).
+      example: CAN
+    VOETransactionsReportConstraintsOut:
+      type: object
+      properties:
+        reportId:
+          $ref: '#/components/schemas/ReportId'
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+        incomeStreamConfidenceMinimum:
+          $ref: '#/components/schemas/IncomeStreamConfidenceMinimum'
+    PayrollDataOut:
+      type: object
+      properties:
+        payrollDataRetrievalId:
+          $ref: '#/components/schemas/PayrollDataRetrievalId'
+        payrollAggregatorResponseId:
+          $ref: '#/components/schemas/PayrollDataRetrievalId'
+        consentMethod:
+          type: string
+          description: Client-collected consent payroll report tagging.
+          example: Written Generic - Finicity Set
+        employmentIds:
+          type: array
+          description: An array of employmentIds
+          items:
+            $ref: '#/components/schemas/EmploymentId'
+        payrollAccountIds:
+          type: array
+          description: An array of payrollAccountIds
+          items:
+            $ref: '#/components/schemas/PayrollAccountId'
+        reportId:
+          $ref: '#/components/schemas/ReportId'
+    InstitutionId:
+      description: The ID of a financial institution
+      type: string
+      example: '4222'
+    ConsumerEndUser:
+      description: Reseller end user information. This is populated only when the report requires a consumer record to be generated and the consumer object includes end user details. The partner is expected to include endUser details when creating a consumer if the end user of the consumer reports is another entity than the partner generating the report.
+      required:
+      - name
+      - address
+      - city
+      - state
+      - zip
+      - phone
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/FirstName'
+        address:
+          $ref: '#/components/schemas/AddressLine1'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        zip:
+          $ref: '#/components/schemas/ZipCode'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+        url:
+          $ref: '#/components/schemas/EndUserUrl'
+    AccountRecurringTransactions:
+      description: Recurring transactions for each account
+      type: object
+      properties:
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        recurringOutflows:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecurringOutFlowTransaction'
+        recurringInflows:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecurringInFlowTransaction'
+    FindTransactionConstraints:
+      description: Parameters used to return transactions matching the given criteria. The presence of multiple parameters will be treated as an **AND**  function.
+      type: object
+      properties:
+        findTransactionDescriptionMemo:
+          $ref: '#/components/schemas/FindTransactionDescriptionMemo'
+        findTransactionAmountFrom:
+          $ref: '#/components/schemas/FindTransactionAmountFrom'
+        findTransactionAmountTo:
+          $ref: '#/components/schemas/FindTransactionAmountTo'
+        findTransactionCategory:
+          $ref: '#/components/schemas/FindTransactionCategory'
+    DisputeStatement:
+      description: A consumer-provided statement describing the nature of an unresolved dispute. This field is populated only if a consumer dispute remains unresolved, and the consumer has requested that a statement be included in their report.
+      type: string
+      minLength: 1
+      maxLength: 2000
+      example: Statement dispute text
+    TransactionsReportConstraints:
+      type: object
+      properties:
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIdsString'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+        toDate:
+          $ref: '#/components/schemas/UnixDate'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        findTransaction:
+          $ref: '#/components/schemas/FindTransactionConstraints'
+    ReportStatus:
+      type: string
+      description: 'A report generation status. Possible values:
+
+
+        * `inProgress`
+
+
+        * `success`
+
+
+        * `failure`
+
+        '
+      example: inProgress
+    RecurringInFlowTransaction:
+      type: object
+      description: Credit recurring transaction stream.
+      properties:
+        normalizedPayeeName:
+          type: string
+          description: A normalized payee, derived from the transaction's description and memo fields
+          example: Netflix
+        transactionCategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Categories'
+        transactionIds:
+          type: array
+          items:
+            type: string
+            example: 21284820851
+            description: List of transaction IDs associated with this credit stream
+        cadence:
+          type: integer
+          description: Mean number of days between transactions
+          example: 30
+        status:
+          type: string
+          description: Indicates if the credit stream is currently active or inactive.
+          example: ACTIVE
+        expectedNextTransactionDate:
+          type: string
+          format: date
+          description: The estimated date of the next credit transaction
+          example: 2025-08-07
+        expectedNextTransactionAmount:
+          type: number
+          description: The estimated amount of the next credit transaction
+          example: 1234.56
+        minimumHistoricalAmount:
+          type: number
+          description: Minimum historical amount for this recurring credit transaction
+          example: 1055.22
+        maximumHistoricalAmount:
+          type: number
+          description: Maximum historical amount for this recurring credit transaction
+          example: 1488.22
+        meanHistoricalAmount:
+          type: number
+          description: Average historical amount for this recurring credit transaction
+          example: 1234.56
+        medianHistoricalAmount:
+          type: number
+          description: Median historical amount for this recurring credit transaction
+          example: 1234.56
+        countOfTransactions:
+          type: integer
+          description: Number of credit transactions identified within this stream
+          example: 1
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    CustomerRecurringTransactions:
+      description: Recurring transactions for customer
+      type: object
+      properties:
+        recurringOutflows:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecurringOutFlowTransaction'
+        recurringInflows:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecurringInFlowTransaction'
+    AggregationStatusCode:
+      type: integer
+      description: The status of the most recent aggregation attempt (see [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes)). Won't be present until you have run your first aggregation for the account.
+    InvestmentTransactionTypes:
+      type: string
+      description: 'Keywords in the `description` and `memo` fields were used to translate investment transactions into these types.
+
+
+        Possible values:
+
+        * "cancel"
+
+
+        * "purchaseToClose"
+
+
+        * "purchaseToCover"
+
+
+        * "contribution"
+
+
+        * "optionExercise"
+
+
+        * "optionExpiration"
+
+
+        * "fee"
+
+
+        * "soldToClose"
+
+
+        * "soldToOpen"
+
+
+        * "split"
+
+
+        * "transfer"
+
+
+        * "returnOfCapital"
+
+
+        * "income"
+
+
+        * "purchased"
+
+
+        * "sold"
+
+
+        * "dividendReinvest"
+
+
+        * "tax"
+
+
+        * "dividend"
+
+
+        * "reinvestOfIncome"
+
+
+        * "interest"
+
+
+        * "deposit"
+
+
+        * "otherInfo"'
+      example: transfer
+    AnalyticsType:
+      description: Analytics type. Allowed Values are benchmarking and forecasting.
+      example: benchmarking
+      type: string
+    ForesightAnalyticsReportConstraints:
+      type: object
+      properties:
+        analyticsReportData:
+          $ref: '#/components/schemas/ForesightAnalyticsReportData'
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIdsString'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+    VOIEWithInterviewData:
+      required:
+      - txVerifyInterview
+      type: object
+      properties:
+        txVerifyInterview:
+          description: An array of `TxVerifyInterview` objects
+          type: array
+          items:
+            $ref: '#/components/schemas/TxVerifyInterview'
+        extractEarnings:
+          $ref: '#/components/schemas/ExtractEarnings'
+        extractDeductions:
+          $ref: '#/components/schemas/ExtractDeductions'
+        extractDirectDeposit:
+          $ref: '#/components/schemas/ExtractDirectDeposit'
+    TransactionRefreshInitiated:
+      type: object
+      description: Transaction refresh response
+      properties:
+        refreshId:
+          $ref: '#/components/schemas/TransactionRefreshID'
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        institutionLoginId:
+          $ref: '#/components/schemas/InstitutionLoginId'
+        accountIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountId'
+        mode:
+          $ref: '#/components/schemas/TransactionRefreshMode'
+        fromDate:
+          $ref: '#/components/schemas/DateTimeWithZone'
+        toDate:
+          $ref: '#/components/schemas/DateTimeWithZone'
+        status:
+          $ref: '#/components/schemas/TransactionRefreshRequestStatus'
+        createdAt:
+          $ref: '#/components/schemas/DateTimeWithZone'
+    CustomerType:
+      type: string
+      description: The type of customer ("active" or "testing" or "" for all types)
+      example: active
+    NumericAccountId:
+      type: integer
+      format: int64
+      description: An account ID represented as a number
+      example: 5011648377
+    ExtractDirectDeposit:
+      type: boolean
+      description: Field to indicate whether to extract the direct deposits on all pay statements
+      default: true
+      example: true
+    PartnerName:
+      type: string
+      description: Name of a Finicity partner
+      example: Finicity Test API
+    MoreResultsAvailableForTransactions:
+      type: string
+      description: If the value of `moreAvailable` is "true", you can retrieve the next page of results by increasing the value of the start parameter in your next request:"...&start=6&limit=5"
+      example: 'true'
+    PayrollReportConstraintsOut:
+      required:
+      - payrollData
+      type: object
+      properties:
+        payrollData:
+          $ref: '#/components/schemas/PayrollDataOut'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        payStatementsFromDate:
+          $ref: '#/components/schemas/UnixDate'
+    VOIEReportConstraints:
+      required:
+      - voieWithStatementData
+      type: object
+      properties:
+        voieWithStatementData:
+          $ref: '#/components/schemas/VOIEWithStatementData'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+      description: The request details from the report generation that were used to generate the report
+    AnalyticsReportConstraintsOut:
+      type: object
+      properties:
+        analyticsReportData:
+          $ref: '#/components/schemas/AnalyticsReportData'
+        accountIds:
+          $ref: '#/components/schemas/ReportAccountIds'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        fromDate:
+          $ref: '#/components/schemas/UnixDate'
+    FindTransactionCategory:
+      type: array
+      description: 'An array of **categories** to return transactions with an exact match to the array of **category**. Limit of 10.
+
+        '
+      maxItems: 10
+      items:
+        type: string
+      example:
+      - Paycheck
+      - Groceries
+    PayrollAccountId:
+      type: string
+      description: "The payrollAccountIds for the Credentialed Payroll accounts the consumer\n        has connected.  Will be used to constrain the report to only\ninclude the\n        specified accounts.  Required if the consumer has connected\ntheir\n        accounts previously and report generation was intentionally\ndelayed for\n        later."
+      example: 018b8f10-fdf8-0ef7-ded5-34a17c34d86f
+    ConsumerDetails:
+      description: Details about the consumer. Populated if the report requires a consumer record to be generated.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ConsumerId'
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        middleName:
+          $ref: '#/components/schemas/MiddleName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        address:
+          $ref: '#/components/schemas/AddressLine1'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        zip:
+          $ref: '#/components/schemas/ZipCode'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        ssn:
+          $ref: '#/components/schemas/SocialSecurityNumberLastDigits'
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+    TransactionFirstEffectiveDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). Represents the first timestamp of the transaction recorded in the `effectiveDate` field. See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    Categories:
+      type: string
+      description: 'The different categories for transactions.
+
+        * "ATM Fee"
+
+
+        * "Advertising"
+
+
+        * "Air Travel"
+
+
+        * "Alcohol & Bars"
+
+
+        * "Allowance"
+
+
+        * "Amusement"
+
+
+        * "Arts"
+
+
+        * "Auto & Transport"
+
+
+        * "Auto Insurance"
+
+
+        * "Auto Payment"
+
+
+        * "Baby Supplies"
+
+
+        * "Babysitter & Daycare"
+
+
+        * "Bank Fee"
+
+
+        * "Bills & Utilities"
+
+
+        * "Bonus"
+
+
+        * "Books"
+
+
+        * "Books & Supplies"
+
+
+        * "Business Services"
+
+
+        * "Buy"
+
+
+        * "Cash & ATM"
+
+
+        * "Charity"
+
+
+        * "Check"
+
+
+        * "Child Support"
+
+
+        * "Clothing"
+
+
+        * "Coffee Shops"
+
+
+        * "Credit Card Payment"
+
+
+        * "Dentist"
+
+
+        * "Deposit"
+
+
+        * "Dividend & Cap Gains"
+
+
+        * "Doctor"
+
+
+        * "Education"
+
+
+        * "Electronics & Software"
+
+
+        * "Entertainment"
+
+
+        * "Eyecare"
+
+
+        * "Fast Food"
+
+
+        * "Federal Tax"
+
+
+        * "Fees & Charges"
+
+
+        * "Finance Charge"
+
+
+        * "Financial"
+
+
+        * "Financial Advisor"
+
+
+        * "Food & Dining"
+
+
+        * "Furnishings"
+
+
+        * "Gas & Fuel"
+
+
+        * "Gift"
+
+
+        * "Gifts & Donations"
+
+
+        * "Groceries"
+
+
+        * "Gym"
+
+
+        * "Hair"
+
+
+        * "Health & Fitness"
+
+
+        * "Health Insurance"
+
+
+        * "Hobbies"
+
+
+        * "Home"
+
+
+        * "Home Improvement"
+
+
+        * "Home Insurance"
+
+
+        * "Home Phone"
+
+
+        * "Home Services"
+
+
+        * "Home Supplies"
+
+
+        * "Hotel"
+
+
+        * "Income"
+
+
+        * "Interest Income"
+
+
+        * "Internet"
+
+
+        * "Investments"
+
+
+        * "Kids"
+
+
+        * "Kids Activities"
+
+
+        * "Late Fee"
+
+
+        * "Laundry"
+
+
+        * "Lawn & Garden"
+
+
+        * "Legal"
+
+
+        * "Life Insurance"
+
+
+        * "Loan Fees and Charges"
+
+
+        * "Loan Insurance"
+
+
+        * "Loan Interest"
+
+
+        * "Loan Payment"
+
+
+        * "Loan Principal"
+
+
+        * "Loans"
+
+
+        * "Local Tax"
+
+
+        * "Low Balance"
+
+
+        * "Mobile Phone"
+
+
+        * "Mortgage & Rent"
+
+
+        * "Movies & DVDs"
+
+
+        * "Music"
+
+
+        * "Newspapers & Magazines"
+
+
+        * "Office Supplies"
+
+
+        * "Parking"
+
+
+        * "Paycheck"
+
+
+        * "Personal Care"
+
+
+        * "Pet Food & Supplies"
+
+
+        * "Pet Grooming"
+
+
+        * "Pets"
+
+
+        * "Pharmacy"
+
+
+        * "Printing"
+
+
+        * "Property Tax"
+
+
+        * "Public Transportation"
+
+
+        * "Reimbursement"
+
+
+        * "Rental Car & Taxi"
+
+
+        * "Restaurants"
+
+
+        * "Sales Tax"
+
+
+        * "Sell"
+
+
+        * "Service & Parts"
+
+
+        * "Service Fee"
+
+
+        * "Shipping"
+
+
+        * "Shopping"
+
+
+        * "Spa & Massage"
+
+
+        * "Sporting Goods"
+
+
+        * "Sports"
+
+
+        * "State Tax"
+
+
+        * "Streaming Services"
+
+
+        * "Student Loan"
+
+
+        * "Taxes"
+
+
+        * "Television"
+
+
+        * "Toys"
+
+
+        * "Trade Commissions"
+
+
+        * "Transfer"
+
+
+        * "Transfer for Cash Spending"
+
+
+        * "Travel"
+
+
+        * "Tuition"
+
+
+        * "Uncategorized"
+
+
+        * "Utilities"
+
+
+        * "Vacation"
+
+
+        * "Veterinary"
+
+
+        * "Internet / Broadband Charges"'
+      example: Streaming Service
+    ExtractEarnings:
+      type: boolean
+      description: Field to indicate whether to extract the earnings on all pay statements
+      default: true
+      example: true
+    ReportTitle:
+      type: string
+      description: Title of the report
+      example: Finicity Asset Ready Report (CRA)
+    TransactionsReportAck:
+      description: A Transaction report being generated
+      required:
+      - id
+      - portfolioId
+      - customerType
+      - customerId
+      - requestId
+      - requesterName
+      - createdDate
+      - title
+      - consumerId
+      - consumerSsn
+      - type
+      - status
+      - constraints
+      allOf:
+      - $ref: '#/components/schemas/BaseReportAckWithPortfolioId'
+      - type: object
+        properties:
+          constraints:
+            $ref: '#/components/schemas/TransactionsReportConstraintsOut'
+    TransactionRefreshRequestStatus:
+      type: string
+      description: "This is the request status, supported request statuses are:  \n  * NEW  \n  * IN_PROGRESS  \n  * COMPLETED  \n  * FAILED"
+      example: IN_PROGRESS
+    State:
+      type: string
+      description: State
+      example: UT
+    FirstName:
+      type: string
+      description: The first name of the account holder
+      example: John
+    ReportId:
+      type: string
+      description: A report ID
+      example: u4hstnnak45g
+    StatementData:
+      required:
+      - accountId
+      type: object
+      properties:
+        accountId:
+          $ref: '#/components/schemas/NumericAccountId'
+        statementIndex:
+          type: integer
+          description: Index of the statement to include in the report. Request statements from 1-24. By default, 1 is the most recent statement. Increase the index value to count back (by month) and retrieve its most recent statement.
+          format: int32
+          example: 1
+          default: 1
+          maximum: 24
+    ReportAccountIdsString:
+      type: string
+      description: A whitespace-separated list of account IDs to be included in the report (all accounts will be included if not set)
+      example: 5011648377 5011648378 5011648379
+    DailyBalance:
+      required:
+      - date
+      - beginning
+      - ending
+      type: object
+      properties:
+        date:
+          $ref: '#/components/schemas/UnixDate'
+        beginning:
+          $ref: '#/components/schemas/Beginning'
+        ending:
+          $ref: '#/components/schemas/Ending'
+    TransactionOptionExpireDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). Represents the timestamp of the transaction expiration date when it became expires on an account by an institution. See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    ReportCreatedDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/). Note: If the report is retrieved on a day other than the day it was generated, on the header of the PDF version of the report there will be a "Retrieved Date" populated.'
+      format: int64
+      example: 1607450357
+    DateTimeWithZone:
+      type: string
+      format: date-time
+      description: A date-time with time zone
+      example: '2022-03-10T06:06:20.042584549Z'
+    BaseReportAck:
+      description: Properties shared by all generated reports
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ReportId'
+        customerType:
+          $ref: '#/components/schemas/CustomerType'
+        customerId:
+          $ref: '#/components/schemas/NumericCustomerId'
+        requestId:
+          $ref: '#/components/schemas/ReportRequestId'
+        requesterName:
+          $ref: '#/components/schemas/PartnerName'
+        endUser:
+          $ref: '#/components/schemas/ConsumerEndUser'
+        createdDate:
+          $ref: '#/components/schemas/ReportCreatedDate'
+        title:
+          $ref: '#/components/schemas/ReportTitle'
+        consumerId:
+          $ref: '#/components/schemas/ConsumerId'
+        consumerSsn:
+          $ref: '#/components/schemas/SocialSecurityNumberLastDigits'
+        consumerDetails:
+          $ref: '#/components/schemas/ConsumerDetails'
+        disputeStatement:
+          $ref: '#/components/schemas/DisputeStatement'
+        type:
+          $ref: '#/components/schemas/ReportType'
+        status:
+          $ref: '#/components/schemas/ReportStatus'
+        constraints:
+          anyOf:
+          - $ref: '#/components/schemas/AnalyticsReportConstraintsOut'
+          - $ref: '#/components/schemas/ForesightAnalyticsReportConstraints'
+          - $ref: '#/components/schemas/CashFlowReportConstraintsOut'
+          - $ref: '#/components/schemas/VOIEWithTXVerifyReportConstraintsOut'
+          - $ref: '#/components/schemas/VOIEReportConstraints'
+          - $ref: '#/components/schemas/StatementReportConstraints'
+          - $ref: '#/components/schemas/TransactionsReportConstraintsOut'
+          - $ref: '#/components/schemas/VOAReportConstraintsOut'
+          - $ref: '#/components/schemas/VOAWithIncomeReportConstraintsOut'
+          - $ref: '#/components/schemas/PrequalificationReportConstraintsOut'
+          - $ref: '#/components/schemas/VOIReportConstraintsOut'
+          - $ref: '#/components/schemas/PayrollReportConstraintsOut'
+          - $ref: '#/components/schemas/VOETransactionsReportConstraintsOut'
+          - $ref: '#/components/schemas/PayStatementReportConstraints'
+        errors:
+          description: In case errors occurred during the report generation
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorMessage'
+    UnixDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    ShowDailyBalance:
+      type: boolean
+      example: true
+      default: false
+    RecurringOutFlowTransaction:
+      type: object
+      description: Debit recurring transaction stream.
+      properties:
+        normalizedPayeeName:
+          type: string
+          description: A normalized payee, derived from the transaction's description and memo fields
+          example: Netflix
+        transactionCategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Categories'
+        transactionIds:
+          type: array
+          items:
+            type: string
+            example: 21284820852
+            description: List of transaction IDs associated with this debit stream
+        cadence:
+          type: integer
+          description: Mean number of days between transactions
+          example: 30
+        status:
+          type: string
+          description: Indicates if the debit stream is currently active or inactive.
+          example: ACTIVE
+        expectedNextTransactionDate:
+          type: string
+          format: date
+          description: The estimated date of the next debit transaction
+          example: 2025-08-07
+        expectedNextTransactionAmount:
+          type: number
+          description: The estimated amount of the next debit transaction
+          example: -15.99
+        minimumHistoricalAmount:
+          type: number
+          description: Minimum historical amount for this recurring debit transaction
+          example: -20.99
+        maximumHistoricalAmount:
+          type: number
+          description: Maximum historical amount for this recurring debit transaction
+          example: -8.99
+        meanHistoricalAmount:
+          type: number
+          description: Average historical amount for this recurring debit transaction
+          example: -15.99
+        medianHistoricalAmount:
+          type: number
+          description: Median historical amount for this recurring debit transaction
+          example: -15.99
+        countOfTransactions:
+          type: integer
+          description: Number of debit transactions identified within this stream
+          example: 1
+    City:
+      type: string
+      description: City
+      example: Murray
+    TransactionCreatedDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). Represents the timestamp of the transaction when it was added to our platform. See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    AccountCount:
+      type: integer
+      format: int32
+      description: Total number of accounts returned.
+      example: 1
+  parameters:
+    RequiredToDateParameter:
+      description: A end date
+      name: toDate
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/UnixDate'
+      example: 1670504017
+    SortParameter:
+      name: sort
+      in: query
+      required: false
+      description: 'Date sort order: "asc" for ascending, "desc" for descending'
+      schema:
+        type: string
+        default: desc
+        example: desc
+    RequiredFromDateParameter:
+      description: A start date
+      name: fromDate
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/UnixDate'
+      example: 1607450357
+    ReportCallbackUrlParameter:
+      name: callbackUrl
+      in: query
+      required: false
+      description: A Report Listener URL to receive notifications. The webhook must respond to the Finicity API with a 2xx HTTP status code.
+      schema:
+        type: string
+        example: https://finicity-test/webhook
+    LimitParameter:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results per page
+      schema:
+        type: integer
+        format: int32
+        default: 25
+        minimum: 1
+        maximum: 1000
+        example: 20
+    IncludePendingParameter:
+      description: If pending transactions must be included
+      name: includePending
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/IncludePending'
+      example: false
+    TransactionIdParameter:
+      description: A transaction ID
+      name: transactionId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/TransactionId'
+      example: 21284820852
+    ShowDailyBalanceParameter:
+      description: Request daily beginning and ending account balances for each day transactions are recorded (query parameter)
+      name: showDailyBalance
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/ShowDailyBalance'
+      example: false
+    AccountIdParameter:
+      description: The account ID
+      name: accountId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AccountId'
+      example: '5011648377'
+    RequiredTransactionReportToDateParameter:
+      description: Transactions up to and including this date will be incorporated into the report. It should be later than the fromDate.
+      name: toDate
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/UnixDate'
+      example: 1670504017
+    CustomerIdParameter:
+      description: A customer ID
+      name: customerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
+    TransactionRefreshIDParameter:
+      name: refreshId
+      in: path
+      required: true
+      description: Unique identifier for the refresh request
+      schema:
+        $ref: '#/components/schemas/TransactionRefreshID'
+      example: bec83f1a-5f65-44f5-8f00-b4a0fc60c2cc
+    RequiredTransactionReportFromDateParameter:
+      description: Transactions starting from this date will be included in the report.
+      name: fromDate
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/UnixDate'
+      example: 1607450357
+    DSAPI_StartParameter:
+      name: start
+      in: query
+      required: false
+      description: "Represents the index of the first record to return within a batch of `limit`.\n\nExample: \n  - `limit=15&start=1`; records 1–15 \n  - `limit=15&start=16`; records 16–30\n"
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+        example: 1
+    UniqueTransactionIdParameter:
+      name: uniqueTransactionId
+      in: path
+      required: true
+      description: A globally unique transaction identifier in the format "accountId-transactionId".
+      schema:
+        $ref: '#/components/schemas/UniqueTransactionId'
+      example: 87529-543210
+  responses:
+    TransactionRefreshResponse:
+      description: Transaction refresh initiated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionRefreshInitiated'
+    BadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            PermissiblePurposeCodeExample:
+              $ref: '#/components/examples/PermissiblePurposeCodeExample'
+            InvalidForesightReportRequestExample:
+              $ref: '#/components/examples/InvalidForesightReportRequestExample'
+            BothCraAndFtcPurposeTrueExample:
+              $ref: '#/components/examples/BothCraAndFtcPurposeTrueExample'
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            InvalidExperienceFieldExample:
+              $ref: '#/components/examples/InvalidExperienceFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+            ResellerPartnerNotAuthorizedExample:
+              $ref: '#/components/examples/ResellerPartnerNotAuthorizedExample'
+            ResellerInvalidDateRangeExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeExample'
+            ResellerInvalidDateRangeLessThanZeroExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeLessThanZeroExample'
+            ResellerInvalidDateRangeGreaterThanEndDateExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThanEndDateExample'
+            ResellerInvalidDateRangeGreaterThan31DaysExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThan31DaysExample'
+            CustomerReportLimitExceedExample:
+              $ref: '#/components/examples/CustomerReportLimitExceedExample'
+            InvalidConsumerSSNExample:
+              $ref: '#/components/examples/InvalidConsumerSSNExample'
+            InvalidConsumerPhoneExample:
+              $ref: '#/components/examples/InvalidConsumerPhoneExample'
+            InvalidConsumerEmailExample:
+              $ref: '#/components/examples/InvalidConsumerEmailExample'
+            InvalidValue:
+              $ref: '#/components/examples/InvalidValueExample'
+    TransactionRefreshBadRequestErrorResponse:
+      description: The request was rejected.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            InvalidInputParameterExample:
+              $ref: '#/components/examples/InvalidInputParameterExample'
+            InvalidDateRangeExample:
+              $ref: '#/components/examples/InvalidDateRangeExample'
+            MissingParameterExample:
+              $ref: '#/components/examples/MissingParameterExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+    MFAChallengeNeededResponse:
+      description: The request was unsuccessful due to a required Multi-Factor Authentication (MFA) challenge. There is no further action that can be taken to resolve this error.
+    TransactionRefreshStatusNotFoundErrorResponse:
+      description: The requested resource doesn't exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            NoDataFoundExample:
+              $ref: '#/components/examples/NoDataFoundExample'
+    GetCustomerTransactionsResponse:
+      description: The transactions were successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Transactions'
+    AuthenticationUnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check Partner ID, Partner Secret or Finicity-App-Key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            InvalidCredentialsExample:
+              $ref: '#/components/examples/InvalidCredentialsExample'
+            NotAuthorizedExample:
+              $ref: '#/components/examples/NotAuthorizedExample'
+    GetRecurringTransactionsBadRequestErrorResponse:
+      description: We couldn't handle your request, see response payload for more information.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+    GetRecurringTransactionsResponse:
+      description: The recurring transactions were successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RecurringTransactionsDetails'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
+    GetCustomerTransactionResponse:
+      description: The transaction was successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Transaction'
+    LoadHistoricTransactionsForCustomerAccountResponse:
+      description: Historic transactions have been loaded successfully. The transactions are now available by calling the Get Customer Account Transactions API.
+    ResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ConsumerNotFoundExample:
+              $ref: '#/components/examples/ConsumerNotFoundExample'
+            NoAccountForInstitutionLoginIdExample:
+              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            NoConsumerForCustomerExample:
+              $ref: '#/components/examples/NoConsumerForCustomerExample'
+            ResourceNotFoundExample:
+              $ref: '#/components/examples/ResourceNotFoundExample'
+            NoRegisteredApplicationExample:
+              $ref: '#/components/examples/NoRegisteredApplicationExample'
+            ResellerNoDataForPartnerExample:
+              $ref: '#/components/examples/ResellerNoDataForPartnerExample'
+            ResellerNoReportForPartnerExample:
+              $ref: '#/components/examples/ResellerNoReportForPartnerExample'
+    TransactionRefreshStatusResponse:
+      description: Transaction refresh request status details
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionRefreshStatusDetails'
+          examples:
+            TransactionRefreshStatusCompletedResponse:
+              $ref: '#/components/examples/TransactionRefreshStatusCompletedResponse'
+            TransactionRefreshStatusInProgressResponse:
+              $ref: '#/components/examples/TransactionRefreshStatusInProgressResponse'
+            TransactionRefreshStatusFailedResponse:
+              $ref: '#/components/examples/TransactionRefreshStatusFailedResponse'
+    GetRecurringTransactionsResourceNotFoundErrorResponse:
+      description: Customer ID or Account ID does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            NoAccountForCustomerIdExample:
+              $ref: '#/components/examples/NoAccountForCustomerIdExample'
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            TransactionNotFoundExample:
+              $ref: '#/components/examples/TransactionNotFoundExample'
+    TransactionRefreshNotFoundErrorResponse:
+      description: The requested resource doesn't exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            NoAccountForCustomerExample:
+              $ref: '#/components/examples/NoAccountForCustomerExample'
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            NoAccountForInstitutionLoginIdExample:
+              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
+    SecurityFreezeErrorResponse:
+      description: The active security freeze for this consumer exists.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SecurityFreezeErrorMessage'
+          examples:
+            SecurityFreezeErrorExample:
+              $ref: '#/components/examples/SecurityFreezeErrorExample'
+    GenerateTransactionsReportResponse:
+      description: 'The report is being generated. When finished, a notification will be sent to the specified callback URL (Report Listener Service) and the report can be fetched using Get Report APIs. If you don''t use a callback URL, Get Report returns a minimal report with the following status: ''inProgress''. Repeat the call every 20 seconds until Get Report returns a different status.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionsReportAck'
+          examples:
+            GenerateTransactionsReportResponseExample:
+              $ref: '#/components/examples/GenerateTransactionsReportResponseExample'
+  requestBodies:
+    GetRecurringTransactionRequest:
+      required: false
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountIds'
+    TransactionRefreshRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InitiateNewTransactionRefresh'
+    GenerateTransactionsReportRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionsReportConstraints'
+          examples:
+            GenerateTransactionsReportRequestExample:
+              $ref: '#/components/examples/GenerateTransactionsReportRequestExample'
+  securitySchemes:
+    FinicityAppKey:
+      name: Finicity-App-Key
+      type: apiKey
+      in: header
+      description: The "Finicity-App-Key" from the developer dashboard
+    FinicityAppToken:
+      name: Finicity-App-Token
+      type: apiKey
+      in: header
+      description: A token returned by the `/authentication` API

@@ -1,0 +1,1613 @@
+openapi: 3.2.0
+info:
+  title: Open Finance Connect API
+  description: 'OpenAPI specification for Finicity APIs.
+
+
+    Open Finance (formerly Open Banking) solutions in the US are provided by
+
+    Finicity, a Mastercard company.'
+  contact:
+    name: API Support
+    email: apisupport@mastercard.com
+    url: https://developer.mastercard.com/open-finance-us/documentation/support/
+  version: 1.43.0
+servers:
+- url: https://api.finicity.com
+  description: Production
+security:
+- FinicityAppKey: []
+  FinicityAppToken: []
+tags:
+- name: Connect
+  description: Allow customers to log into their financial institutions and grant Finicity authorization
+paths:
+  /connect/v2/generate:
+    post:
+      tags:
+      - Connect
+      summary: Generate Data Connect URL
+      description: "Generate a Data Connect URL link to add within your own applications.\n\nOptional Parameters:\n* `experience`: Configure different customer experiences per Data Connect session by changing the brand, color, logo, icon, the type of credit decisioning report to generate after the session ends, and more.\n* `language`: By default, the Data Connect application is in English. You don't need to pass  this parameter unless you want to translate Data Connect into one of our supported languages.\n\n  * Spanish (United States)\n  * French (Canada)\n\n\nMVS Developers: You can pre-populate the consumer's SSN on the Find employment records page at the beginning of the MVS payroll app. Pass the SSN value for the consumer in the body of the request call.\n\n_Supported regions_: ![\U0001F1FA\U0001F1F8](https://flagcdn.com/20x15/us.png)"
+      operationId: GenerateConnectUrl
+      requestBody:
+        $ref: '#/components/requestBodies/GenerateConnectUrlRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/GenerateConnectUrlResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+  /connect/v2/generate/lite:
+    post:
+      tags:
+      - Connect
+      summary: Generate Lite Data Connect URL
+      description: 'Data Connect Lite is a variation of Data Connect Full (`POST /connect/v2/generate`), which has a limited set of features.
+
+        * Sign in, user''s credentials, and Multi-Factor Authentication (MFA)
+
+        * No user account management
+
+
+        The Data Connect Web SDK isn''t a requirement when using Data Connect lite. However, if you want to use the SDK events, routes, and user events, then you must integrate with the Data Connect Web SDK.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GenerateLiteConnectUrl
+      requestBody:
+        $ref: '#/components/requestBodies/GenerateLiteConnectUrlRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/GenerateConnectUrlResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+  /connect/v2/generate/fix:
+    post:
+      tags:
+      - Connect
+      summary: Generate Fix Data Connect URL
+      description: 'Use the Data Connect Fix API when the following conditions occur:
+
+        * The connection to the user''s financial institution is lost
+
+        * The user''s credentials were updated (for any number of reasons)
+
+        * The user''s MFA challenge has expired
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GenerateFixConnectUrl
+      requestBody:
+        $ref: '#/components/requestBodies/GenerateFixConnectUrlRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/GenerateConnectUrlResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundErrorResponse'
+  /connect/v2/send/email:
+    post:
+      tags:
+      - Connect
+      summary: Send Data Connect Email
+      description: 'Same as Data Connect Full (`POST /connect/v2/generate`) but send a Connect email to a consumer.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: SendConnectEmail
+      requestBody:
+        $ref: '#/components/requestBodies/SendConnectEmailRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SendConnectEmailResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+  /connect/v2/generate/jointBorrower:
+    post:
+      tags:
+      - Connect
+      summary: Generate Data Connect URL - Joint Borrower
+      description: 'Same as Data Connect Full (`POST /connect/v2/generate`) but for joint borrowers.
+
+
+        MVS prompts both the primary and joint borrower to enter each of their financial, payroll, and paystub information in the same Data Connect session.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: GenerateJointBorrowerConnectUrl
+      requestBody:
+        $ref: '#/components/requestBodies/GenerateJointBorrowerConnectUrlRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/GenerateJointBorrowerConnectUrlResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+  /connect/v2/generate/microentry/verify:
+    post:
+      tags:
+      - Connect
+      summary: Account Validation Assistant User Verification of Microdeposits
+      description: 'The UI re-engages the consumer to enter two microdeposit amounts found in their account and validates them.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: VerifyMicroEntryMicrodeposit
+      requestBody:
+        $ref: '#/components/requestBodies/MicroEntryVerifyRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/MicroEntryVerifyUrlResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+  /connect/generate/transfer/bill-pay-switch:
+    post:
+      tags:
+      - Connect
+      summary: Generate Connect Transfer URL for Bill Pay Switch
+      description: Generate a Connect Transfer URL which you can use in your application to allow end users to set up a bill pay switch.
+      operationId: GenerateTransferBillPaySwitchUrl
+      requestBody:
+        $ref: '#/components/requestBodies/ConnectGenerateTransferBillPaySwitch'
+      responses:
+        '200':
+          $ref: '#/components/responses/ConnectGenerateTransferBillPaySwitchResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+  /connect/generate/transfer/deposit-switch:
+    post:
+      tags:
+      - Connect
+      summary: Generate Connect Transfer URL for Deposit Switch
+      description: Generate a Connect Transfer URL which you can use in your application to allow end users to set up a deposit switch.
+      operationId: GenerateTransferDepositSwitchUrl
+      requestBody:
+        $ref: '#/components/requestBodies/ConnectGenerateTransferDepositSwitch'
+      responses:
+        '200':
+          $ref: '#/components/responses/ConnectGenerateTransferDepositSwitchResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+  /connect/v2/send/email/jointBorrower:
+    post:
+      tags:
+      - Connect
+      summary: Send Data Connect Email - Joint Borrower
+      description: 'Same as Data Connect Joint Borrower (`POST /connect/v2/generate/jointBorrower`) but send a Data Connect email  to at least one of the joint borrower''s email addresses.
+
+
+        When the consumer opens the email, MVS prompts both the primary and joint borrower to enter each of their financial, payroll, and paystub information in the same Data Connect session.
+
+
+        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+      operationId: SendJointBorrowerConnectEmail
+      requestBody:
+        $ref: '#/components/requestBodies/SendJointBorrowerConnectEmailRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SendConnectEmailResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+  /connect/experiences:
+    get:
+      tags:
+      - Connect
+      summary: Get Experience IDs
+      description: Retrieve Data Connect experiences by application name. Optionally, filter the experiences by product codes.
+      operationId: GetAllExperience
+      security:
+      - FinicityAppToken: []
+      - FinicityAppKey: []
+      parameters:
+      - $ref: '#/components/parameters/ProductCodeParam'
+      - $ref: '#/components/parameters/AppNameParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAllExperienceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+  /connect/experiences/{experience_id}/duplicate:
+    post:
+      tags:
+      - Connect
+      summary: Duplicate Experience for Indirect Partner
+      description: Creates a new experience configuration for indirect partners by duplicating an existing experience through the API, enabling them to manage customer onboarding flows based on the  configuration of the source experience.
+      operationId: CreateConnectExperience
+      security:
+      - FinicityAppToken: []
+      - FinicityAppKey: []
+      parameters:
+      - $ref: '#/components/parameters/ExperienceIdParam'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateExperienceForIndirectPartnerRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/CreateExperienceForIndirectPartnerResponse'
+        '400':
+          $ref: '#/components/responses/ExperienceBadRequest'
+        '401':
+          $ref: '#/components/responses/ExpiredToken'
+components:
+  examples:
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    ExperienceBadRequest:
+      value:
+        code: '1003'
+        status: '400'
+        message: '"experienceId" must be a valid GUID.'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+    ResellerInvalidDateRangeLessThanZeroExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
+    InvalidConsumerEmailExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.email.
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    InvalidForesightReportRequestExample:
+      value:
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    InvalidFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: Customer ID does not exist or does not belong to this partner
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    InvalidConsumerSSNExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    NoAccountForInstitutionLoginIdExample:
+      value:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
+    ResellerNoDataForPartnerExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    ResellerInvalidDateRangeExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+    ResourceNotFoundRequest:
+      value:
+        code: '4004'
+        status: '404'
+        message: The requested experience could not be found for the external app name.
+        user_message: The requested entity was not found.
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    BadRequest:
+      value:
+        code: 1000
+        status: '400'
+        message: field must be a number
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+    ExpiredTokenRequest:
+      value:
+        code: '10023'
+        status: '401'
+        message: Expired (Finicity-App-Token)
+        user_message: Your connection timed out due to inactivity. Please log in again to complete your account linking.
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
+    PermissiblePurposeCodeExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: Permissible Purpose Code is required
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    NoConsumerForCustomerExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer for customer with id 5011115315."
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+  parameters:
+    AppNameParam:
+      name: appName
+      description: Unique name of the application provided to Mastercard during app registration.
+      in: query
+      required: true
+      schema:
+        type: string
+      example: test app
+    ProductCodeParam:
+      name: productCode
+      description: Filter the results by product code (a unique billing code assigned to each Open Finance product used). Specify either one single product or multiple products separated by commas.
+      in: query
+      required: false
+      style: form
+      explode: false
+      example:
+      - ABC
+      schema:
+        type: array
+        items:
+          type: string
+          minLength: 1
+          maxLength: 10
+    ExperienceIdParam:
+      name: experience_id
+      description: UUID that distinguishes each experience
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 84fd419a-1add-4bf4-961b-16e8285b3a92
+        minLength: 36
+        maxLength: 36
+  requestBodies:
+    GenerateLiteConnectUrlRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LiteConnectParameters'
+    GenerateJointBorrowerConnectUrlRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConnectJointBorrowerParameters'
+    SendConnectEmailRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConnectEmailParameters'
+    GenerateConnectUrlRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConnectParameters'
+    GenerateFixConnectUrlRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FixConnectParameters'
+    SendJointBorrowerConnectEmailRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConnectJointBorrowerEmailParameters'
+    CreateExperienceForIndirectPartnerRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IndirectPartnerRequest'
+    ConnectGenerateTransferDepositSwitch:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransferDepositSwitchParameters'
+    ConnectGenerateTransferBillPaySwitch:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConnectGenerateTransferBillPaySwitchParameters'
+    MicroEntryVerifyRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MicroEntryVerifyRequestParameter'
+  schemas:
+    ServiceAgreement:
+      description: An object that contains the language the terms and conditions were present in and the date the customer accepted the terms and conditions.
+      type: object
+      required:
+      - language
+      - acceptedDate
+      properties:
+        language:
+          description: The language translation of the terms and conditions as presented to the customer.
+          type: string
+          example: en
+        acceptedDate:
+          description: The date the customer accepted the terms and conditions. Must be a valid ISO-8601 date time.
+          type: string
+          format: date-time
+          example: '2024-11-28T18:25:32+00:00'
+    ReportCustomField:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The name of the custom field
+          example: loanID
+        value:
+          type: string
+          description: The value of the custom field
+          example: '123456'
+        shown:
+          type: boolean
+          description: If the custom field will show on the PDF or not
+          example: true
+    TransferExperience:
+      type: string
+      description: "The `experience` field allows you to customize:\n\n  * To toggle landing screen visibility\n\n  Note: the Finicity sales engineers (SE) help you set up a default\n  experience for your company. For each additional experience you\ncreate\n  thereafter, they'll give you a unique ID. See [Configure the\nConnect\n  Experience](https://developer.mastercard.com/open-finance-us/documentation/connect/configure-connect-experience/).\n\n\n  Experience values options:\n\n  * \"default\": your default experience (must be defined)\n  * GUID: the code for a different experience"
+      example: 03099618-8a28-41f6-b891-83af336626d6
+    Context:
+      type: string
+      description: The context in which you are using the Data Connect link.
+      enum:
+      - EMAIL
+      - SMS
+      - WEB
+      - MOBILE
+      example: EMAIL
+    ConsumerId:
+      type: string
+      description: A consumer ID. See Create Consumer API for how to create a consumer ID.
+      example: 0bf46322c167b562e6cbed9d40e19a4c
+    MicroEntryVerifyRequestParameter:
+      type: object
+      properties:
+        partnerId:
+          $ref: '#/components/schemas/PartnerId'
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        redirectUri:
+          $ref: '#/components/schemas/RedirectUri'
+        webhook:
+          $ref: '#/components/schemas/Webhook'
+        webhookContentType:
+          $ref: '#/components/schemas/WebhookContentType'
+        webhookData:
+          $ref: '#/components/schemas/WebhookData'
+        webhookHeaders:
+          $ref: '#/components/schemas/WebhookHeaders'
+        experience:
+          $ref: '#/components/schemas/Experience'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+    WebhookContentType:
+      type: string
+      description: 'The content type the webhook events will be sent in. Supported types: "application/json" and "application/xml".'
+      default: application/json
+      example: application/json
+    ConsumerDateOfBirth:
+      type: integer
+      description: 'The consumer''s date of birth in Unix epoch time (in seconds). See: Handling Epoch Dates and Times. The timestamp should be set at the start of day of birth.'
+      format: int64
+      example: 1607450357
+    EmailOptions:
+      description: Configuration for the Data Connect email's sent to customers
+      required:
+      - to
+      type: object
+      properties:
+        to:
+          type: string
+          description: The email address for the customer receiving the Data Connect email
+          example: bob@example.com
+        from:
+          type: string
+          description: The name of a person or business sending the Data Connect email
+          example: test.lender@test.com
+        supportPhone:
+          type: string
+          description: The support phone number listed in the email
+          example: 800-555-5555
+        subject:
+          type: string
+          description: The subject line of the email. The default is "Verify your Financial Information".
+          example: Verify your income
+        firstName:
+          type: string
+          description: 'The first name of the customer or both names of the customers for joint borrowers. Example: "Marvin and Jenny".'
+          example: Bob
+        institutionName:
+          type: string
+          description: The name of your company
+          example: Acme Lending
+        institutionAddress:
+          type: string
+          description: The institution address to appear in the footer of the email
+          example: 222 Winnipeg Drive SLC UT, 84109
+        signature:
+          type: array
+          items:
+            type: string
+          description: A signature for the email
+          example:
+          - Cindy Mayfield
+          - Senior Loan Officer
+          - Direct 123-456-7890
+    BankAccount:
+      description: Deposit Switch account
+      type: object
+      required:
+      - accountNumber
+      - bankIdentifier
+      - type
+      properties:
+        accountNumber:
+          type: string
+          description: The user's bank account number
+          minLength: 4
+          maxLength: 17
+          example: '7526894126'
+        bankIdentifier:
+          description: Code used to identify the financial institution also known as the bank routing number
+          type: string
+          pattern: ^[0-9]{9}$
+          example: '110000000'
+        title:
+          description: The title of the account
+          type: string
+          example: My savings account
+        type:
+          description: Financial institution account type. Options `checking` or `savings`
+          type: string
+          example: checking
+    isHostedInMobileApp:
+      description: Indicates whether Data Connect is hosted in a web view / secure container of the partner mobile app. It is only required for NON SDK integrations.
+      type: boolean
+      example: false
+    ConsumerInfo:
+      description: The SSN and date of birth of a consumer
+      required:
+      - ssn
+      type: object
+      properties:
+        ssn:
+          $ref: '#/components/schemas/SocialSecurityNumberNoHyphens'
+        dob:
+          $ref: '#/components/schemas/ConsumerDateOfBirth'
+    InstitutionSettings:
+      type: object
+      description: Advanced options for configuration of which institutions to display in. See [Institution Settings](https://developer.mastercard.com/open-finance-us/documentation/connect/connect-institutions-settings/).
+    Webhook:
+      type: string
+      description: The publicly available URL you want to be notified with events as the user progresses through the application. See [Connect Webhook Event](https://developer.mastercard.com/open-finance-us/documentation/webhooks/webhooks-connect/) for event details.
+      example: https://webhook.site/8d4421a7-d1d1-4f01-bb08-5370aff0321b
+    CreateExperience:
+      type: object
+      properties:
+        experienceId:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+          description: UUID that distinguishes each experience
+          example: 84fd419a-1add-4bf4-961b-16e8285b3a92
+    BillPaySwitchIdentity:
+      description: Identity information for the user. Mandatory when use case is BPS.
+      type: object
+      required:
+      - address
+      - city
+      - firstName
+      - lastName
+      - zipCode
+      - state
+      properties:
+        firstName:
+          type: string
+          description: User first name
+          example: Jane
+          maxLength: 50
+        lastName:
+          type: string
+          description: User last name
+          example: Doe
+          maxLength: 50
+        zipCode:
+          type: string
+          description: Postal / zip code of the user
+          example: '12345'
+          minLength: 5
+          maxLength: 10
+        address:
+          type: string
+          description: First line of user address
+          example: 123 Lane
+          maxLength: 100
+        address2:
+          type: string
+          description: Second line of user address
+          example: Apt 987
+          maxLength: 100
+        city:
+          type: string
+          description: City in which user is located
+          example: Purchase
+          maxLength: 100
+        state:
+          type: string
+          description: State in which user is located
+          example: NY
+          maxLength: 2
+        phone:
+          type: string
+          description: User phone number
+          example: '2121234567'
+          maxLength: 15
+        email:
+          type: string
+          description: User email address
+          example: jane.doe@example.com
+          maxLength: 100
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    ReportCustomFields:
+      type: array
+      items:
+        $ref: '#/components/schemas/ReportCustomField'
+      description: 'The `reportCustomFields` parameter is used when experiences are associated with a credit decisioning report.
+
+
+        Designate up to 5 custom fields that you''d like associated with the report when it''s generated. Every custom field consists of three variables: `label`, `value`, and `shown`. The `shown` variable is "true" or "false".
+
+        * "true": (default) display the custom field in the PDF report
+
+        * "false": don''t display the custom field in the PDF report
+
+
+        For an experience that generates multiple reports, the `reportCustomFields` parameter gets passed to all reports.
+
+
+        All custom fields display in the Reseller Billing API.'
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    IsWebView:
+      type: boolean
+      description: '"true": Indicates that the Data Connect Session will be displayed within a WebView. When the `isWebView` parameter is `true` the `redirectUri` parameter is required.
+
+
+        Note: This parameter is no longer recommended. We instead recommend specifying a `redirectUrl` through our WebSDK. Please refer to the following documentation:
+
+
+        - [iOS](https://developer.mastercard.com/open-finance-us/documentation/connect/integrating/webviews/ios-webviews/)
+
+
+        - [Android](https://developer.mastercard.com/open-finance-us/documentation/connect/integrating/webviews/android-webviews/)'
+      example: true
+    Borrower:
+      required:
+      - customerId
+      - consumerId
+      - type
+      type: object
+      properties:
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        consumerId:
+          $ref: '#/components/schemas/ConsumerId'
+        type:
+          $ref: '#/components/schemas/BorrowerType'
+        optionalConsumerInfo:
+          $ref: '#/components/schemas/ConsumerInfo'
+    Card:
+      type: object
+      description: Structure of the user card
+      required:
+      - title
+      - number
+      - expiry
+      - cvv
+      properties:
+        title:
+          type: string
+          description: The user title for the card in use
+          example: Mastercard super card
+        number:
+          type: string
+          description: The card number used for bill payment. Should be between 15-19 digits
+          example: '4242424242424242'
+          minLength: 15
+          maxLength: 19
+        expiry:
+          type: string
+          description: The expiry date for the card in mm/yy format
+          example: 12/27
+        cvv:
+          type: string
+          description: The CVV / CVC number associated to the card
+          example: '123'
+          minLength: 3
+          maxLength: 4
+        brand:
+          type: string
+          description: The Brand of card in use. Possible values include mastercard, visa, american-express, or discover.
+          example: Mastercard
+    ConnectTransferDepositSwitchLink:
+      type: object
+      description: contains url to launch connect session
+      properties:
+        link:
+          type: string
+          description: web url to launch a connect session
+          example: https://connect2.finicity.com?customerId=6007761187&origin=url&partnerId=2445582695152&signature=f4d278f9d0b4a54f6bc2e71aa00607900365a2625bdb5bc9ca0eaec1c4158de8&timestamp=1660164260516&ttl=1660171460516type=transferDepositSwitch
+    ConnectEmailParameters:
+      required:
+      - partnerId
+      - customerId
+      - consumerId
+      - email
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/ConnectLanguage'
+        partnerId:
+          $ref: '#/components/schemas/PartnerId'
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        consumerId:
+          $ref: '#/components/schemas/ConsumerId'
+        redirectUri:
+          $ref: '#/components/schemas/RedirectUri'
+        webhook:
+          $ref: '#/components/schemas/Webhook'
+        webhookContentType:
+          $ref: '#/components/schemas/WebhookContentType'
+        webhookData:
+          $ref: '#/components/schemas/WebhookData'
+        webhookHeaders:
+          $ref: '#/components/schemas/WebhookHeaders'
+        institutionSettings:
+          $ref: '#/components/schemas/InstitutionSettings'
+        email:
+          $ref: '#/components/schemas/EmailOptions'
+        experience:
+          $ref: '#/components/schemas/Experience'
+        singleUseUrl:
+          $ref: '#/components/schemas/SingleUseUrl'
+        fromDate:
+          $ref: '#/components/schemas/ConnectFromDate'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        optionalConsumerInfo:
+          $ref: '#/components/schemas/ConsumerInfo'
+    ConnectGenerateTransferBillPaySwitchParameters:
+      type: object
+      required:
+      - cards
+      - customerId
+      - identity
+      - partnerId
+      - singleUseUrl
+      properties:
+        serviceAgreement:
+          $ref: '#/components/schemas/ServiceAgreement'
+        accounts:
+          $ref: '#/components/schemas/BankAccounts'
+        partnerId:
+          $ref: '#/components/schemas/PartnerId'
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        experience:
+          $ref: '#/components/schemas/TransferExperience'
+        language:
+          description: 'By default, the Data Connect application is in English. You don''t need to pass this parameter unless
+
+            you want to translate Data Connect into one of our supported languages.
+
+
+            * Spanish (United States): `es`
+
+            '
+          type: string
+          example: es
+        singleUseUrl:
+          $ref: '#/components/schemas/SingleUseUrl'
+        redirectUri:
+          $ref: '#/components/schemas/RedirectUri'
+        cards:
+          description: List of the user cards. Mandatory when use case is BPS.
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Card'
+        identity:
+          $ref: '#/components/schemas/BillPaySwitchIdentity'
+    RedirectUri:
+      type: string
+      description: The URL that customers will be redirected to after completing Finicity Connect.  Required unless Data Connect is embedded inside our application (iframe). Required for NON SDK integrations, should be iOS universal link OR Android app link  when Data Connect is hosted in a web view / secure container of the partner mobile app.
+      example: https://www.finicity.com/connect/
+    ConnectParameters:
+      required:
+      - partnerId
+      - customerId
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/ConnectLanguage'
+        partnerId:
+          $ref: '#/components/schemas/PartnerId'
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        consumerId:
+          $ref: '#/components/schemas/ConsumerId'
+        redirectUri:
+          $ref: '#/components/schemas/RedirectUri'
+        webhook:
+          $ref: '#/components/schemas/Webhook'
+        webhookContentType:
+          $ref: '#/components/schemas/WebhookContentType'
+        webhookData:
+          $ref: '#/components/schemas/WebhookData'
+        webhookHeaders:
+          $ref: '#/components/schemas/WebhookHeaders'
+        optionalConsumerInfo:
+          $ref: '#/components/schemas/ConsumerInfo'
+        singleUseUrl:
+          $ref: '#/components/schemas/SingleUseUrl'
+        experience:
+          $ref: '#/components/schemas/Experience'
+        institutionSettings:
+          $ref: '#/components/schemas/InstitutionSettings'
+        fromDate:
+          $ref: '#/components/schemas/ConnectFromDate'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        isHostedInMobileApp:
+          $ref: '#/components/schemas/isHostedInMobileApp'
+        isWebView:
+          $ref: '#/components/schemas/IsWebView'
+    ConnectEmailUrl:
+      required:
+      - link
+      - emailConfig
+      type: object
+      properties:
+        link:
+          $ref: '#/components/schemas/ConnectLink'
+        emailConfig:
+          $ref: '#/components/schemas/EmailOptions'
+    WebhookData:
+      type: object
+      description: 'Allows additional identifiable information to be inserted into the payload of connect webhook events. See: [Custom Webhooks](https://developer.mastercard.com/open-finance-us/documentation/webhooks/webhooks-custom/).'
+    InstitutionLoginId:
+      type: string
+      description: An institution login ID (from the account record)
+      example: '1007302745'
+    Experience:
+      type: string
+      description: 'The `experience` field allows you to customize:
+
+        * Brand: color and logo
+
+        * Icon: displayed on the "Share your data" page
+
+        * Popular institutions: displayed on the Bank Search page
+
+        * Report: the credit decisioning report to send when Data Connect completes.
+
+        * MVS modules: financial, payroll, paystub
+
+
+        Note: the Finicity sales engineers (SE) help you set up a default experience for your company. For each additional experience you create thereafter, they''ll give you a unique ID. See [Configure the Connect Experience](https://developer.mastercard.com/open-finance-us/documentation/connect/configure-connect-experience/).
+
+
+        Experience values options:
+
+        * "default": your default experience (must be defined)
+
+        * GUID: the code for a different experience
+
+        * Not defined: If you don''t pass the experience parameter, then Connect''s out of the box default experience (add accounts but no branding) is used, and the MVS modules will not run.'
+      example: default
+    ConnectFromDate:
+      type: integer
+      description: 'The `fromDate` parameter is used when experiences are associated with a credit decisioning report and any other reports with transaction data. The value is in epoch time and must be 10 digits. Example: 1494449017. If it''s greater than 10 digits, then the `fromDate` is set to the credit decisioning report''s default `fromDate`.
+
+
+        For an experience that generates multiple reports, the `fromDate` gets passed to the reports that support it.
+
+
+        However, Data Connect doesn''t pass this parameter to the following reports:
+
+        * Pay Statement Extraction Report
+
+        * VOIE - Paystub (with TXVerify) Report
+
+        * Statement Report
+
+        * Verification of Income Report
+
+        * VOIE - Payroll Report
+
+
+        Note: this field isn''t used if you''re only collecting transaction data without a report.'
+      format: int64
+      example: 1607450357
+    BankAccounts:
+      type: array
+      items:
+        $ref: '#/components/schemas/BankAccount'
+      description: List of customer accounts (one or more) for Deposit Switch.
+      example:
+      - accountNumber: '7526894126'
+        bankIdentifier: '110000000'
+        title: My savings account
+        type: savings
+      - accountNumber: '3740238560'
+        bankIdentifier: '110000000'
+        title: Checking account 8560
+        type: checking
+    SocialSecurityNumberNoHyphens:
+      type: string
+      description: The consumer's full SSN without hyphens
+      example: '999999999'
+    ConnectLink:
+      type: string
+      description: A generated Connect URL
+      example: https://connect2.finicity.com?customerId=5025024821&institutionId=102105&origin=url&partnerId=2445583925753&signature=b5667164db7a9a0007b59267785c996ca3bc9ce97f2e72c98099cead76edfad9&timestamp=1648050761908&ttl=1648057961908&type=lite&webhookContentType=application%2Fjson
+    ConnectJointBorrowerEmailParameters:
+      required:
+      - partnerId
+      - borrowers
+      - email
+      - experience
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/ConnectLanguage'
+        partnerId:
+          $ref: '#/components/schemas/PartnerId'
+        borrowers:
+          $ref: '#/components/schemas/Borrowers'
+        redirectUri:
+          $ref: '#/components/schemas/RedirectUri'
+        webhook:
+          $ref: '#/components/schemas/Webhook'
+        webhookContentType:
+          $ref: '#/components/schemas/WebhookContentType'
+        webhookData:
+          $ref: '#/components/schemas/WebhookData'
+        webhookHeaders:
+          $ref: '#/components/schemas/WebhookHeaders'
+        institutionSettings:
+          $ref: '#/components/schemas/InstitutionSettings'
+        email:
+          $ref: '#/components/schemas/EmailOptions'
+        experience:
+          $ref: '#/components/schemas/Experience'
+        fromDate:
+          $ref: '#/components/schemas/ConnectFromDate'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        singleUseUrl:
+          $ref: '#/components/schemas/SingleUseUrl'
+    ConnectUrl:
+      description: A Connect URL object
+      required:
+      - link
+      type: object
+      properties:
+        link:
+          $ref: '#/components/schemas/ConnectLink'
+    ConnectJointBorrowerParameters:
+      required:
+      - partnerId
+      - borrowers
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/ConnectLanguage'
+        partnerId:
+          $ref: '#/components/schemas/PartnerId'
+        borrowers:
+          $ref: '#/components/schemas/Borrowers'
+        redirectUri:
+          $ref: '#/components/schemas/RedirectUri'
+        webhook:
+          $ref: '#/components/schemas/Webhook'
+        webhookContentType:
+          $ref: '#/components/schemas/WebhookContentType'
+        webhookData:
+          $ref: '#/components/schemas/WebhookData'
+        webhookHeaders:
+          $ref: '#/components/schemas/WebhookHeaders'
+        institutionSettings:
+          $ref: '#/components/schemas/InstitutionSettings'
+        experience:
+          $ref: '#/components/schemas/Experience'
+        fromDate:
+          $ref: '#/components/schemas/ConnectFromDate'
+        reportCustomFields:
+          $ref: '#/components/schemas/ReportCustomFields'
+        singleUseUrl:
+          $ref: '#/components/schemas/SingleUseUrl'
+    WebhookHeaders:
+      type: object
+      description: 'Allows additional identifiable information to be included as headers of connect webhook event. See: [Custom Webhooks](https://developer.mastercard.com/open-finance-us/documentation/webhooks/webhooks-custom/).'
+    Error:
+      description: A single error.
+      type: object
+      properties:
+        Source:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: The application that generated this error
+          example: Event Subscription Service
+        ReasonCode:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: A unique constant identifying the error case encountered during transaction processing
+          example: '10001'
+        Description:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: Description of the ReasonCode field with additional details.
+          example: Resource Not Found.
+        Recoverable:
+          type: boolean
+          description: Indicates whether this error will always be returned for this request, or retrying could change the outcome
+          example: false
+        Details:
+          type: string
+          minLength: 0
+          maxLength: 512
+          description: Details for backwards compatibility.
+          example: Invalid JSON payload
+    IndirectPartnerRequest:
+      type: object
+      required:
+      - indirectPartnerId
+      properties:
+        indirectPartnerId:
+          type: integer
+          format: int64
+          description: The ID of the indirect partner
+          example: 423456789
+    PartnerId:
+      type: string
+      description: Your Partner ID displayed in the [Developer Dashboard](https://developer.mastercard.com/account/log-in)
+      example: '1234583871234'
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    BorrowerType:
+      description: '"primary" or "jointBorrower"'
+      type: string
+      example: primary
+    ConnectLanguage:
+      description: 'By default, the Data Connect application is in English. You don''t need to pass this parameter unless
+
+        you want to translate Data Connect into one of our supported languages.
+
+
+        * Spanish (United States): `es`
+
+        * French (Canada): `fr`
+
+        '
+      type: string
+      example: es
+    Borrowers:
+      type: array
+      items:
+        $ref: '#/components/schemas/Borrower'
+      description: (MVS) Array of borrowers to pass the primary and joint borrower's customer and consumer IDs
+    FixConnectParameters:
+      required:
+      - partnerId
+      - customerId
+      - institutionLoginId
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/ConnectLanguage'
+        partnerId:
+          $ref: '#/components/schemas/PartnerId'
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        institutionLoginId:
+          $ref: '#/components/schemas/InstitutionLoginId'
+        redirectUri:
+          $ref: '#/components/schemas/RedirectUri'
+        webhook:
+          $ref: '#/components/schemas/Webhook'
+        webhookContentType:
+          $ref: '#/components/schemas/WebhookContentType'
+        webhookData:
+          $ref: '#/components/schemas/WebhookData'
+        webhookHeaders:
+          $ref: '#/components/schemas/WebhookHeaders'
+        experience:
+          $ref: '#/components/schemas/Experience'
+        singleUseUrl:
+          $ref: '#/components/schemas/SingleUseUrl'
+        isHostedInMobileApp:
+          $ref: '#/components/schemas/isHostedInMobileApp'
+        isWebView:
+          $ref: '#/components/schemas/IsWebView'
+    LiteConnectParameters:
+      required:
+      - partnerId
+      - customerId
+      - institutionId
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/ConnectLanguage'
+        partnerId:
+          $ref: '#/components/schemas/PartnerId'
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        institutionId:
+          $ref: '#/components/schemas/NumericInstitutionId'
+        redirectUri:
+          $ref: '#/components/schemas/RedirectUri'
+        webhook:
+          $ref: '#/components/schemas/Webhook'
+        webhookContentType:
+          $ref: '#/components/schemas/WebhookContentType'
+        webhookData:
+          $ref: '#/components/schemas/WebhookData'
+        webhookHeaders:
+          $ref: '#/components/schemas/WebhookHeaders'
+        experience:
+          $ref: '#/components/schemas/Experience'
+        singleUseUrl:
+          $ref: '#/components/schemas/SingleUseUrl'
+        isHostedInMobileApp:
+          $ref: '#/components/schemas/isHostedInMobileApp'
+        isWebView:
+          $ref: '#/components/schemas/IsWebView'
+    ExternalIdentity:
+      type: string
+      description: The identifier for your employee or branch.
+      example: '1234583871234'
+    NumericInstitutionId:
+      description: The ID of a financial institution, represented as a number
+      type: integer
+      format: int64
+      example: 4222
+    SingleUseUrl:
+      type: boolean
+      description: '"true": The URL link expires after a Data Connect session successfully completes.
+
+
+        Note: when the `singleUseUrl` and the `experience` parameters are passed in the same call, the `singleUseUrl` value overrides the `singleUseUrl` value configured in the `experience` parameter.'
+      example: true
+    TransferDepositSwitchParameters:
+      type: object
+      required:
+      - partnerId
+      - customerId
+      - accounts
+      properties:
+        serviceAgreement:
+          $ref: '#/components/schemas/ServiceAgreement'
+        external:
+          $ref: '#/components/schemas/ExternalTransferDetails'
+        accounts:
+          $ref: '#/components/schemas/BankAccounts'
+        partnerId:
+          $ref: '#/components/schemas/PartnerId'
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        language:
+          description: 'By default, the Connect Transfer application is in English. You don''t need to pass this parameter unless
+
+            you want to translate Connect Transfer into one of our supported languages.
+
+
+            * Spanish (United States): `es`
+
+            '
+          type: string
+          example: es
+        webhook:
+          type: string
+          deprecated: true
+          description: The publicly available URL you want to be notified with events as the user progresses through the application. See [Connect Webhook Event](https://developer.mastercard.com/open-finance-us/documentation/webhooks/webhooks-connect/) for event details.
+          example: https://webhook.site/8d4421a7-d1d1-4f01-bb08-5370aff0321b
+        webhookContentType:
+          type: string
+          deprecated: true
+          description: 'The content type the webhook events will be sent in. Supported types: "application/json" and "application/xml".'
+          default: application/json
+          example: application/json
+        webhookData:
+          type: object
+          deprecated: true
+          description: 'Allows additional identifiable information to be inserted into the payload of Connect webhook events. See: [Custom Webhooks](https://developer.mastercard.com/open-finance-us/documentation/webhooks/webhooks-custom/).'
+        webhookHeaders:
+          type: object
+          deprecated: true
+          description: 'Allows additional identifiable information to be included as headers of the Connect webhook event. See: [Custom Webhooks](https://developer.mastercard.com/open-finance-us/documentation/webhooks/webhooks-custom/).'
+        redirectUri:
+          $ref: '#/components/schemas/RedirectUri'
+        experience:
+          $ref: '#/components/schemas/TransferExperience'
+    ExternalTransferDetails:
+      type: object
+      description: The context type.
+      required:
+      - id
+      - context
+      properties:
+        id:
+          $ref: '#/components/schemas/ExternalIdentity'
+        context:
+          $ref: '#/components/schemas/Context'
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    Experiences:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+          description: UUID that distinguishes each experience
+          example: 84fd419a-1add-4bf4-961b-16e8285b3a92
+        appName:
+          type: string
+          description: Your registered application name in our system
+          minLength: 1
+          maxLength: 255
+          example: Test Application Name
+        productCode:
+          type: array
+          description: A unique code assigned to each open finance product used.
+          example:
+          - ABC
+          - AO
+          items:
+            type: string
+            minLength: 1
+            maxLength: 10
+    ConnectTransferBillPaySwitchLink:
+      type: object
+      description: contains url to launch connect session
+      properties:
+        link:
+          type: string
+          description: web url to launch a connect session
+          example: https://connect2.finicity.com?customerId=6007761187&origin=url&partnerId=2445582695152&signature=f4d278f9d0b4a54f6bc2e71aa00607900365a2625bdb5bc9ca0eaec1c4158de8&timestamp=1660164260516&ttl=1660171460516type=transferBillPaySwitch
+  responses:
+    BadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            PermissiblePurposeCodeExample:
+              $ref: '#/components/examples/PermissiblePurposeCodeExample'
+            InvalidForesightReportRequestExample:
+              $ref: '#/components/examples/InvalidForesightReportRequestExample'
+            BothCraAndFtcPurposeTrueExample:
+              $ref: '#/components/examples/BothCraAndFtcPurposeTrueExample'
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            InvalidExperienceFieldExample:
+              $ref: '#/components/examples/InvalidExperienceFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+            ResellerPartnerNotAuthorizedExample:
+              $ref: '#/components/examples/ResellerPartnerNotAuthorizedExample'
+            ResellerInvalidDateRangeExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeExample'
+            ResellerInvalidDateRangeLessThanZeroExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeLessThanZeroExample'
+            ResellerInvalidDateRangeGreaterThanEndDateExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThanEndDateExample'
+            ResellerInvalidDateRangeGreaterThan31DaysExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThan31DaysExample'
+            CustomerReportLimitExceedExample:
+              $ref: '#/components/examples/CustomerReportLimitExceedExample'
+            InvalidConsumerSSNExample:
+              $ref: '#/components/examples/InvalidConsumerSSNExample'
+            InvalidConsumerPhoneExample:
+              $ref: '#/components/examples/InvalidConsumerPhoneExample'
+            InvalidConsumerEmailExample:
+              $ref: '#/components/examples/InvalidConsumerEmailExample'
+            InvalidValue:
+              $ref: '#/components/examples/InvalidValueExample'
+    ExperienceBadRequest:
+      description: The request was rejected.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ExperienceBadRequest:
+              $ref: '#/components/examples/ExperienceBadRequest'
+    ResourceNotFoundResponse:
+      description: The requested entity was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ResourceNotFoundRequest:
+              $ref: '#/components/examples/ResourceNotFoundRequest'
+    ConnectGenerateTransferBillPaySwitchResponse:
+      description: Successful response. Returns Connect Transfer URL.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConnectTransferBillPaySwitchLink'
+    MicroEntryVerifyUrlResponse:
+      description: The URL link was successfully generated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConnectUrl'
+    GenerateJointBorrowerConnectUrlResponse:
+      description: The URL link was successfully generated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConnectUrl'
+    GetAllExperienceResponse:
+      description: Successful response. Returns all retrieved Experience.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Experiences'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
+    CreateExperienceForIndirectPartnerResponse:
+      description: Experience created successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateExperience'
+    BadRequestResponse:
+      description: The request was rejected.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            BadRequest:
+              $ref: '#/components/examples/BadRequest'
+    ResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ConsumerNotFoundExample:
+              $ref: '#/components/examples/ConsumerNotFoundExample'
+            NoAccountForInstitutionLoginIdExample:
+              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            NoConsumerForCustomerExample:
+              $ref: '#/components/examples/NoConsumerForCustomerExample'
+            ResourceNotFoundExample:
+              $ref: '#/components/examples/ResourceNotFoundExample'
+            NoRegisteredApplicationExample:
+              $ref: '#/components/examples/NoRegisteredApplicationExample'
+            ResellerNoDataForPartnerExample:
+              $ref: '#/components/examples/ResellerNoDataForPartnerExample'
+            ResellerNoReportForPartnerExample:
+              $ref: '#/components/examples/ResellerNoReportForPartnerExample'
+    GenerateConnectUrlResponse:
+      description: The URL link was successfully generated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConnectUrl'
+    ConnectGenerateTransferDepositSwitchResponse:
+      description: Successful response. Returns Connect Transfer URL.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConnectTransferDepositSwitchLink'
+    ExpiredToken:
+      description: Unauthorized request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            UnauthorizedRequest:
+              $ref: '#/components/examples/ExpiredTokenRequest'
+    SendConnectEmailResponse:
+      description: The URL link was successfully generated and the email sent
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConnectEmailUrl'
+  securitySchemes:
+    FinicityAppKey:
+      name: Finicity-App-Key
+      type: apiKey
+      in: header
+      description: The "Finicity-App-Key" from the developer dashboard
+    FinicityAppToken:
+      name: Finicity-App-Token
+      type: apiKey
+      in: header
+      description: A token returned by the `/authentication` API
