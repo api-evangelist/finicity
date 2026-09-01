@@ -453,7 +453,7 @@ apis:
   humanURL: https://developer.mastercard.com/open-banking-us/documentation/
   baseURL: https://api.finicity.com
   tags:
-  - institutions
+  - Institutions
   tags_raw:
   - Institutions
   properties:
