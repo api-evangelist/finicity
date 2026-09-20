@@ -11,7 +11,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 2
+edge_count: 3
 edges:
 - tag: Webhook Subscription
   spec_file: finicity-webhook-subscription-api-openapi.yml
@@ -24,6 +24,19 @@ edges:
   reason: Full CRUD plus enable/disable and test of outbound webhook subscriptions and their event types
     — exactly outbound webhook/event subscription lifecycle on a developer platform. Slight discount because
     such plumbing could equally be judged non-business.
+- tag: TxPush
+  spec_file: finicity-txpush-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.75
+  evidence: POST /aggregation/v1/customers/{customerId}/accounts/{accountId}/txpush SubscribeToTxPushNotifications
+    Subscribe to TxPush Notifications; schemas TxPushCallbackUrl, TxPushSubscriptions
+  reason: Operations manage outbound push-notification subscriptions with a callback URL, including test
+    event creation and subscription deletion — the lifecycle of outbound event/webhook subscriptions for
+    API consumers. Confidence moderate as this is largely integration plumbing, but BC-4270.80 exists
+    precisely for it.
+  recovered_from: sweep-20260829T005356Z-edges.json
 - tag: Small Business Credit Analytics
   spec_file: finicity-small-business-credit-analytics-api-openapi.yml
   capability_id: BC-1320.20
