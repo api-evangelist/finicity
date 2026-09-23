@@ -80,7 +80,13 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-      description: "Use the Data Connect Fix API when the following conditions occur:\n  * The connection to the user's financial institution is lost.\n  * The user's credentials were updated (for any number of reasons).\n  * The user's MFA challenge has expired."
+      description: 'Use the Data Connect Fix API when the following conditions occur:
+
+        * The connection to the user''s financial institution is lost.
+
+        * The user''s credentials were updated (for any number of reasons).
+
+        * The user''s MFA challenge has expired.'
       requestBody:
         $ref: '#/components/requestBodies/NoBody'
   /connect-components/configurations:
@@ -96,7 +102,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-      description: Optional endpoint. This endpoint is use to generate a configuration  object, which an then be passed in during the login flow. If used, the ID provided will need to be passed in the Create Login  Form or Create OAuth URL.
+      description: Optional endpoint. This endpoint is use to generate a configuration object, which an then be passed in during the login flow. If used, the ID provided will need to be passed in the Create Login Form or Create OAuth URL.
       requestBody:
         $ref: '#/components/requestBodies/CreateConfiguration'
     get:
@@ -140,25 +146,130 @@ paths:
           $ref: '#/components/responses/ResourceNotFound'
       description: Removes the configuration from the database
 components:
+  schemas:
+    FilterAccounts:
+      type: array
+      description: An optional filter to apply during account activation with institutions that support legacy login forms.
+      items:
+        type: string
+        example: Checking
+        minLength: 1
+        maxLength: 512
+    GoldStandardErrorMessage:
+      required:
+      - Errors
+      type: object
+      properties:
+        Errors:
+          type: object
+          required:
+          - Error
+          properties:
+            Error:
+              description: Mastercard standard error message.
+              type: array
+              items:
+                type: object
+                properties:
+                  Source:
+                    type: string
+                    description: The applications that generated the error.
+                  ReasonCode:
+                    type: string
+                    description: A unique constant identifying the error case encountered during processing.
+                  Description:
+                    type: string
+                    description: Short description of the ReasonCode field.
+                  Recoverable:
+                    type: boolean
+                    description: Indicates whether this error will always be returned for this request, or retrying could change the outcome.
+                  Details:
+                    type: string
+                    description: Where appropriate, indicates detailed information about data received and calculated during request processing, to help the user with diagnosing errors.
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    EventStreamId:
+      type: string
+      format: uuid
+      description: Unique reference to the event stream used to send events to the SDK
+      minLength: 36
+      maxLength: 36
+      example: 208a1170-875e-4656-85d0-27dfc3ee7137
+    ConfigurationId:
+      description: Unique identifier of the configuration object
+      type: string
+      format: uuid
+      example: 605543e1-f507-48ad-8127-95c40566597b
+      minLength: 36
+      maxLength: 36
+    AccountClassificationType:
+      type: array
+      example:
+      - personal
+      - business
+      description: 'An optional filter to apply during account activation with institutions that support Oauth integration. Supported filters are: `personal`, `business`, and `unknown`.'
+      items:
+        type: string
+        example: personal
+    Configuration:
+      title: Configuration
+      type: object
+      description: Used to modify behavior during the login flow
+      properties:
+        id:
+          $ref: '#/components/schemas/ConfigurationId'
+        filterAccounts:
+          $ref: '#/components/schemas/FilterAccounts'
+        accountClassificationType:
+          $ref: '#/components/schemas/AccountClassificationType'
+        aoRequired:
+          $ref: '#/components/schemas/AoRequired'
+    AoRequired:
+      type: boolean
+      description: When set to true, the user must explicitly permission Account Owner details at OAuth-supported institutions. If they do not, a [239] error is returned, and the login attempt is blocked. Partners are responsible for handling user re-attempt flows to ensure proper permissions are granted
+      default: false
+      example: true
+    ServiceAgreement:
+      description: An object that contains the language the terms and conditions were present in and the date the customer accepted the terms and conditions.
+      type: object
+      required:
+      - language
+      - acceptedDate
+      properties:
+        language:
+          description: The language translation of the terms and conditions as presented to the customer.
+          type: string
+          example: en
+        acceptedDate:
+          description: The date the customer accepted the terms and conditions. Must be a valid ISO-8601 date time.
+          type: string
+          format: date-time
+          example: '2024-11-28T18:25:32+00:00'
   responses:
-    ResourceNotFound:
-      description: The resource doesn't exist
+    Configurations:
+      description: Array of available configurations
+      content:
+        application/json:
+          schema:
+            type: array
+            description: The array of configuration objects associated with this partner
+            items:
+              $ref: '#/components/schemas/Configuration'
+    Unauthorized:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/GoldStandardErrorMessage'
           examples:
-            ResourceNotFoundExample:
-              $ref: '#/components/examples/GoldStandardResourceNotFound'
-    BadRequest:
-      description: The request was rejected
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GoldStandardErrorMessage'
-          examples:
-            InvalidFieldExample:
-              $ref: '#/components/examples/GoldStandardInvalidField'
+            ExpiredTokenExample:
+              $ref: '#/components/examples/GoldStandardExpiredToken'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/GoldStandardMissingFinicityAppKey'
+    NoBody:
+      description: Empty Response Body
     GenerateOAuthUrl:
       description: The returned oauth url, as well as a reference back to this resource in case modifications are needed
       content:
@@ -191,12 +302,15 @@ components:
                 description: The oauth url to direct the user to
               eventStreamId:
                 $ref: '#/components/schemas/EventStreamId'
-    Configuration:
-      description: An object used to modify the login behavior
+    BadRequest:
+      description: The request was rejected
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Configuration'
+            $ref: '#/components/schemas/GoldStandardErrorMessage'
+          examples:
+            InvalidFieldExample:
+              $ref: '#/components/examples/GoldStandardInvalidField'
     LoginForms:
       description: Generate a new login form entry
       content:
@@ -260,19 +374,21 @@ components:
             - id
             - elements
             - eventStreamId
-    Unauthorized:
-      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+    ResourceNotFound:
+      description: The resource doesn't exist
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/GoldStandardErrorMessage'
           examples:
-            ExpiredTokenExample:
-              $ref: '#/components/examples/GoldStandardExpiredToken'
-            MissingFinicityAppKeyExample:
-              $ref: '#/components/examples/GoldStandardMissingFinicityAppKey'
-    NoBody:
-      description: Empty Response Body
+            ResourceNotFoundExample:
+              $ref: '#/components/examples/GoldStandardResourceNotFound'
+    Configuration:
+      description: An object used to modify the login behavior
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Configuration'
     MfaChallenge:
       description: MFA challenges required to log in
       content:
@@ -320,153 +436,6 @@ components:
                           example: 9082affa-d965-40be-a3ed-a320bb3467ff
                           minLength: 36
                           maxLength: 36
-    Configurations:
-      description: Array of available configurations
-      content:
-        application/json:
-          schema:
-            type: array
-            description: The array of configuration objects associated with this partner
-            items:
-              $ref: '#/components/schemas/Configuration'
-  parameters:
-    InstitutionIdPathParameter:
-      name: institution_id
-      in: path
-      description: The financial institution id at Mastercard.
-      required: true
-      schema:
-        type: integer
-      example: 170716
-    CustomerIdPathParameter:
-      description: Unique identifier of the customer
-      name: customer_id
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/CustomerId'
-      example: '1005061234'
-    InstitutionLoginIdPathParam:
-      name: institution_login_id
-      description: Institution login id of the customer.
-      in: path
-      required: true
-      schema:
-        type: integer
-        format: int64
-        example: 7008461438
-    ConfigurationIdPathParameter:
-      name: configuration_id
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-        example: 9082affa-d965-40be-a3ed-a320bb3467ff
-        minLength: 36
-        maxLength: 36
-      description: The unique identifier for a configuration object
-  schemas:
-    ServiceAgreement:
-      description: An object that contains the language the terms and conditions were present in and the date the customer accepted the terms and conditions.
-      type: object
-      required:
-      - language
-      - acceptedDate
-      properties:
-        language:
-          description: The language translation of the terms and conditions as presented to the customer.
-          type: string
-          example: en
-        acceptedDate:
-          description: The date the customer accepted the terms and conditions. Must be a valid ISO-8601 date time.
-          type: string
-          format: date-time
-          example: '2024-11-28T18:25:32+00:00'
-    FilterAccounts:
-      type: array
-      description: An optional filter to apply during account activation with institutions that support legacy login forms.
-      items:
-        type: string
-        example: Checking
-        minLength: 1
-        maxLength: 512
-    AccountClassificationType:
-      type: array
-      example:
-      - personal
-      - business
-      description: 'An optional filter to apply during account activation with institutions that support Oauth integration. Supported filters are: `personal`, `business`, and `unknown`.'
-      items:
-        type: string
-        example: personal
-    GoldStandardErrorMessage:
-      required:
-      - Errors
-      type: object
-      properties:
-        Errors:
-          type: object
-          required:
-          - Error
-          properties:
-            Error:
-              description: Mastercard standard error message.
-              type: array
-              items:
-                type: object
-                properties:
-                  Source:
-                    type: string
-                    description: The applications that generated the error.
-                  ReasonCode:
-                    type: string
-                    description: A unique constant identifying the error case encountered during processing.
-                  Description:
-                    type: string
-                    description: Short description of the ReasonCode field.
-                  Recoverable:
-                    type: boolean
-                    description: Indicates whether this error will always be returned for this request, or retrying could change the outcome.
-                  Details:
-                    type: string
-                    description: Where appropriate, indicates detailed information about data received and calculated during request processing, to help the user with diagnosing errors.
-    Configuration:
-      title: Configuration
-      type: object
-      description: Used to modify behavior during the login flow
-      properties:
-        id:
-          $ref: '#/components/schemas/ConfigurationId'
-        filterAccounts:
-          $ref: '#/components/schemas/FilterAccounts'
-        accountClassificationType:
-          $ref: '#/components/schemas/AccountClassificationType'
-        aoRequired:
-          $ref: '#/components/schemas/AoRequired'
-    ConfigurationId:
-      description: Unique identifier of the configuration object
-      type: string
-      format: uuid
-      example: 605543e1-f507-48ad-8127-95c40566597b
-      minLength: 36
-      maxLength: 36
-    CustomerId:
-      type: string
-      description: A customer ID. See Add Customer API for how to create a customer ID.
-      example: '1005061234'
-    AoRequired:
-      type: boolean
-      description: When set to true, the user must explicitly permission Account Owner details at OAuth-supported institutions. If they do not, a [239] error is returned, and the login attempt is blocked. Partners are responsible for handling user re-attempt flows to ensure proper permissions are granted
-      default: false
-      example: true
-    EventStreamId:
-      type: string
-      format: uuid
-      description: Unique reference to the event stream used to send events to the SDK
-      minLength: 36
-      maxLength: 36
-      example: 208a1170-875e-4656-85d0-27dfc3ee7137
   examples:
     GoldStandardInvalidField:
       value:
@@ -477,24 +446,6 @@ components:
             Description: All request parameters could not be validated. Ensure you are sending the correct data in your headers, query parameters, and request body.
             Recoverable: false,
             Details: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-    GoldStandardResourceNotFound:
-      value:
-        Errors:
-          Error:
-          - Source: Connect-Components,
-            ReasonCode: 4041,
-            Description: The requested entity was not found,
-            Recoverable: false,
-            Details: The requested entity was not found
-    GoldStandardExpiredToken:
-      value:
-        Errors:
-          Error:
-          - Source: Connect-Components,
-            ReasonCode: 10023,
-            Description: Expired (Finicity-App-Token),
-            Recoverable: false,
-            Details: Expired (Finicity-App-Token)
     GoldStandardMissingFinicityAppKey:
       value:
         Errors:
@@ -504,7 +455,47 @@ components:
             Description: Missing parameter (Finicity-App-Key)
             Recoverable: false,
             Details: Missing parameter (Finicity-App-Key)
+    GoldStandardExpiredToken:
+      value:
+        Errors:
+          Error:
+          - Source: Connect-Components,
+            ReasonCode: 10023,
+            Description: Expired (Finicity-App-Token),
+            Recoverable: false,
+            Details: Expired (Finicity-App-Token)
+    GoldStandardResourceNotFound:
+      value:
+        Errors:
+          Error:
+          - Source: Connect-Components,
+            ReasonCode: 4041,
+            Description: The requested entity was not found,
+            Recoverable: false,
+            Details: The requested entity was not found
   requestBodies:
+    NoBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type:
+            - object
+            - 'null'
+    CreateConfiguration:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Used to generate a new configuration, which can be used during the login flow
+            properties:
+              filterAccounts:
+                $ref: '#/components/schemas/FilterAccounts'
+              accountClassificationType:
+                $ref: '#/components/schemas/AccountClassificationType'
+              aoRequired:
+                $ref: '#/components/schemas/AoRequired'
     OauthUrl:
       required: true
       content:
@@ -530,20 +521,6 @@ components:
                 $ref: '#/components/schemas/ConfigurationId'
               serviceAgreement:
                 $ref: '#/components/schemas/ServiceAgreement'
-    CreateConfiguration:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            description: Used to generate a new configuration, which can be used during the login flow
-            properties:
-              filterAccounts:
-                $ref: '#/components/schemas/FilterAccounts'
-              accountClassificationType:
-                $ref: '#/components/schemas/AccountClassificationType'
-              aoRequired:
-                $ref: '#/components/schemas/AoRequired'
     LoginForm:
       required: true
       description: "An optional configuration object can be applied by including a valid `configurationId` in the request body. <br><br> The preferred language translation for the login form is request with the `language` property in the request body. Supported languages are:\n  * English: `en`\n  * English-United States:'en-us`\n  * Spanish: `es`\n  * Spanish-United States: `es-us`\n  * French: `fr`\n  * French-Canada: `fr-ca`"
@@ -567,14 +544,43 @@ components:
                 $ref: '#/components/schemas/ConfigurationId'
               serviceAgreement:
                 $ref: '#/components/schemas/ServiceAgreement'
-    NoBody:
+  parameters:
+    InstitutionLoginIdPathParam:
+      name: institution_login_id
+      description: Institution login id of the customer.
+      in: path
       required: true
-      content:
-        application/json:
-          schema:
-            type:
-            - object
-            - 'null'
+      schema:
+        type: integer
+        format: int64
+        example: 7008461438
+    CustomerIdPathParameter:
+      description: Unique identifier of the customer
+      name: customer_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
+    InstitutionIdPathParameter:
+      name: institution_id
+      in: path
+      description: The financial institution id at Mastercard.
+      required: true
+      schema:
+        type: integer
+      example: 170716
+    ConfigurationIdPathParameter:
+      name: configuration_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 9082affa-d965-40be-a3ed-a320bb3467ff
+        minLength: 36
+        maxLength: 36
+      description: The unique identifier for a configuration object
   securitySchemes:
     FinicityAppKey:
       name: Finicity-App-Key

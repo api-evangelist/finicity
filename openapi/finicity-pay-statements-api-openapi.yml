@@ -30,7 +30,7 @@ paths:
       description: 'Upload pay statements for a customer.
 
 
-        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+        _Supported regions_: !🇺🇸'
       operationId: StoreCustomerPayStatement
       parameters:
       - $ref: '#/components/parameters/CustomerIdParameter'
@@ -51,31 +51,60 @@ components:
       value:
         code: '10026'
         message: Missing parameter (Finicity-App-Key)
-    InvalidForesightReportRequestExample:
+    ResourceNotFoundExample:
       value:
-        code: '10100'
-        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
-    ResellerInvalidDateRangeGreaterThan31DaysExample:
+        code: '14001'
+        message: Resource not found.
+    NoRegisteredApplicationExample:
       value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
-    ResellerNoReportForPartnerExample:
-      value:
-        code: '10100'
-        message: Cannot find resellerBilling reports with id 2445581559892.
+        code: '50051'
+        message: No registered partner applications found.
     ResellerInvalidDateRangeGreaterThanEndDateExample:
       value:
         code: '10100'
         message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
-    BothCraAndFtcPurposeTrueExample:
+    InvalidConsumerSSNExample:
       value:
         code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
         status: '400'
-        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
-    ResellerPartnerNotAuthorizedExample:
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    MissingFinicityAppTokenExample:
       value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+    InvalidFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: Customer ID does not exist or does not belong to this partner
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
     InvalidConsumerPhoneExample:
       value:
         code: '10100'
@@ -84,106 +113,116 @@ components:
       value:
         code: '10005'
         message: Missing parameter (partnerId)
-    NoRegisteredApplicationExample:
-      value:
-        code: '50051'
-        message: No registered partner applications found.
-    ExpiredFinicityAppTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    InvalidFieldExample:
-      value:
-        code: '10010'
-        status: '400'
-        message: Customer ID does not exist or does not belong to this partner
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    InvalidValueExample:
-      value:
-        code: '1618'
-        message: Negative or invalid value entered. Please use positive numbers only.
-    InvalidConsumerSSNExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
-    InvalidFinicityAppTokenExample:
-      value:
-        code: '10022'
-        message: Invalid (Finicity-App-Token)
-    ResellerInvalidDateRangeLessThanZeroExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
-    CustomerReportLimitExceedExample:
-      value:
-        code: '20400'
-        message: The max report generation limit was exceeded for this customer.
-    NoAccountForInstitutionLoginIdExample:
-      value:
-        code: '38007'
-        message: Customer does not have any accounts associated with institutionLoginId.
-    CustomerNotFoundExample:
-      value:
-        code: '14001'
-        message: Customer not found.
-    ResellerNoDataForPartnerExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
     InvalidConsumerEmailExample:
       value:
         code: '10100'
         message: Invalid format for field consumer.email.
-    ResellerInvalidDateRangeExample:
+    ResellerInvalidDateRangeLessThanZeroExample:
       value:
         code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
-    ExpiredTokenExample:
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
+    ResellerNoReportForPartnerExample:
       value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    AccountTypeNotSupportedExample:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    GenericBadRequestExample:
       value:
         code: '14020'
-        message: Bad request. (Account type not supported).
+        message: Bad request.
     PermissiblePurposeCodeExample:
       value:
         code: '10100'
         status: '400'
         message: Permissible Purpose Code is required
-    ResourceNotFoundExample:
+    NoAccountForInstitutionLoginIdExample:
       value:
-        code: '14001'
-        message: Resource not found.
-    ConsumerNotFoundExample:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    ResellerInvalidDateRangeExample:
       value:
         code: '10100'
-        message: Cannot find consumer with id 1234.
-    InvalidExperienceFieldExample:
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
+    ResellerPartnerNotAuthorizedExample:
       value:
-        code: '10010'
-        status: '400'
-        message: '"experience" must be a valid GUID'
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    GenericBadRequestExample:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    ResellerNoDataForPartnerExample:
       value:
-        code: '14020'
-        message: Bad request.
-    BadCredentialsExample:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    CustomerNotFoundExample:
       value:
-        code: '24302'
-        message: Bad credentials
+        code: '14001'
+        message: Customer not found.
+    InvalidForesightReportRequestExample:
+      value:
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
     NoConsumerForCustomerExample:
       value:
         code: '10100'
         message: Cannot find consumer for customer with id 5011115315."
-    MissingFinicityAppTokenExample:
-      value:
-        code: '10024'
-        message: Missing parameter (Finicity-App-Token)
   schemas:
+    PayStatement:
+      description: A pay statement document and pay statement label
+      required:
+      - label
+      - statement
+      type: object
+      properties:
+        label:
+          type: string
+          description: 'The label to be associated with the pay statement. This label will allow the paystub to go through data extraction.
+
+            * `lastPayPeriod`: default label that should be used for the VOIE - Paystub products
+
+            * `lastPayPeriodMinusOne`: the second most recent pay statement
+
+            * `lastPayPeriodMinusTwo`: the third most recent pay statement
+
+            * `previousYearLastPayPeriod` Last pay statement of the previous calendar year
+
+            * `previousYear2LastPayPeriod`: last pay statement of the calendar year 2 years prior
+
+            * `earliestPayPeriod`: the earliest pay statement'
+          example: lastPayPeriod
+        statement:
+          type: string
+          description: A Base64 encoded pay statement file. Finicity supports PDF, JPG, or PNG files.
+          example: VGhpcyBtdXN0IGJlIGFuIGltYWdl
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
     ErrorMessage:
       required:
       - code
@@ -227,18 +266,6 @@ components:
           type: string
           description: Categories that the error belongs to
           example: AGG
-    AccountId:
-      type: string
-      description: An account ID
-      example: '5011648377'
-    AssetId:
-      type: string
-      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
-      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
-    CustomerId:
-      type: string
-      description: A customer ID. See Add Customer API for how to create a customer ID.
-      example: '1005061234'
     Asset:
       description: An asset
       required:
@@ -247,33 +274,6 @@ components:
       properties:
         assetId:
           $ref: '#/components/schemas/AssetId'
-    PayStatement:
-      description: A pay statement document and pay statement label
-      required:
-      - label
-      - statement
-      type: object
-      properties:
-        label:
-          type: string
-          description: 'The label to be associated with the pay statement. This label will allow the paystub to go through data extraction.
-
-            * `lastPayPeriod`: default label that should be used for the VOIE - Paystub products
-
-            * `lastPayPeriodMinusOne`: the second most recent pay statement
-
-            * `lastPayPeriodMinusTwo`: the third most recent pay statement
-
-            * `previousYearLastPayPeriod` Last pay statement of the previous calendar year
-
-            * `previousYear2LastPayPeriod`: last pay statement of the calendar year 2 years prior
-
-            * `earliestPayPeriod`: the earliest pay statement'
-          example: lastPayPeriod
-        statement:
-          type: string
-          description: A Base64 encoded pay statement file. Finicity supports PDF, JPG, or PNG files.
-          example: VGhpcyBtdXN0IGJlIGFuIGltYWdl
   parameters:
     CustomerIdParameter:
       description: A customer ID
@@ -327,12 +327,6 @@ components:
               $ref: '#/components/examples/InvalidConsumerEmailExample'
             InvalidValue:
               $ref: '#/components/examples/InvalidValueExample'
-    StoreCustomerPayStatementResponse:
-      description: The pay statement was successfully uploaded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Asset'
     ResourceNotFoundErrorResponse:
       description: The resource doesn't exist
       content:
@@ -379,6 +373,12 @@ components:
           schema:
             type: string
             example: Invalid (Finicity-App-Key)
+    StoreCustomerPayStatementResponse:
+      description: The pay statement was successfully uploaded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Asset'
   requestBodies:
     StoreCustomerPayStatementRequest:
       required: true

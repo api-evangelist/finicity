@@ -30,7 +30,7 @@ paths:
       description: 'This API is a lighter version of Get Customer Accounts by Institution ID, returning only basic information of active accounts owned by the given customer at the given institution.
 
 
-        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+        _Supported regions_: !🇺🇸'
       operationId: GetCustomerAccountsByInstitutionSimple
       parameters:
       - $ref: '#/components/parameters/CustomerIdParameter'
@@ -52,7 +52,7 @@ paths:
       description: 'This API is a lighter version of Get Customer Accounts by Institution Login ID, returning only basic information of all active accounts owned by the given customer at the given institution login ID.
 
 
-        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+        _Supported regions_: !🇺🇸'
       operationId: GetCustomerAccountsByInstitutionLoginSimple
       parameters:
       - $ref: '#/components/parameters/CustomerIdParameter'
@@ -74,7 +74,7 @@ paths:
       description: 'This API is a lighter version of Get Customer Accounts by ID, returning only basic information of a customer account.
 
 
-        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+        _Supported regions_: !🇺🇸'
       operationId: GetCustomerAccountSimple
       parameters:
       - $ref: '#/components/parameters/CustomerIdParameter'
@@ -96,7 +96,7 @@ paths:
       description: 'This API is a lighter version of Get Customer Accounts, returning only basic information of all active customer accounts.
 
 
-        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+        _Supported regions_: !🇺🇸'
       operationId: GetCustomerAccountsSimple
       parameters:
       - $ref: '#/components/parameters/CustomerIdParameter'
@@ -110,163 +110,80 @@ paths:
         '404':
           $ref: '#/components/responses/ResourceNotFoundErrorResponse'
 components:
-  examples:
-    MissingFinicityAppKeyExample:
-      value:
-        code: '10026'
-        message: Missing parameter (Finicity-App-Key)
-    InvalidForesightReportRequestExample:
-      value:
-        code: '10100'
-        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
-    ResellerInvalidDateRangeGreaterThan31DaysExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
-    ResellerNoReportForPartnerExample:
-      value:
-        code: '10100'
-        message: Cannot find resellerBilling reports with id 2445581559892.
-    ResellerInvalidDateRangeGreaterThanEndDateExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
-    BothCraAndFtcPurposeTrueExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
-    ResellerPartnerNotAuthorizedExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
-    InvalidConsumerPhoneExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.phone.
-    MissingFieldExample:
-      value:
-        code: '10005'
-        message: Missing parameter (partnerId)
-    NoRegisteredApplicationExample:
-      value:
-        code: '50051'
-        message: No registered partner applications found.
-    ExpiredFinicityAppTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    InvalidFieldExample:
-      value:
-        code: '10010'
-        status: '400'
-        message: Customer ID does not exist or does not belong to this partner
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    InvalidValueExample:
-      value:
-        code: '1618'
-        message: Negative or invalid value entered. Please use positive numbers only.
-    InvalidConsumerSSNExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
-    InvalidFinicityAppTokenExample:
-      value:
-        code: '10022'
-        message: Invalid (Finicity-App-Token)
-    ResellerInvalidDateRangeLessThanZeroExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
-    CustomerReportLimitExceedExample:
-      value:
-        code: '20400'
-        message: The max report generation limit was exceeded for this customer.
-    NoAccountForInstitutionLoginIdExample:
-      value:
-        code: '38007'
-        message: Customer does not have any accounts associated with institutionLoginId.
-    CustomerNotFoundExample:
-      value:
-        code: '14001'
-        message: Customer not found.
-    ResellerNoDataForPartnerExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
-    InvalidConsumerEmailExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.email.
-    ResellerInvalidDateRangeExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
-    ExpiredTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    AccountTypeNotSupportedExample:
-      value:
-        code: '14020'
-        message: Bad request. (Account type not supported).
-    PermissiblePurposeCodeExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: Permissible Purpose Code is required
-    ResourceNotFoundExample:
-      value:
-        code: '14001'
-        message: Resource not found.
-    ConsumerNotFoundExample:
-      value:
-        code: '10100'
-        message: Cannot find consumer with id 1234.
-    InvalidExperienceFieldExample:
-      value:
-        code: '10010'
-        status: '400'
-        message: '"experience" must be a valid GUID'
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    GenericBadRequestExample:
-      value:
-        code: '14020'
-        message: Bad request.
-    BadCredentialsExample:
-      value:
-        code: '24302'
-        message: Bad credentials
-    NoConsumerForCustomerExample:
-      value:
-        code: '10100'
-        message: Cannot find consumer for customer with id 5011115315."
-    MissingFinicityAppTokenExample:
-      value:
-        code: '10024'
-        message: Missing parameter (Finicity-App-Token)
   schemas:
-    LinkedAccountDate:
+    AuthorizationStartDate:
       type: integer
-      description: 'A timestamp showing when the customer first linked the account via Data Connect. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
       format: int64
-      example: 1607450357
-    Currency:
+      description: Authorization start date and time in epoch format.
+      example: 1541030399
+    AssetId:
       type: string
-      description: A currency code
-      example: USD
-    AuthorizationExpires:
-      type: boolean
-      description: A Boolean flag that indicates whether the customer’s authorization period has a defined authorization end date.
-      example: true
-      default: false
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    AggregationStatus:
+      type: string
+      description: "\"pending\" during account discovery, always \"active\" following\n  successful account activation"
+      example: active
+    InstitutionLoginId:
+      type: string
+      description: An institution login ID (from the account record)
+      example: '1007302745'
     AuthorizationEndDate:
       type: integer
       format: int64
       description: Authorization end date and time in epoch format (not used if AuthorizationExpires is false).
       example: 1641030399
+    CustomerAccountsSimple:
+      description: A list of accounts with basic information of a customer
+      required:
+      - accounts
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerAccountSimple'
+          description: A list of accounts with basic information of a customer
+    NumericInstitutionLoginId:
+      type: integer
+      format: int64
+      description: An institution login ID (from the account record), represented as a number
+      example: 1007302745
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    AggregationStatusCode:
+      type: integer
+      description: The status of the most recent aggregation attempt (see [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes)). Won't be present until you have run your first aggregation for the account.
+    UnixDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    AuthorizationExpires:
+      type: boolean
+      description: A Boolean flag that indicates whether the customer’s authorization period has a defined authorization end date.
+      example: true
+      default: false
+    Name:
+      type: string
+      description: The account name from the institution
+      example: Super Checking
+    LinkedAccountDate:
+      type: integer
+      description: 'A timestamp showing when the customer first linked the account via Data Connect. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    DisplayPosition:
+      type: integer
+      description: "Display position of the account at the financial institution, \"1\"\n    being the top listed account"
+      format: int32
+      example: 2
     ErrorMessage:
       required:
       - code
@@ -310,126 +227,10 @@ components:
           type: string
           description: Categories that the error belongs to
           example: AGG
-    AccountId:
+    Currency:
       type: string
-      description: An account ID
-      example: '5011648377'
-    CustomerAccountSimple:
-      description: An account represents a bank account such as a checking or savings that the customer has added via the Connect interface.
-      required:
-      - id
-      - accountNumberDisplay
-      - name
-      - type
-      - status
-      - customerId
-      - institutionId
-      - createdDate
-      - currency
-      - institutionLoginId
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AccountId'
-        accountNumberDisplay:
-          $ref: '#/components/schemas/AccountNumberDisplay'
-        name:
-          $ref: '#/components/schemas/Name'
-        type:
-          $ref: '#/components/schemas/AccountType'
-        aggregationStatusCode:
-          $ref: '#/components/schemas/AggregationStatusCode'
-        status:
-          $ref: '#/components/schemas/AggregationStatus'
-        customerId:
-          $ref: '#/components/schemas/CustomerId'
-        institutionId:
-          $ref: '#/components/schemas/InstitutionId'
-        aggregationSuccessDate:
-          $ref: '#/components/schemas/UnixDate'
-        aggregationAttemptDate:
-          $ref: '#/components/schemas/UnixDate'
-        createdDate:
-          $ref: '#/components/schemas/UnixDate'
-        currency:
-          $ref: '#/components/schemas/Currency'
-        institutionLoginId:
-          $ref: '#/components/schemas/NumericInstitutionLoginId'
-        authorizationStartDate:
-          $ref: '#/components/schemas/AuthorizationStartDate'
-        authorizationEndDate:
-          $ref: '#/components/schemas/AuthorizationEndDate'
-        authorizationExpires:
-          $ref: '#/components/schemas/AuthorizationExpires'
-        displayPosition:
-          $ref: '#/components/schemas/DisplayPosition'
-        parentAccount:
-          $ref: '#/components/schemas/AccountId'
-        linkedAccountDate:
-          $ref: '#/components/schemas/LinkedAccountDate'
-    NumericInstitutionId:
-      description: The ID of a financial institution, represented as a number
-      type: integer
-      format: int64
-      example: 4222
-    NumericInstitutionLoginId:
-      type: integer
-      format: int64
-      description: An institution login ID (from the account record), represented as a number
-      example: 1007302745
-    CustomerAccountsSimple:
-      description: A list of accounts with basic information of a customer
-      required:
-      - accounts
-      type: object
-      properties:
-        accounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerAccountSimple'
-          description: A list of accounts with basic information of a customer
-    InstitutionId:
-      description: The ID of a financial institution
-      type: string
-      example: '4222'
-    AggregationStatus:
-      type: string
-      description: "\"pending\" during account discovery, always \"active\" following\n  successful account activation"
-      example: active
-    Name:
-      type: string
-      description: The account name from the institution
-      example: Super Checking
-    AssetId:
-      type: string
-      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
-      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
-    AggregationStatusCode:
-      type: integer
-      description: The status of the most recent aggregation attempt (see [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes)). Won't be present until you have run your first aggregation for the account.
-    CustomerId:
-      type: string
-      description: A customer ID. See Add Customer API for how to create a customer ID.
-      example: '1005061234'
-    UnixDate:
-      type: integer
-      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    AuthorizationStartDate:
-      type: integer
-      format: int64
-      description: Authorization start date and time in epoch format.
-      example: 1541030399
-    InstitutionLoginId:
-      type: string
-      description: An institution login ID (from the account record)
-      example: '1007302745'
-    DisplayPosition:
-      type: integer
-      description: "Display position of the account at the financial institution, \"1\"\n    being the top listed account"
-      format: int32
-      example: 2
+      description: A currency code
+      example: USD
     AccountType:
       type: string
       description: 'The list of supported account types.
@@ -520,6 +321,205 @@ components:
 
         * 0824-S0050'
       example: '7528'
+    CustomerAccountSimple:
+      description: An account represents a bank account such as a checking or savings that the customer has added via the Connect interface.
+      required:
+      - id
+      - accountNumberDisplay
+      - name
+      - type
+      - status
+      - customerId
+      - institutionId
+      - createdDate
+      - currency
+      - institutionLoginId
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AccountId'
+        accountNumberDisplay:
+          $ref: '#/components/schemas/AccountNumberDisplay'
+        name:
+          $ref: '#/components/schemas/Name'
+        type:
+          $ref: '#/components/schemas/AccountType'
+        aggregationStatusCode:
+          $ref: '#/components/schemas/AggregationStatusCode'
+        status:
+          $ref: '#/components/schemas/AggregationStatus'
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        institutionId:
+          $ref: '#/components/schemas/InstitutionId'
+        aggregationSuccessDate:
+          $ref: '#/components/schemas/UnixDate'
+        aggregationAttemptDate:
+          $ref: '#/components/schemas/UnixDate'
+        createdDate:
+          $ref: '#/components/schemas/UnixDate'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        institutionLoginId:
+          $ref: '#/components/schemas/NumericInstitutionLoginId'
+        authorizationStartDate:
+          $ref: '#/components/schemas/AuthorizationStartDate'
+        authorizationEndDate:
+          $ref: '#/components/schemas/AuthorizationEndDate'
+        authorizationExpires:
+          $ref: '#/components/schemas/AuthorizationExpires'
+        displayPosition:
+          $ref: '#/components/schemas/DisplayPosition'
+        parentAccount:
+          $ref: '#/components/schemas/AccountId'
+        linkedAccountDate:
+          $ref: '#/components/schemas/LinkedAccountDate'
+    InstitutionId:
+      description: The ID of a financial institution
+      type: string
+      example: '4222'
+    NumericInstitutionId:
+      description: The ID of a financial institution, represented as a number
+      type: integer
+      format: int64
+      example: 4222
+  examples:
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    InvalidConsumerSSNExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    NoConsumerForCustomerExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer for customer with id 5011115315."
+    PermissiblePurposeCodeExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: Permissible Purpose Code is required
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+    InvalidFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: Customer ID does not exist or does not belong to this partner
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    InvalidConsumerEmailExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.email.
+    ResellerInvalidDateRangeLessThanZeroExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+    NoAccountForInstitutionLoginIdExample:
+      value:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    ResellerInvalidDateRangeExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
+    ResellerNoDataForPartnerExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
+    InvalidForesightReportRequestExample:
+      value:
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
   parameters:
     CustomerIdParameter:
       description: A customer ID
@@ -529,22 +529,6 @@ components:
       schema:
         $ref: '#/components/schemas/CustomerId'
       example: '1005061234'
-    InstitutionIdParameter:
-      description: The institution ID
-      name: institutionId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/NumericInstitutionId'
-      example: 4222
-    InstitutionLoginIdParameter:
-      description: The institution login ID
-      name: institutionLoginId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/InstitutionLoginId'
-      example: '1007302745'
     AccountIdParameter:
       description: The account ID
       name: accountId
@@ -553,7 +537,29 @@ components:
       schema:
         $ref: '#/components/schemas/AccountId'
       example: '5011648377'
+    InstitutionLoginIdParameter:
+      description: The institution login ID
+      name: institutionLoginId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/InstitutionLoginId'
+      example: '1007302745'
+    InstitutionIdParameter:
+      description: The institution ID
+      name: institutionId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/NumericInstitutionId'
+      example: 4222
   responses:
+    GetCustomerAccountsSimpleResponse:
+      description: The account list was successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CustomerAccountsSimple'
     BadRequestErrorResponse:
       description: The request was rejected
       content:
@@ -597,18 +603,6 @@ components:
               $ref: '#/components/examples/InvalidConsumerEmailExample'
             InvalidValue:
               $ref: '#/components/examples/InvalidValueExample'
-    GetCustomerAccountsSimpleResponse:
-      description: The account list was successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CustomerAccountsSimple'
-    GetCustomerAccountSimpleResponse:
-      description: The account was successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CustomerAccountSimple'
     ResourceNotFoundErrorResponse:
       description: The resource doesn't exist
       content:
@@ -632,6 +626,12 @@ components:
               $ref: '#/components/examples/ResellerNoDataForPartnerExample'
             ResellerNoReportForPartnerExample:
               $ref: '#/components/examples/ResellerNoReportForPartnerExample'
+    GetCustomerAccountSimpleResponse:
+      description: The account was successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CustomerAccountSimple'
     UnauthorizedErrorResponse:
       description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
       content:

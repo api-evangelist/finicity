@@ -33,7 +33,7 @@ paths:
         Note: this is a premium service, billable per every successful API call.
 
 
-        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+        _Supported regions_: !🇺🇸'
       operationId: GetLoanPaymentDetails
       parameters:
       - $ref: '#/components/parameters/CustomerIdParameter'
@@ -61,7 +61,7 @@ paths:
         _Supported account types_: "checking", "savings", "moneyMarket","certificateOfDeposit"
 
 
-        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+        _Supported regions_: !🇺🇸'
       operationId: GetAccountACHDetails
       parameters:
       - $ref: '#/components/parameters/CustomerIdParameter'
@@ -92,7 +92,7 @@ paths:
         _Supported account types_: "checking", "savings", "moneyMarket", "cd"
 
 
-        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+        _Supported regions_: !🇺🇸'
       operationId: GetAvailableBalanceLive
       parameters:
       - $ref: '#/components/parameters/CustomerIdParameter'
@@ -125,7 +125,7 @@ paths:
         _Supported account types_: "checking", "savings", "moneyMarket", "cd"
 
 
-        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+        _Supported regions_: !🇺🇸'
       operationId: GetAvailableBalance
       parameters:
       - $ref: '#/components/parameters/CustomerIdParameter'
@@ -153,7 +153,7 @@ paths:
         _Supported account types_: "checking", "savings", "moneyMarket"
 
 
-        _Supported regions_: ![🇺🇸](https://flagcdn.com/20x15/us.png)'
+        _Supported regions_: !🇺🇸'
       operationId: GetAccountPaymentInstructionDetails
       parameters:
       - $ref: '#/components/parameters/CustomerIdParameter'
@@ -173,104 +173,27 @@ components:
       value:
         code: '10026'
         message: Missing parameter (Finicity-App-Key)
-    InvalidForesightReportRequestExample:
+    ResourceNotFoundExample:
       value:
-        code: '10100'
-        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
-    ResellerInvalidDateRangeGreaterThan31DaysExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
-    ResellerNoReportForPartnerExample:
-      value:
-        code: '10100'
-        message: Cannot find resellerBilling reports with id 2445581559892.
-    ResellerInvalidDateRangeGreaterThanEndDateExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
-    BothCraAndFtcPurposeTrueExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
-    ACHDetailsExampleWithoutFedNowV3Example:
-      value:
-        paymentInstruction:
-        - type: ach
-          accountNumber: '1000001111'
-          descriptors:
-          - type: routingNumber
-            value: 091000019
-        - type: rtp
-          accountNumber: '1000001115'
-          tanEnabled: false
-          descriptors:
-          - type: routingNumber
-            value: 091009910
-          transferInEnabled: true
-          transferOutEnabled: true
-    ResellerPartnerNotAuthorizedExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
-    InvalidConsumerPhoneExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.phone.
-    MissingFieldExample:
-      value:
-        code: '10005'
-        message: Missing parameter (partnerId)
+        code: '14001'
+        message: Resource not found.
     NoRegisteredApplicationExample:
       value:
         code: '50051'
         message: No registered partner applications found.
-    ExpiredFinicityAppTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    InstitutionLoginIdDetailsNotFoundErrorResponseExample:
-      value:
-        code: '3004'
-        status: '404'
-        message: Resource Not Found.
-        user_message: Institution Login Id details are not found
-    InvalidFieldExample:
-      value:
-        code: '10010'
-        status: '400'
-        message: Customer ID does not exist or does not belong to this partner
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    InvalidValueExample:
-      value:
-        code: '1618'
-        message: Negative or invalid value entered. Please use positive numbers only.
     InvalidConsumerSSNExample:
       value:
         code: '10100'
         message: Invalid format for field consumer.ssn.  Required format is 9 digits.
-    InvalidFinicityAppTokenExample:
-      value:
-        code: '10022'
-        message: Invalid (Finicity-App-Token)
-    ResellerInvalidDateRangeLessThanZeroExample:
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
       value:
         code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
-    CustomerReportLimitExceedExample:
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    CustomerAuthorizationDetailsExample:
       value:
-        code: '20400'
-        message: The max report generation limit was exceeded for this customer.
-    NoAccountForInstitutionLoginIdExample:
-      value:
-        code: '38007'
-        message: Customer does not have any accounts associated with institutionLoginId.
-    CustomerNotFoundExample:
-      value:
-        code: '14001'
-        message: Customer not found.
+        institutionLoginId: 7008461438
+        authorizationStartDate: 2024-01-01 16:11:23.200000+00:00
+        authorizationEndDate: 2024-12-31 16:11:23.200000+00:00
     ACHDetailsExampleWithoutFedNowAndWithoutRTPV3Example:
       value:
         paymentInstruction:
@@ -279,81 +202,18 @@ components:
           descriptors:
           - type: routingNumber
             value: 091000019
-    InstitutionLoginIdNotFoundErrorResponseExample:
+    CustomerReportLimitExceedExample:
       value:
-        code: '3003'
-        status: '404'
-        message: Resource Not Found.
-        user_message: Institution Login Id is not found
-    ResellerNoDataForPartnerExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
-    InvalidConsumerEmailExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.email.
-    ResellerInvalidDateRangeExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
-    ExpiredTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    AccountTypeNotSupportedExample:
-      value:
-        code: '14020'
-        message: Bad request. (Account type not supported).
-    PermissiblePurposeCodeExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: Permissible Purpose Code is required
-    ResourceNotFoundExample:
-      value:
-        code: '14001'
-        message: Resource not found.
-    ConsumerNotFoundExample:
-      value:
-        code: '10100'
-        message: Cannot find consumer with id 1234.
-    ACHDetailsWithoutRTPDetailsV3Example:
-      value:
-        paymentInstruction:
-        - type: ach
-          accountNumber: '1000001111'
-          descriptors:
-          - type: routingNumber
-            value: 091000019
-        - type: fedNow
-          accountNumber: '1000001111'
-          tanEnabled: false
-          descriptors:
-          - type: routingNumber
-            value: 091009919
-          transferInEnabled: true
-          transferOutEnabled: true
-    InvalidExperienceFieldExample:
-      value:
-        code: '10010'
-        status: '400'
-        message: '"experience" must be a valid GUID'
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    GenericBadRequestExample:
-      value:
-        code: '14020'
-        message: Bad request.
-    CustomerAuthorizationDetailsExample:
-      value:
-        institutionLoginId: 7008461438
-        authorizationStartDate: 2024-01-01 16:11:23.200000+00:00
-        authorizationEndDate: 2024-12-31 16:11:23.200000+00:00
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
     BadCredentialsExample:
       value:
         code: '24302'
         message: Bad credentials
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
     ACHDetailsV3Example:
       value:
         paymentInstruction:
@@ -379,6 +239,33 @@ components:
             value: 091009919
           transferInEnabled: true
           transferOutEnabled: true
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    ACHDetailsWithoutRTPDetailsV3Example:
+      value:
+        paymentInstruction:
+        - type: ach
+          accountNumber: '1000001111'
+          descriptors:
+          - type: routingNumber
+            value: 091000019
+        - type: fedNow
+          accountNumber: '1000001111'
+          tanEnabled: false
+          descriptors:
+          - type: routingNumber
+            value: 091009919
+          transferInEnabled: true
+          transferOutEnabled: true
     NoConsumerForCustomerExample:
       value:
         code: '10100'
@@ -387,43 +274,232 @@ components:
       value:
         code: '10024'
         message: Missing parameter (Finicity-App-Token)
+    InvalidFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: Customer ID does not exist or does not belong to this partner
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    ACHDetailsExampleWithoutFedNowV3Example:
+      value:
+        paymentInstruction:
+        - type: ach
+          accountNumber: '1000001111'
+          descriptors:
+          - type: routingNumber
+            value: 091000019
+        - type: rtp
+          accountNumber: '1000001115'
+          tanEnabled: false
+          descriptors:
+          - type: routingNumber
+            value: 091009910
+          transferInEnabled: true
+          transferOutEnabled: true
+    InvalidConsumerEmailExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.email.
+    ResellerInvalidDateRangeLessThanZeroExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+    PermissiblePurposeCodeExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: Permissible Purpose Code is required
+    NoAccountForInstitutionLoginIdExample:
+      value:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    InstitutionLoginIdNotFoundErrorResponseExample:
+      value:
+        code: '3003'
+        status: '404'
+        message: Resource Not Found.
+        user_message: Institution Login Id is not found
+    ResellerInvalidDateRangeExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    ResellerNoDataForPartnerExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
+    InvalidForesightReportRequestExample:
+      value:
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    InstitutionLoginIdDetailsNotFoundErrorResponseExample:
+      value:
+        code: '3004'
+        status: '404'
+        message: Resource Not Found.
+        user_message: Institution Login Id details are not found
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
   schemas:
-    Currency:
-      type: string
-      description: A currency code
-      example: USD
-    AvailableBalance:
+    Descriptor:
       required:
-      - id
-      - realAccountNumberLast4
-      - availableBalance
-      - availableBalanceDate
-      - clearedBalance
-      - clearedBalanceDate
-      - aggregationStatusCode
-      - currency
+      - type
+      - value
       type: object
       properties:
-        id:
-          $ref: '#/components/schemas/NumericCustomerId'
-        realAccountNumberLast4:
-          $ref: '#/components/schemas/AccountNumberLast4'
-        availableBalance:
+        type:
+          type: string
+          description: Payment Instruction Descriptor Type
+          example: routingNumber
+        value:
+          type: string
+          description: Value that the Descriptor Type Holds
+          example: '2434345'
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    PaymentInstructions:
+      description: A list of payment instructions
+      type: object
+      properties:
+        paymentInstruction:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentInstruction'
+          description: List of payment instructions
+    AggregationStatusCode:
+      type: integer
+      description: The status of the most recent aggregation attempt (see [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes)). Won't be present until you have run your first aggregation for the account.
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    UnixDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    NumericCustomerId:
+      type: integer
+      format: int64
+      description: A customer ID represented as a number. See Add Customer API for how to create a customer ID.
+      example: 1005061234
+    AllowedBalanceCacheInterval:
+      type: integer
+      format: int32
+      default: 30
+      minimum: 0
+      maximum: 1440
+      description: Cache interval in minutes for available balance retrieval. If omitted, the default interval is 30 minutes. If `0`, always fetch live balance. If greater than `0`, cached balance may be returned when cache age is within interval; otherwise live balance is retrieved.
+      example: 30
+    LoanPaymentDetailsAccount:
+      required:
+      - accountId
+      - accountNumber
+      - accountPaymentNumber
+      - accountPaymentAddress
+      type: object
+      properties:
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        accountNumber:
+          type: string
+          description: Institution's ID of the Student Loan Account
+          example: '9876543210'
+        accountPaymentNumber:
+          type: string
+          description: The payment number given by the institution. This number is typically for manual payments. This is not an ACH payment number.
+          example: 00001234895413
+        accountPaymentAddress:
+          type: string
+          description: The payment address to which send manual payments should be sent
+          example: P.O. Box 123 Sioux Falls, IA 51054
+        accountFuturePayoffAmount:
           type: number
-          description: The available balance of the account
-          example: 173.47
-        availableBalanceDate:
-          $ref: '#/components/schemas/UnixDate'
-        clearedBalance:
-          type: number
-          description: The cleared balance of the account. Also referred as posted balance, current balance, ledger balance
-          example: 222.25
-        clearedBalanceDate:
-          $ref: '#/components/schemas/UnixDate'
-        aggregationStatusCode:
-          $ref: '#/components/schemas/AggregationStatusCode'
-        currency:
-          $ref: '#/components/schemas/Currency'
+          description: The payoff amount for the account
+          example: 10000
+        accountFuturePayoffDate:
+          type: string
+          description: The date to which the "Future Payoff Amount" applies
+          format: date-time
+          example: '2022-01-01T00:00:00.000Z'
+        groupDetail:
+          description: Group details
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanPaymentDetailsGroup'
+        loanDetail:
+          description: Loan details
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanPaymentDetailsLoan'
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    ACHDetails:
+      required:
+      - routingNumber
+      - realAccountNumber
+      type: object
+      properties:
+        routingNumber:
+          type: string
+          description: The routing number of the financial institution for specific customer account
+          example: '123456789'
+        realAccountNumber:
+          type: string
+          description: The account number for initiating ACH transfers for this account
+          example: 002345678901
+      description: The routing and account number information to initiate ACH transfers
     ErrorMessage:
       required:
       - code
@@ -467,131 +543,46 @@ components:
           type: string
           description: Categories that the error belongs to
           example: AGG
-    AccountId:
+    AccountNumberLast4:
       type: string
-      description: An account ID
-      example: '5011648377'
-    NumericCustomerId:
-      type: integer
-      format: int64
-      description: A customer ID represented as a number. See Add Customer API for how to create a customer ID.
-      example: 1005061234
-    LoanPaymentDetailsAccount:
+      description: The last 4 digits of the account number, derived by Mastercard from the account number provided by the financial institution. This is only returned for ACH-enabled accounts.
+      example: '5678'
+    Currency:
+      type: string
+      description: A currency code
+      example: USD
+    LoanPaymentDetailsLoan:
+      description: Loan details
       required:
       - accountId
-      - accountNumber
-      - accountPaymentNumber
-      - accountPaymentAddress
-      type: object
-      properties:
-        accountId:
-          $ref: '#/components/schemas/AccountId'
-        accountNumber:
-          type: string
-          description: Institution's ID of the Student Loan Account
-          example: '9876543210'
-        accountPaymentNumber:
-          type: string
-          description: The payment number given by the institution. This number is typically for manual payments. This is not an ACH payment number.
-          example: 00001234895413
-        accountPaymentAddress:
-          type: string
-          description: The payment address to which send manual payments should be sent
-          example: P.O. Box 123 Sioux Falls, IA 51054
-        accountFuturePayoffAmount:
-          type: number
-          description: The payoff amount for the account
-          example: 10000
-        accountFuturePayoffDate:
-          type: string
-          description: The date to which the "Future Payoff Amount" applies
-          format: date-time
-          example: '2022-01-01T00:00:00.000Z'
-        groupDetail:
-          description: Group details
-          type: array
-          items:
-            $ref: '#/components/schemas/LoanPaymentDetailsGroup'
-        loanDetail:
-          description: Loan details
-          type: array
-          items:
-            $ref: '#/components/schemas/LoanPaymentDetailsLoan'
-    PaymentInstructions:
-      description: A list of payment instructions
-      type: object
-      properties:
-        paymentInstruction:
-          type: array
-          items:
-            $ref: '#/components/schemas/PaymentInstruction'
-          description: List of payment instructions
-    ACHDetails:
-      required:
-      - routingNumber
-      - realAccountNumber
-      type: object
-      properties:
-        routingNumber:
-          type: string
-          description: The routing number of the financial institution for specific customer account
-          example: '123456789'
-        realAccountNumber:
-          type: string
-          description: The account number for initiating ACH transfers for this account
-          example: 002345678901
-      description: The routing and account number information to initiate ACH transfers
-    AllowedBalanceCacheInterval:
-      type: integer
-      format: int32
-      default: 30
-      minimum: 0
-      maximum: 1440
-      description: Cache interval in minutes for available balance retrieval. If omitted, the default interval is 30 minutes. If `0`, always fetch live balance. If greater than `0`, cached balance may be returned when cache age is within interval; otherwise live balance is retrieved.
-      example: 30
-    Descriptor:
-      required:
-      - type
-      - value
-      type: object
-      properties:
-        type:
-          type: string
-          description: Payment Instruction Descriptor Type
-          example: routingNumber
-        value:
-          type: string
-          description: Value that the Descriptor Type Holds
-          example: '2434345'
-    LoanPaymentDetails:
-      description: Loan payment details for a customer account
-      required:
       - loanNumber
       - loanPaymentNumber
       - loanPaymentAddress
       type: object
       properties:
+        accountId:
+          $ref: '#/components/schemas/AccountId'
         loanNumber:
           type: string
-          description: The number of the specific loan under the account.
-          example: '123456789'
+          description: Institution's ID of the Student Loan
+          example: 3210-Group A-1
         loanPaymentNumber:
           type: string
           description: The payment number given by the institution. This number is typically for manual payments. This is not an ACH payment number.
-          example: '5231123456789'
+          example: 00001234895413-A-1
         loanPaymentAddress:
           type: string
-          description: The payment address to send manual payments to
-          example: Heartland ECSI       PO Box 718       Wexford PA 15090
-        accountDetail:
-          $ref: '#/components/schemas/LoanPaymentDetailsAccount'
-    AssetId:
-      type: string
-      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
-      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
-    AggregationStatusCode:
-      type: integer
-      description: The status of the most recent aggregation attempt (see [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes)). Won't be present until you have run your first aggregation for the account.
+          description: The payment address to which send manual payments should be sent
+          example: P.O. Box 123 Sioux Falls, IA 51054
+        loanFuturePayoffAmount:
+          type: number
+          description: The payoff amount for the loan
+          example: 5000
+        loanFuturePayoffDate:
+          type: string
+          description: The date to which the "Future Payoff Amount" applies
+          format: date-time
+          example: '2022-01-01T00:00:00.000Z'
     LoanPaymentDetailsGroup:
       description: Group details
       required:
@@ -629,51 +620,60 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LoanPaymentDetailsLoan'
-    LoanPaymentDetailsLoan:
-      description: Loan details
+    LoanPaymentDetails:
+      description: Loan payment details for a customer account
       required:
-      - accountId
       - loanNumber
       - loanPaymentNumber
       - loanPaymentAddress
       type: object
       properties:
-        accountId:
-          $ref: '#/components/schemas/AccountId'
         loanNumber:
           type: string
-          description: Institution's ID of the Student Loan
-          example: 3210-Group A-1
+          description: The number of the specific loan under the account.
+          example: '123456789'
         loanPaymentNumber:
           type: string
           description: The payment number given by the institution. This number is typically for manual payments. This is not an ACH payment number.
-          example: 00001234895413-A-1
+          example: '5231123456789'
         loanPaymentAddress:
           type: string
-          description: The payment address to which send manual payments should be sent
-          example: P.O. Box 123 Sioux Falls, IA 51054
-        loanFuturePayoffAmount:
+          description: The payment address to send manual payments to
+          example: Heartland ECSI       PO Box 718       Wexford PA 15090
+        accountDetail:
+          $ref: '#/components/schemas/LoanPaymentDetailsAccount'
+    AvailableBalance:
+      required:
+      - id
+      - realAccountNumberLast4
+      - availableBalance
+      - availableBalanceDate
+      - clearedBalance
+      - clearedBalanceDate
+      - aggregationStatusCode
+      - currency
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/NumericCustomerId'
+        realAccountNumberLast4:
+          $ref: '#/components/schemas/AccountNumberLast4'
+        availableBalance:
           type: number
-          description: The payoff amount for the loan
-          example: 5000
-        loanFuturePayoffDate:
-          type: string
-          description: The date to which the "Future Payoff Amount" applies
-          format: date-time
-          example: '2022-01-01T00:00:00.000Z'
-    UnixDate:
-      type: integer
-      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    AccountNumberLast4:
-      type: string
-      description: The last 4 digits of the account number, derived by Mastercard from the account number provided by the financial institution. This is only returned for ACH-enabled accounts.
-      example: '5678'
-    CustomerId:
-      type: string
-      description: A customer ID. See Add Customer API for how to create a customer ID.
-      example: '1005061234'
+          description: The available balance of the account
+          example: 173.47
+        availableBalanceDate:
+          $ref: '#/components/schemas/UnixDate'
+        clearedBalance:
+          type: number
+          description: The cleared balance of the account. Also referred as posted balance, current balance, ledger balance
+          example: 222.25
+        clearedBalanceDate:
+          $ref: '#/components/schemas/UnixDate'
+        aggregationStatusCode:
+          $ref: '#/components/schemas/AggregationStatusCode'
+        currency:
+          $ref: '#/components/schemas/Currency'
     PaymentInstruction:
       required:
       - accountNumber
@@ -712,13 +712,38 @@ components:
           type: boolean
           description: Indicates whether transfer from this account is enabled or not. Applicable for "RTP" and "FedNow" type only.
           example: true
+  parameters:
+    AllowedBalanceCacheIntervalParameter:
+      description: '`balance_cache_interval` (in minutes) is used at server side to decide whether to return existing cached balance or retrieve from financial institution in real-time. Details explained below:
+
+        1. If not provided, a predefined default interval of 30 minutes is used.
+
+        2. If set to `0`, live balance is always retrieved from the financial institution.
+
+        3. If set to a value greater than `0`, cached balance is returned only when cache age is within the interval; otherwise live balance is retrieved.'
+      name: balance_cache_interval
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/AllowedBalanceCacheInterval'
+      example: 1
+    CustomerIdParameter:
+      description: A customer ID
+      name: customerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
+    AccountIdParameter:
+      description: The account ID
+      name: accountId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AccountId'
+      example: '5011648377'
   responses:
-    GetAvailableBalanceLiveResponse:
-      description: The live balance was successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AvailableBalance'
     GetAccountPaymentInstructionDetailsResponse:
       description: Account ACH details were successfully retrieved
       content:
@@ -779,88 +804,6 @@ components:
               $ref: '#/components/examples/InvalidConsumerEmailExample'
             InvalidValue:
               $ref: '#/components/examples/InvalidValueExample'
-    GetAvailableBalanceLiveBadRequestErrorResponse:
-      description: The request was rejected
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            MissingFieldExample:
-              $ref: '#/components/examples/MissingFieldExample'
-            InvalidFieldExample:
-              $ref: '#/components/examples/InvalidFieldExample'
-            GenericBadRequestExample:
-              $ref: '#/components/examples/GenericBadRequestExample'
-            AccountTypeNotSupportedExample:
-              $ref: '#/components/examples/AccountTypeNotSupportedExample'
-    GetAccountPaymentInstructionBadRequestErrorResponse:
-      description: The request was rejected due to validation failures
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            InstitutionLoginIdNotFoundErrorResponseExample:
-              $ref: '#/components/examples/InstitutionLoginIdNotFoundErrorResponseExample'
-            InstitutionLoginIdDetailsNotFoundErrorResponseExample:
-              $ref: '#/components/examples/InstitutionLoginIdDetailsNotFoundErrorResponseExample'
-            MissingFieldExample:
-              $ref: '#/components/examples/MissingFieldExample'
-            InvalidFieldExample:
-              $ref: '#/components/examples/InvalidFieldExample'
-            GenericBadRequestExample:
-              $ref: '#/components/examples/GenericBadRequestExample'
-            AccountTypeNotSupportedExample:
-              $ref: '#/components/examples/AccountTypeNotSupportedExample'
-    GetAccountACHDetailsBadRequestErrorResponse:
-      description: The request was rejected
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            MissingFieldExample:
-              $ref: '#/components/examples/MissingFieldExample'
-            InvalidFieldExample:
-              $ref: '#/components/examples/InvalidFieldExample'
-            GenericBadRequestExample:
-              $ref: '#/components/examples/GenericBadRequestExample'
-            AccountTypeNotSupportedExample:
-              $ref: '#/components/examples/AccountTypeNotSupportedExample'
-    GetAvailableBalanceResponse:
-      description: The balance was successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AvailableBalance'
-    GetLoanPaymentDetailsResponse:
-      description: The loan payment details were successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/LoanPaymentDetails'
-    GetAccountACHDetailsResponse:
-      description: Account ACH details were successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ACHDetails'
-    GetAvailableBalanceBadRequestErrorResponse:
-      description: The request was rejected
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            MissingFieldExample:
-              $ref: '#/components/examples/MissingFieldExample'
-            InvalidFieldExample:
-              $ref: '#/components/examples/InvalidFieldExample'
-            GenericBadRequestExample:
-              $ref: '#/components/examples/GenericBadRequestExample'
-            AccountTypeNotSupportedExample:
-              $ref: '#/components/examples/AccountTypeNotSupportedExample'
     ResourceNotFoundErrorResponse:
       description: The resource doesn't exist
       content:
@@ -884,6 +827,94 @@ components:
               $ref: '#/components/examples/ResellerNoDataForPartnerExample'
             ResellerNoReportForPartnerExample:
               $ref: '#/components/examples/ResellerNoReportForPartnerExample'
+    GetAccountACHDetailsBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+    GetAvailableBalanceLiveBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+    GetAccountACHDetailsResponse:
+      description: Account ACH details were successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ACHDetails'
+    GetAvailableBalanceBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+    GetAvailableBalanceLiveResponse:
+      description: The live balance was successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AvailableBalance'
+    GetLoanPaymentDetailsResponse:
+      description: The loan payment details were successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoanPaymentDetails'
+    GetAccountPaymentInstructionBadRequestErrorResponse:
+      description: The request was rejected due to validation failures
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            InstitutionLoginIdNotFoundErrorResponseExample:
+              $ref: '#/components/examples/InstitutionLoginIdNotFoundErrorResponseExample'
+            InstitutionLoginIdDetailsNotFoundErrorResponseExample:
+              $ref: '#/components/examples/InstitutionLoginIdDetailsNotFoundErrorResponseExample'
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+    GetAvailableBalanceResponse:
+      description: The balance was successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AvailableBalance'
     UnauthorizedErrorResponse:
       description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
       content:
@@ -907,37 +938,6 @@ components:
           schema:
             type: string
             example: Invalid (Finicity-App-Key)
-  parameters:
-    CustomerIdParameter:
-      description: A customer ID
-      name: customerId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/CustomerId'
-      example: '1005061234'
-    AccountIdParameter:
-      description: The account ID
-      name: accountId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/AccountId'
-      example: '5011648377'
-    AllowedBalanceCacheIntervalParameter:
-      description: '`balance_cache_interval` (in minutes) is used at server side to decide whether to return existing cached balance or retrieve from financial institution in real-time. Details explained below:
-
-        1. If not provided, a predefined default interval of 30 minutes is used.
-
-        2. If set to `0`, live balance is always retrieved from the financial institution.
-
-        3. If set to a value greater than `0`, cached balance is returned only when cache age is within the interval; otherwise live balance is retrieved.'
-      name: balance_cache_interval
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/AllowedBalanceCacheInterval'
-      example: 1
   securitySchemes:
     FinicityAppKey:
       name: Finicity-App-Key
