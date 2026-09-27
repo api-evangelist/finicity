@@ -78,6 +78,10 @@ paths:
           $ref: '#/components/responses/SBCAResourceNotFoundErrorResponse'
 components:
   examples:
+    InvalidCountryCodeSmallBusinessReportExample:
+      value:
+        code: '10000'
+        message: Invalid country code provided.
     GenerateRetailSalesAnalyticsReportExample:
       value:
         id: y3pic4xhda-sbcaanalyticsnoncra
@@ -134,14 +138,79 @@ components:
               value: 19942.409207
             - name: txn_cnt
               value: 269
-    MissingMandatoryDataSmallBusinessReportExample:
+    ExpiredFinicityAppTokenExample:
       value:
-        code: '10020'
-        message: 'Data missing: analyticsReportData, analyticsReportData.sbcaParams, analyticsReportData.businessDetails...'
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    InvalidFinicityAppKeyExample:
+      value:
+        code: '10027'
+        message: Invalid parameter (Finicity-App-Key)
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+    LocationMatchesResponseExample:
+      value:
+        locationMatches:
+        - locationId: a1b2c3d4-0000-1234-abcd-000000000001
+          matchRank: 1
+          merchantName: Artisan Emporium
+          streetAddress: 2000 Purchase St
+          city: Purchase
+          state: NY
+          postalCode: 10577
+          countryCode: USA
+    InvalidBusinessIdSmallBusinessReportExample:
+      value:
+        code: '10003'
+        message: Missing or invalid request parameter(s) - businessId
+    InvalidDataSmallBusinessReportExample:
+      value:
+        code: '10025'
+        message: 'Invalid data: analyticsReportData.sbcaParams.hasConsent'
     ExpiredTokenExample:
       value:
         code: '10023'
         message: Expired (Finicity-App-Token)
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    InvalidLocationIdSmallBusinessReportExample:
+      value:
+        code: '10003'
+        message: Missing or invalid request parameter(s) - locationId must be a valid UUID
+    MetricsNotFoundExample:
+      value:
+        code: '10100'
+        message: No potential merchant metrics found.
+    InvalidSbcaDataCombinationExample:
+      value:
+        code: '10030'
+        status: '400'
+        message: Invalid data combination.
+        user_message: Both Idtype/Idvalue and Merchant name/Address data combinations are present in the input.
+    MissingMandatoryDataSmallBusinessReportExample:
+      value:
+        code: '10020'
+        message: 'Data missing: analyticsReportData, analyticsReportData.sbcaParams, analyticsReportData.businessDetails...'
+    InvalidSbcaDataExample:
+      value:
+        code: '10025'
+        status: '400'
+        message: 'Invalid data: IdType, IdValue.'
+        user_message: The data provided in one or more fields is invalid.
+    MissingSbcaMandatoryDataExample:
+      value:
+        code: '10020'
+        status: '400'
+        message: 'Data missing : MerchantName, streetAddress.'
+        user_message: One or more of the fields are missing. Please ensure you have entered the correct data.
+    NoLocationMatchFoundExample:
+      value:
+        code: '10100'
+        message: No potential location matches found.
     GenerateRetailSalesBenchmarksReportExample:
       value:
         id: y3pic4xhda-sbcabenchmarksnoncra
@@ -190,96 +259,131 @@ components:
               value: 118
             - name: num_cards_index
               value: 121
-    MissingSbcaMandatoryDataExample:
-      value:
-        code: '10020'
-        status: '400'
-        message: 'Data missing : MerchantName, streetAddress.'
-        user_message: One or more of the fields are missing. Please ensure you have entered the correct data.
-    InvalidLocationIdSmallBusinessReportExample:
-      value:
-        code: '10003'
-        message: Missing or invalid request parameter(s) - locationId must be a valid UUID
-    MissingFinicityAppTokenExample:
-      value:
-        code: '10024'
-        message: Missing parameter (Finicity-App-Token)
-    InvalidCountryCodeSmallBusinessReportExample:
-      value:
-        code: '10000'
-        message: Invalid country code provided.
-    LocationMatchesResponseExample:
-      value:
-        locationMatches:
-        - locationId: a1b2c3d4-0000-1234-abcd-000000000001
-          matchRank: 1
-          merchantName: Artisan Emporium
-          streetAddress: 2000 Purchase St
-          city: Purchase
-          state: NY
-          postalCode: 10577
-          countryCode: USA
-    ExpiredFinicityAppTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    InvalidFinicityAppKeyExample:
-      value:
-        code: '10027'
-        message: Invalid parameter (Finicity-App-Key)
-    MissingFinicityAppKeyExample:
-      value:
-        code: '10026'
-        message: Missing parameter (Finicity-App-Key)
-    InvalidSbcaDataExample:
-      value:
-        code: '10025'
-        status: '400'
-        message: 'Invalid data: IdType, IdValue.'
-        user_message: The data provided in one or more fields is invalid.
-    MetricsNotFoundExample:
-      value:
-        code: '10100'
-        message: No potential merchant metrics found.
-    NoLocationMatchFoundExample:
-      value:
-        code: '10100'
-        message: No potential location matches found.
     InvalidPhoneCodeSmallBusinessReportExample:
       value:
         code: '10000'
         message: Invalid phone number provided.
-    InvalidDataSmallBusinessReportExample:
-      value:
-        code: '10025'
-        message: 'Invalid data: analyticsReportData.sbcaParams.hasConsent'
-    InvalidBusinessIdSmallBusinessReportExample:
-      value:
-        code: '10003'
-        message: Missing or invalid request parameter(s) - businessId
-    InvalidSbcaDataCombinationExample:
-      value:
-        code: '10030'
-        status: '400'
-        message: Invalid data combination.
-        user_message: Both Idtype/Idvalue and Merchant name/Address data combinations are present in the input.
-  requestBodies:
-    GenerateSBCAMetricsReportRequest:
-      required: true
+  responses:
+    SbcaUnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/SBCAMetricsReportConstraints'
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            InvalidFinicityAppKeyExample:
+              $ref: '#/components/examples/InvalidFinicityAppKeyExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+    SmallBusinessReportBadRequestErrorResponse:
+      description: The request is rejected to Generate Small Business Credit Analytics report
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingSBCAMandatoryDataExample:
+              $ref: '#/components/examples/MissingMandatoryDataSmallBusinessReportExample'
+            InvalidSBCADataExample:
+              $ref: '#/components/examples/InvalidDataSmallBusinessReportExample'
+            InvalidLocationIdExample:
+              $ref: '#/components/examples/InvalidLocationIdSmallBusinessReportExample'
+            InvalidBusinessIdSmallBusinessReportExample:
+              $ref: '#/components/examples/InvalidBusinessIdSmallBusinessReportExample'
+            InvalidCountryCodeSmallBusinessReportExample:
+              $ref: '#/components/examples/InvalidCountryCodeSmallBusinessReportExample'
+            InvalidPhoneCodeSmallBusinessReportExample:
+              $ref: '#/components/examples/InvalidPhoneCodeSmallBusinessReportExample'
+    LocationMatchesResponse:
+      description: The location matches were successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LocationMatches'
+          examples:
+            LocationMatchesResponseExample:
+              $ref: '#/components/examples/LocationMatchesResponseExample'
+    SbcaResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            NoLocationMatchFoundExample:
+              $ref: '#/components/examples/NoLocationMatchFoundExample'
+    GenerateSBCAReportResponse:
+      description: 'The report provides real-time transaction-based  insights to build a more complete view of business performance and creditworthiness, helping them underwrite more businesses and reduce risk.</br>
+
+        The report can also be fetched using Get Report APIs at later times.'
+      content:
+        application/json:
+          schema:
+            description: A generated report for Small Business Credit Analytics.</br> Based of report type either `retailSalesAnalyticsMetrics` or `retailSalesBenchmarkMetrics` will be available in the report.
+            oneOf:
+            - $ref: '#/components/schemas/SBCAAnalyticsReport'
+            - $ref: '#/components/schemas/SBCABenchmarkReport'
+          examples:
+            GenerateRetailSalesAnalyticsReportExample:
+              $ref: '#/components/examples/GenerateRetailSalesAnalyticsReportExample'
+            GenerateRetailSalesBenchmarksReportExample:
+              $ref: '#/components/examples/GenerateRetailSalesBenchmarksReportExample'
+    SbcaBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingSbcaMandatoryDataExample:
+              $ref: '#/components/examples/MissingSbcaMandatoryDataExample'
+            InvalidSbcaDataExample:
+              $ref: '#/components/examples/InvalidSbcaDataExample'
+            InvalidSbcaDataCombinationExample:
+              $ref: '#/components/examples/InvalidSbcaDataCombinationExample'
+    SBCAUnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check `Finicity-App-Key` or `Finicity-App-Token`.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            InvalidFinicityAppKeyExample:
+              $ref: '#/components/examples/InvalidFinicityAppKeyExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+    SBCAResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MetricsNotFoundExample:
+              $ref: '#/components/examples/MetricsNotFoundExample'
   schemas:
-    PostalCode:
+    HasConsent:
+      type: boolean
+      description: Indicates that the merchant has provided explicit consent.
+    StreetAddress:
       type: string
-      description: The postal code in the merchant's address.
-      example: '10577'
-    UnixDate:
-      type: integer
-      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
+      description: The full street address of the merchant.
+      maxLength: 250
+      example: 2000 Purchase St
+    CustomerType:
+      type: string
+      description: The type of customer ("active" or "testing" or "" for all types)
+      example: active
     SBCAParams:
       type: object
       description: Parameters for small business credit analytics metrics retrieval.
@@ -297,37 +401,195 @@ components:
           $ref: '#/components/schemas/MetricType'
         locationId:
           $ref: '#/components/schemas/LocationId'
-    City:
+    SBCAanalyticsReportData:
+      type: object
+      description: Analytics reports data required to create business analytics.
+      required:
+      - sbcaParams
+      - businessDetails
+      properties:
+        sbcaParams:
+          $ref: '#/components/schemas/SBCAParams'
+        businessDetails:
+          $ref: '#/components/schemas/BusinessDetailsRequest'
+    NumericCustomerId:
+      type: integer
+      format: int64
+      description: A customer ID represented as a number. See Add Customer API for how to create a customer ID.
+      example: 1005061234
+    LocationId:
       type: string
-      description: City
-      example: Murray
-    IdType:
+      description: The unique identifier for the merchant location.
+      format: uuid
+      example: a1b2c3d4-0000-1234-abcd-000000000001
+    SBCAAnalyticsReport:
+      description: A generated report for Small Business Credit Analytics.</br> The report is enriched with retail sales analytics metrics.
+      type: object
+      required:
+      - id
+      - customerType
+      - customerId
+      - createdDate
+      - requestId
+      - requesterName
+      - partnerName
+      - type
+      - title
+      - status
+      - constraints
+      - retailSalesAnalyticsMetrics
+      properties:
+        id:
+          $ref: '#/components/schemas/ReportId'
+        customerType:
+          $ref: '#/components/schemas/CustomerType'
+        customerId:
+          $ref: '#/components/schemas/NumericCustomerId'
+        createdDate:
+          $ref: '#/components/schemas/UnixDate'
+        requestId:
+          $ref: '#/components/schemas/ReportRequestId'
+        requesterName:
+          $ref: '#/components/schemas/PartnerName'
+        partnerName:
+          $ref: '#/components/schemas/PartnerName'
+        type:
+          $ref: '#/components/schemas/SBCAReportType'
+        title:
+          $ref: '#/components/schemas/ReportTitle'
+        status:
+          type: string
+          description: 'A report generation status. Possible values:
+
+            * `success`
+
+            * `failure`'
+          example: success
+        constraints:
+          $ref: '#/components/schemas/SBCAMetricsReportConstraints'
+        retailSalesAnalyticsMetrics:
+          $ref: '#/components/schemas/SBCAAnalyticsResponseData'
+    UnixDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    MetricType:
       type: string
-      description: The identifier type for finding the merchant.
-      maxLength: 100
-      example: MERCHANT_ID
+      description: The metric family or report type.</br> Possible values are retail_sales_analytics, retail_sales_benchmarks
+      example: retail_sales_analytics
+    ReportTitle:
+      type: string
+      description: Title of the report
+      example: Finicity Asset Ready Report (CRA)
+    LocationMatches:
+      description: SBCA location match response data
+      type: object
+      properties:
+        locationMatches:
+          type: array
+          description: List of location details
+          items:
+            $ref: '#/components/schemas/LocationDetail'
+    PhoneNumberWithCountryCode:
+      type: object
+      description: A phone number with corresponding country code.
+      required:
+      - countryCode
+      - phoneNo
+      properties:
+        countryCode:
+          type: string
+          description: The country code digit representing the phone number for specific country.
+          minLength: 1
+          maxLength: 3
+          example: '1'
+        phoneNo:
+          type: string
+          description: A phone number (E.164 format)
+          minLength: 7
+          maxLength: 12
+          example: '8042221111'
+    ZipCode:
+      type: string
+      description: A ZIP code
+      example: '84123'
     MatchRank:
       type: integer
       description: The rank of the match compared to other potential matches.
       format: int32
       example: 1
-    BusinessPersonallyLiable:
-      type: boolean
-      description: Indicates whether a business owner is personally liable for a loan.
-      example: false
-    ZipCode:
+    ReportId:
       type: string
-      description: A ZIP code
-      example: '84123'
-    MerchantName:
+      description: A report ID
+      example: u4hstnnak45g
+    LocationDetail:
+      description: A Location detail
+      type: object
+      properties:
+        locationId:
+          $ref: '#/components/schemas/LocationId'
+        matchRank:
+          $ref: '#/components/schemas/MatchRank'
+        merchantName:
+          $ref: '#/components/schemas/MerchantName'
+        streetAddress:
+          $ref: '#/components/schemas/StreetAddress'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        postalCode:
+          $ref: '#/components/schemas/ZipCode'
+        countryCode:
+          $ref: '#/components/schemas/Country'
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    AccountId:
       type: string
-      description: Name of merchant.
-      maxLength: 250
-      example: Artisan Emporium
-    MetricType:
-      type: string
-      description: The metric family or report type.</br> Possible values are retail_sales_analytics, retail_sales_benchmarks
-      example: retail_sales_analytics
+      description: An account ID
+      example: '5011648377'
     SBCAAnalyticsResponseData:
       type: array
       description: Analytics response data for SBCA report. This will be present in the report for the report `retail_sales_analytics`.
@@ -396,52 +658,92 @@ components:
                         type: number
                         description: The value of the metric.
                         example: 150000.75
-    AssetId:
+    ReportRequestId:
       type: string
-      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
-      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
-    ReportTitle:
+      description: Finicity indicator to track all activity associated with this report
+      example: cjqm4wtdcn
+    BusinessAddressLine2:
       type: string
-      description: Title of the report
-      example: Finicity Asset Ready Report (CRA)
-    CustomerId:
+      minLength: 0
+      maxLength: 50
+      description: Address Line2, Apt/Unit Details
+      example: Apt E226
+    BusinessPersonallyLiable:
+      type: boolean
+      description: Indicates whether a business owner is personally liable for a loan.
+      example: false
+    PartnerName:
       type: string
-      description: A customer ID. See Add Customer API for how to create a customer ID.
-      example: '1005061234'
-    NumericCustomerId:
-      type: integer
-      format: int64
-      description: A customer ID represented as a number. See Add Customer API for how to create a customer ID.
-      example: 1005061234
-    StreetAddress:
+      description: Name of a Finicity partner
+      example: Finicity Test API
+    State:
       type: string
-      description: The full street address of the merchant.
-      maxLength: 250
-      example: 2000 Purchase St
-    LocationDetail:
-      description: A Location detail
+      description: State
+      example: UT
+    IdValue:
+      type: string
+      description: The identifier value pertaining to the identifier type.
+      maxLength: 100
+      example: 106241230D01
+    SBCAReportType:
+      description: 'A Small Business Credit Analytics Report type. Possible values:
+
+
+        * `sbcaanalyticsnoncra`
+
+
+        * `sbcabenchmarksnoncra`
+
+        '
+      type: string
+      example: voi
+    SBCAMetricsReportConstraints:
       type: object
+      description: Request constraints required to create Small Business Credit Analytics report.
+      required:
+      - analyticsReportData
       properties:
-        locationId:
-          $ref: '#/components/schemas/LocationId'
-        matchRank:
-          $ref: '#/components/schemas/MatchRank'
-        merchantName:
-          $ref: '#/components/schemas/MerchantName'
-        streetAddress:
-          $ref: '#/components/schemas/StreetAddress'
-        city:
-          $ref: '#/components/schemas/City'
-        state:
-          $ref: '#/components/schemas/State'
-        postalCode:
-          $ref: '#/components/schemas/ZipCode'
-        countryCode:
-          $ref: '#/components/schemas/Country'
-    ReportId:
+        analyticsReportData:
+          $ref: '#/components/schemas/SBCAanalyticsReportData'
+    PostalCode:
       type: string
-      description: A report ID
-      example: u4hstnnak45g
+      description: The postal code in the merchant's address.
+      example: '10577'
+    BusinessDetailsRequest:
+      required:
+      - name
+      - address
+      - personallyLiable
+      - phoneNumber
+      properties:
+        name:
+          $ref: '#/components/schemas/BusinessName'
+        personallyLiable:
+          $ref: '#/components/schemas/BusinessPersonallyLiable'
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumberWithCountryCode'
+        address:
+          type: object
+          description: Business address where business is registered/located.
+          required:
+          - addressLine1
+          - city
+          - state
+          - country
+          - postalCode
+          properties:
+            addressLine1:
+              $ref: '#/components/schemas/BusinessAddressLine1'
+            addressLine2:
+              $ref: '#/components/schemas/BusinessAddressLine2'
+            city:
+              $ref: '#/components/schemas/City'
+            state:
+              $ref: '#/components/schemas/State'
+            country:
+              $ref: '#/components/schemas/Country'
+            postalCode:
+              $ref: '#/components/schemas/ZipCode'
     SBCABenchmarkResponseData:
       type: array
       description: Benchmark response data for SBCA report. This will be present in the report for the report `retail_sales_benchmarks`.
@@ -510,22 +812,10 @@ components:
                         type: number
                         description: The value of the metric.
                         example: 150000.75
-    SBCAanalyticsReportData:
-      type: object
-      description: Analytics reports data required to create business analytics.
-      required:
-      - sbcaParams
-      - businessDetails
-      properties:
-        sbcaParams:
-          $ref: '#/components/schemas/SBCAParams'
-        businessDetails:
-          $ref: '#/components/schemas/BusinessDetailsRequest'
-    LocationId:
+    City:
       type: string
-      description: The unique identifier for the merchant location.
-      format: uuid
-      example: a1b2c3d4-0000-1234-abcd-000000000001
+      description: City
+      example: Murray
     SBCABenchmarkReport:
       description: A generated report for Small Business Credit Analytics.</br> The report is enriched with retail sales benchmark metrics.
       type: object
@@ -573,380 +863,43 @@ components:
           $ref: '#/components/schemas/SBCAMetricsReportConstraints'
         retailSalesBenchmarksMetrics:
           $ref: '#/components/schemas/SBCABenchmarkResponseData'
-    LocationMatches:
-      description: SBCA location match response data
-      type: object
-      properties:
-        locationMatches:
-          type: array
-          description: List of location details
-          items:
-            $ref: '#/components/schemas/LocationDetail'
+    Country:
+      type: string
+      description: Country code is Iso3166-1 Alpha-2 code and Alpha 3 standard (max length 3).
+      example: CAN
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    BusinessName:
+      type: string
+      description: The name of a business
+      example: ABC Tires Inc
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
     BusinessAddressLine1:
       type: string
       minLength: 0
       maxLength: 50
       description: A street address
       example: 434 W Ascension Way
-    AccountId:
+    IdType:
       type: string
-      description: An account ID
-      example: '5011648377'
-    State:
-      type: string
-      description: State
-      example: UT
-    BusinessDetailsRequest:
-      required:
-      - name
-      - address
-      - personallyLiable
-      - phoneNumber
-      properties:
-        name:
-          $ref: '#/components/schemas/BusinessName'
-        personallyLiable:
-          $ref: '#/components/schemas/BusinessPersonallyLiable'
-        phoneNumber:
-          $ref: '#/components/schemas/PhoneNumberWithCountryCode'
-        address:
-          type: object
-          description: Business address where business is registered/located.
-          required:
-          - addressLine1
-          - city
-          - state
-          - country
-          - postalCode
-          properties:
-            addressLine1:
-              $ref: '#/components/schemas/BusinessAddressLine1'
-            addressLine2:
-              $ref: '#/components/schemas/BusinessAddressLine2'
-            city:
-              $ref: '#/components/schemas/City'
-            state:
-              $ref: '#/components/schemas/State'
-            country:
-              $ref: '#/components/schemas/Country'
-            postalCode:
-              $ref: '#/components/schemas/ZipCode'
-    BusinessAddressLine2:
-      type: string
-      minLength: 0
-      maxLength: 50
-      description: Address Line2, Apt/Unit Details
-      example: Apt E226
-    SBCAMetricsReportConstraints:
-      type: object
-      description: Request constraints required to create Small Business Credit Analytics report.
-      required:
-      - analyticsReportData
-      properties:
-        analyticsReportData:
-          $ref: '#/components/schemas/SBCAanalyticsReportData'
-    SBCAAnalyticsReport:
-      description: A generated report for Small Business Credit Analytics.</br> The report is enriched with retail sales analytics metrics.
-      type: object
-      required:
-      - id
-      - customerType
-      - customerId
-      - createdDate
-      - requestId
-      - requesterName
-      - partnerName
-      - type
-      - title
-      - status
-      - constraints
-      - retailSalesAnalyticsMetrics
-      properties:
-        id:
-          $ref: '#/components/schemas/ReportId'
-        customerType:
-          $ref: '#/components/schemas/CustomerType'
-        customerId:
-          $ref: '#/components/schemas/NumericCustomerId'
-        createdDate:
-          $ref: '#/components/schemas/UnixDate'
-        requestId:
-          $ref: '#/components/schemas/ReportRequestId'
-        requesterName:
-          $ref: '#/components/schemas/PartnerName'
-        partnerName:
-          $ref: '#/components/schemas/PartnerName'
-        type:
-          $ref: '#/components/schemas/SBCAReportType'
-        title:
-          $ref: '#/components/schemas/ReportTitle'
-        status:
-          type: string
-          description: 'A report generation status. Possible values:
-
-            * `success`
-
-            * `failure`'
-          example: success
-        constraints:
-          $ref: '#/components/schemas/SBCAMetricsReportConstraints'
-        retailSalesAnalyticsMetrics:
-          $ref: '#/components/schemas/SBCAAnalyticsResponseData'
-    CustomerType:
-      type: string
-      description: The type of customer ("active" or "testing" or "" for all types)
-      example: active
-    PhoneNumberWithCountryCode:
-      type: object
-      description: A phone number with corresponding country code.
-      required:
-      - countryCode
-      - phoneNo
-      properties:
-        countryCode:
-          type: string
-          description: The country code digit representing the phone number for specific country.
-          minLength: 1
-          maxLength: 3
-          example: '1'
-        phoneNo:
-          type: string
-          description: A phone number (E.164 format)
-          minLength: 7
-          maxLength: 12
-          example: '8042221111'
-    Country:
-      type: string
-      description: Country code is Iso3166-1 Alpha-2 code and Alpha 3 standard (max length 3).
-      example: CAN
-    IdValue:
-      type: string
-      description: The identifier value pertaining to the identifier type.
+      description: The identifier type for finding the merchant.
       maxLength: 100
-      example: 106241230D01
-    HasConsent:
-      type: boolean
-      description: Indicates that the merchant has provided explicit consent.
-    BusinessName:
-      type: string
-      description: The name of a business
-      example: ABC Tires Inc
-    ErrorMessage:
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          type: object
-          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
-          example: '10001'
-        status:
-          type: string
-          description: A status code
-          example: '401'
-        title:
-          type: string
-          description: A title for the error
-          example: Connecting accounts error
-        level:
-          type: string
-          description: An error level
-          example: error
-        message:
-          type: string
-          description: An error message
-          example: Invalid authorization credentials
-        user_message:
-          type: string
-          description: Some more details about the error
-          example: The session has expired or is invalid
-        assetId:
-          $ref: '#/components/schemas/AssetId'
-        accountId:
-          $ref: '#/components/schemas/AccountId'
-        externalTransactionId:
-          type: string
-          description: A unique identifier for the transaction that assists in linking data back to your systems.
-          example: MAC1005061234
-          minLength: 1
-          maxLength: 100
-        tags:
-          type: string
-          description: Categories that the error belongs to
-          example: AGG
+      example: MERCHANT_ID
     MetricFrequency:
       type: string
       description: Frequency of the metric aggregation/reporting.</br> Possible values are Monthly, Weekly.
       example: Weekly
-    SBCAReportType:
-      description: 'A Small Business Credit Analytics Report type. Possible values:
-
-
-        * `sbcaanalyticsnoncra`
-
-
-        * `sbcabenchmarksnoncra`
-
-        '
+    MerchantName:
       type: string
-      example: voi
-    ReportRequestId:
-      type: string
-      description: Finicity indicator to track all activity associated with this report
-      example: cjqm4wtdcn
-    PartnerName:
-      type: string
-      description: Name of a Finicity partner
-      example: Finicity Test API
-  responses:
-    SBCAUnauthorizedErrorResponse:
-      description: The request lacks valid authentication credentials. Check `Finicity-App-Key` or `Finicity-App-Token`.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            ExpiredTokenExample:
-              $ref: '#/components/examples/ExpiredTokenExample'
-            MissingFinicityAppKeyExample:
-              $ref: '#/components/examples/MissingFinicityAppKeyExample'
-            InvalidFinicityAppKeyExample:
-              $ref: '#/components/examples/InvalidFinicityAppKeyExample'
-            ExpiredFinicityAppTokenExample:
-              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
-            MissingFinicityAppTokenExample:
-              $ref: '#/components/examples/MissingFinicityAppTokenExample'
-    SmallBusinessReportBadRequestErrorResponse:
-      description: The request is rejected to Generate Small Business Credit Analytics report
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            MissingSBCAMandatoryDataExample:
-              $ref: '#/components/examples/MissingMandatoryDataSmallBusinessReportExample'
-            InvalidSBCADataExample:
-              $ref: '#/components/examples/InvalidDataSmallBusinessReportExample'
-            InvalidLocationIdExample:
-              $ref: '#/components/examples/InvalidLocationIdSmallBusinessReportExample'
-            InvalidBusinessIdSmallBusinessReportExample:
-              $ref: '#/components/examples/InvalidBusinessIdSmallBusinessReportExample'
-            InvalidCountryCodeSmallBusinessReportExample:
-              $ref: '#/components/examples/InvalidCountryCodeSmallBusinessReportExample'
-            InvalidPhoneCodeSmallBusinessReportExample:
-              $ref: '#/components/examples/InvalidPhoneCodeSmallBusinessReportExample'
-    SbcaUnauthorizedErrorResponse:
-      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            ExpiredTokenExample:
-              $ref: '#/components/examples/ExpiredTokenExample'
-            InvalidFinicityAppKeyExample:
-              $ref: '#/components/examples/InvalidFinicityAppKeyExample'
-            MissingFinicityAppKeyExample:
-              $ref: '#/components/examples/MissingFinicityAppKeyExample'
-            MissingFinicityAppTokenExample:
-              $ref: '#/components/examples/MissingFinicityAppTokenExample'
-    LocationMatchesResponse:
-      description: The location matches were successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/LocationMatches'
-          examples:
-            LocationMatchesResponseExample:
-              $ref: '#/components/examples/LocationMatchesResponseExample'
-    SbcaBadRequestErrorResponse:
-      description: The request was rejected
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            MissingSbcaMandatoryDataExample:
-              $ref: '#/components/examples/MissingSbcaMandatoryDataExample'
-            InvalidSbcaDataExample:
-              $ref: '#/components/examples/InvalidSbcaDataExample'
-            InvalidSbcaDataCombinationExample:
-              $ref: '#/components/examples/InvalidSbcaDataCombinationExample'
-    GenerateSBCAReportResponse:
-      description: 'The report provides real-time transaction-based  insights to build a more complete view of business performance and creditworthiness, helping them underwrite more businesses and reduce risk.</br>
-
-        The report can also be fetched using Get Report APIs at later times.'
-      content:
-        application/json:
-          schema:
-            description: A generated report for Small Business Credit Analytics.</br> Based of report type either `retailSalesAnalyticsMetrics` or `retailSalesBenchmarkMetrics` will be available in the report.
-            oneOf:
-            - $ref: '#/components/schemas/SBCAAnalyticsReport'
-            - $ref: '#/components/schemas/SBCABenchmarkReport'
-          examples:
-            GenerateRetailSalesAnalyticsReportExample:
-              $ref: '#/components/examples/GenerateRetailSalesAnalyticsReportExample'
-            GenerateRetailSalesBenchmarksReportExample:
-              $ref: '#/components/examples/GenerateRetailSalesBenchmarksReportExample'
-    SbcaResourceNotFoundErrorResponse:
-      description: The resource doesn't exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            NoLocationMatchFoundExample:
-              $ref: '#/components/examples/NoLocationMatchFoundExample'
-    SBCAResourceNotFoundErrorResponse:
-      description: The resource doesn't exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            MetricsNotFoundExample:
-              $ref: '#/components/examples/MetricsNotFoundExample'
+      description: Name of merchant.
+      maxLength: 250
+      example: Artisan Emporium
   parameters:
-    StateProvinceRegionParameter:
-      name: stateProvinceRegion
-      in: query
-      description: The state, province, department or region abbreviation in the merchant's address will vary based on the country code.
-      required: false
-      schema:
-        $ref: '#/components/schemas/State'
-      example: UT
-    CityParameter:
-      name: city
-      in: query
-      description: The city name in the merchant's address. This is limited to alphanumeric characters, spaces, single quotes, and commas.
-      required: false
-      schema:
-        $ref: '#/components/schemas/City'
-      example: Murray
-    PostalCodeParameter:
-      name: postalCode
-      in: query
-      description: The postal code in the merchant's address. Expected format will be determined based on the country_code.
-      required: false
-      schema:
-        $ref: '#/components/schemas/PostalCode'
-      example: '84123'
-    StreetAddressParameter:
-      name: streetAddress
-      in: query
-      description: The full street address of the merchant.
-      required: false
-      schema:
-        $ref: '#/components/schemas/StreetAddress'
-      example: 123 Main St
-    CustomerIdParameter:
-      description: A customer ID
-      name: customerId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/CustomerId'
-      example: '1005061234'
     IdValueParameter:
       name: idValue
       in: query
@@ -955,14 +908,30 @@ components:
       schema:
         $ref: '#/components/schemas/IdValue'
       example: 106241230D01
-    IdTypeParameter:
-      name: idType
+    StateProvinceRegionParameter:
+      name: stateProvinceRegion
       in: query
-      description: The identifier type for finding the merchant.
+      description: The state, province, department or region abbreviation in the merchant's address will vary based on the country code.
       required: false
       schema:
-        $ref: '#/components/schemas/IdType'
-      example: MERCHANT_ID
+        $ref: '#/components/schemas/State'
+      example: UT
+    CustomerIdParameter:
+      description: A customer ID
+      name: customerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
+    PostalCodeParameter:
+      name: postalCode
+      in: query
+      description: The postal code in the merchant's address. Expected format will be determined based on the country_code.
+      required: false
+      schema:
+        $ref: '#/components/schemas/PostalCode'
+      example: '84123'
     MerchantNameParameter:
       name: merchantName
       in: query
@@ -971,6 +940,37 @@ components:
       schema:
         $ref: '#/components/schemas/MerchantName'
       example: Artisan Emporium
+    CityParameter:
+      name: city
+      in: query
+      description: The city name in the merchant's address. This is limited to alphanumeric characters, spaces, single quotes, and commas.
+      required: false
+      schema:
+        $ref: '#/components/schemas/City'
+      example: Murray
+    IdTypeParameter:
+      name: idType
+      in: query
+      description: The identifier type for finding the merchant.
+      required: false
+      schema:
+        $ref: '#/components/schemas/IdType'
+      example: MERCHANT_ID
+    StreetAddressParameter:
+      name: streetAddress
+      in: query
+      description: The full street address of the merchant.
+      required: false
+      schema:
+        $ref: '#/components/schemas/StreetAddress'
+      example: 123 Main St
+  requestBodies:
+    GenerateSBCAMetricsReportRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SBCAMetricsReportConstraints'
   securitySchemes:
     FinicityAppKey:
       name: Finicity-App-Key

@@ -366,22 +366,13 @@ paths:
           $ref: '#/components/responses/ObwmsResourceNotFounderrorResponse'
 components:
   examples:
-    EventUpdatedResponseExample:
-      value:
-        name: authorization.accesstoken.expiry
-        condition:
-          subscribeFor: institutionId
-          excludes:
-          - '170718'
-          - '170788'
-          - '188797'
-    ObmwsResourceNotFoundExample:
+    ObwmsExpiredTokenExample:
       value:
         Errors:
           Error:
           - source: Event Subscription Service
-            reasonCode: 1501
-            description: Resource not found.
+            reasonCode: 1503
+            description: Expired (App-Token)
             recoverable: false
             details: null
     UpdateEventRequestExample:
@@ -394,15 +385,56 @@ components:
           - '170718'
           - '170788'
           - '188797'
-    BadRequestErrorResponseExample:
+    SubscriptionRequestExample:
       value:
-        Errors:
-          Error:
-          - source: Event Subscription Service
-            reasonCode: 1502
-            description: Bad Request.
-            recoverable: false
-            details: null
+        url: https://example.com/example_webhook/expiry
+        events:
+        - name: authorization.accesstoken.expiry
+          condition:
+            subscribeFor: institutionId
+            excludes:
+            - '170718'
+            - '170788'
+            - '188797'
+        - name: manage.txpush.account.created
+          condition:
+            subscribeFor: accountId
+            includes:
+            - '100010'
+            - '100011'
+            - '100012'
+        - url: https://example.com/overridden_webhookurl
+          name: mastercard.openbanking.customer.consent
+    SubscriptionCreatedResponseExample:
+      value:
+        subscriptionId: 661f3c48-f596-423b-81f5-d275d4dd1345
+        url: https://example.com/example_webhook
+        events:
+        - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1346
+          name: authorization.accesstoken.expiry
+          condition:
+            subscribeFor: institutionId
+            excludes:
+            - '170718'
+            - '170788'
+            - '188797'
+          status: pending
+        - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1347
+          name: manage.txpush.account.created
+          condition:
+            subscribeFor: accountId
+            includes:
+            - '100010'
+            - '100011'
+            - '100012'
+          status: pending
+        - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1348
+          url: https://example.com/overridden_webhookurl
+          name: mastercard.openbanking.customer.consent
+          status: pending
+        status: pending
+        createdDate: '2024-03-16T06:06:20Z'
+        lastUpdatedDate: '2024-03-16T06:06:20Z'
     SubscriptionsResponseExample:
       value:
         count: 3
@@ -436,49 +468,24 @@ components:
           status: active
           createdDate: '2024-03-16T06:06:20Z'
           lastUpdatedDate: '2024-03-16T06:06:20Z'
-    AvailableEventsResponseExample:
+    EventUpdatedResponseExample:
       value:
-        events:
-        - name: manage.txpush.account.created
-          description: notification will be sent when accounts are created
-          conditionalSubscription:
-            applicable: true
-            fields: accountid,customerId
-            mandatory: false
-        - name: mastercard.openbanking.customer.consent
-          description: Customer consent information
-          conditionalSubscription:
-            applicable: false
-    SubscriptionCreatedResponseExample:
+        name: authorization.accesstoken.expiry
+        condition:
+          subscribeFor: institutionId
+          excludes:
+          - '170718'
+          - '170788'
+          - '188797'
+    BadRequestErrorResponseExample:
       value:
-        subscriptionId: 661f3c48-f596-423b-81f5-d275d4dd1345
-        url: https://example.com/example_webhook
-        events:
-        - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1346
-          name: authorization.accesstoken.expiry
-          condition:
-            subscribeFor: institutionId
-            excludes:
-            - '170718'
-            - '170788'
-            - '188797'
-          status: pending
-        - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1347
-          name: manage.txpush.account.created
-          condition:
-            subscribeFor: accountId
-            includes:
-            - '100010'
-            - '100011'
-            - '100012'
-          status: pending
-        - webhookEventId: 661f3c48-f596-423b-81f5-d275d4dd1348
-          url: https://example.com/overridden_webhookurl
-          name: mastercard.openbanking.customer.consent
-          status: pending
-        status: pending
-        createdDate: '2024-03-16T06:06:20Z'
-        lastUpdatedDate: '2024-03-16T06:06:20Z'
+        Errors:
+          Error:
+          - source: Event Subscription Service
+            reasonCode: 1502
+            description: Bad Request.
+            recoverable: false
+            details: null
     SubscriptionDetailResponseExample:
       value:
         subscriptionId: 661f3c48-f596-423b-81f5-d275d4dd1345
@@ -508,6 +515,19 @@ components:
         status: active
         createdDate: '2024-03-16T06:06:20Z'
         lastUpdatedDate: '2024-03-16T06:06:20Z'
+    AvailableEventsResponseExample:
+      value:
+        events:
+        - name: manage.txpush.account.created
+          description: notification will be sent when accounts are created
+          conditionalSubscription:
+            applicable: true
+            fields: accountid,customerId
+            mandatory: false
+        - name: mastercard.openbanking.customer.consent
+          description: Customer consent information
+          conditionalSubscription:
+            applicable: false
     MissingAppKeyExample:
       value:
         Errors:
@@ -517,105 +537,169 @@ components:
             description: Missing parameter (App-Key)
             recoverable: false
             details: null
-    ObwmsExpiredTokenExample:
+    ObmwsResourceNotFoundExample:
       value:
         Errors:
           Error:
           - source: Event Subscription Service
-            reasonCode: 1503
-            description: Expired (App-Token)
+            reasonCode: 1501
+            description: Resource not found.
             recoverable: false
             details: null
-    SubscriptionRequestExample:
-      value:
-        url: https://example.com/example_webhook/expiry
-        events:
-        - name: authorization.accesstoken.expiry
-          condition:
-            subscribeFor: institutionId
-            excludes:
-            - '170718'
-            - '170788'
-            - '188797'
-        - name: manage.txpush.account.created
-          condition:
-            subscribeFor: accountId
-            includes:
-            - '100010'
-            - '100011'
-            - '100012'
-        - url: https://example.com/overridden_webhookurl
-          name: mastercard.openbanking.customer.consent
+  responses:
+    EventDeletedResponse:
+      description: Event deleted successfully
+    ObwmsResourceNotFounderrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorWrapper'
+          examples:
+            ResourceNotFoundExample:
+              $ref: '#/components/examples/ObmwsResourceNotFoundExample'
+    SubscriptionDetail:
+      description: Subscription detail by ID
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SubscriptionDetail'
+          examples:
+            SubscriptionDetailExample:
+              $ref: '#/components/examples/SubscriptionDetailResponseExample'
+    EventUpdatedResponse:
+      description: Event updated successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WebhookEvent'
+          examples:
+            SubscriptionCreatedResponseExample:
+              $ref: '#/components/examples/EventUpdatedResponseExample'
+    ObwmsBadRequestErrorResponse:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorWrapper'
+          examples:
+            BadRequestErrorResponseExample:
+              $ref: '#/components/examples/BadRequestErrorResponseExample'
+    AvailableEventsResponse:
+      description: List of all available events.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - events
+            properties:
+              events:
+                type: array
+                description: List of available events.
+                items:
+                  $ref: '#/components/schemas/AvailableEvent'
+          examples:
+            AvailableEventsResponseExample:
+              $ref: '#/components/examples/AvailableEventsResponseExample'
+    ObwmsUnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "App-Key" or "App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorWrapper'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ObwmsExpiredTokenExample'
+            MissingAppKeyExample:
+              $ref: '#/components/examples/MissingAppKeyExample'
+    SubscriptionDeletedResponse:
+      description: Subscription deleted successfully
+    TestWebhookSubscriptionResponse:
+      description: test subscription submitted successfully.
+    EventStatusUpdatedResponse:
+      description: Event updated successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventStatusUpdate'
+    SubscriptionsResponse:
+      description: List of all subscriptions with pagination and availability details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Subscriptions'
+          examples:
+            SubscriptionsResponseExample:
+              $ref: '#/components/examples/SubscriptionsResponseExample'
+    SubscriptionCreatedResponse:
+      description: Subscription created successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SubscriptionDetail'
+          examples:
+            SubscriptionCreatedResponseExample:
+              $ref: '#/components/examples/SubscriptionCreatedResponseExample'
+    SubscriptionUpdatedResponse:
+      description: Subscription updated successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SubscriptionDetail'
+          examples:
+            SubscriptionCreatedResponseExample:
+              $ref: '#/components/examples/SubscriptionCreatedResponseExample'
   schemas:
-    WebhookEvents:
-      type: array
-      description: List of webhook subscription event.
-      items:
-        $ref: '#/components/schemas/WebhookEvent'
-    Subscription:
+    SubscriptionDetail:
       type: object
       required:
+      - subscriptionId
       - events
-      description: Request body to create or update a subscription.
+      - status
+      - createdDate
+      - lastUpdatedDate
       properties:
+        subscriptionId:
+          type: string
+          description: A unique UUID identifier for the subscription.
+          minLength: 36
+          maxLength: 36
+          example: 661f3c48-f596-423b-81f5-d275d4dd1345
         url:
           $ref: '#/components/schemas/WebhookUrl'
         events:
-          $ref: '#/components/schemas/WebhookEvents'
-    Subscriptions:
-      type: object
-      required:
-      - count
-      - offset
-      - limit
-      - total
-      - subscriptions
-      properties:
-        count:
-          $ref: '#/components/schemas/CountResults'
-        offset:
-          $ref: '#/components/schemas/OffsetResults'
-        limit:
-          $ref: '#/components/schemas/LimitResults'
-        total:
-          $ref: '#/components/schemas/TotalResults'
-        subscriptions:
-          type: array
-          description: List of subscription objects returned by the API.
-          items:
-            $ref: '#/components/schemas/SubscriptionDetail'
-    Events:
-      type: array
-      description: List of events for the subscription.
-      items:
-        $ref: '#/components/schemas/Event'
-    Condition:
-      type: object
-      required:
-      - subscribeFor
-      properties:
-        subscribeFor:
+          $ref: '#/components/schemas/Events'
+        status:
+          $ref: '#/components/schemas/Status'
+        createdDate:
           type: string
-          description: The field or entity that the event is subscribed for, such as an institution or account ID.
+          format: date-time
           minLength: 1
-          maxLength: 50
-          example: institutionId
-        includes:
-          type: array
-          description: A list of specific IDs or values to include in the subscription condition.
-          items:
-            type: string
-          example:
-          - '100010'
-          - '100011'
-        excludes:
-          type: array
-          description: A list of specific IDs or values to exclude from the subscription condition.
-          items:
-            type: string
-          example:
-          - '170718'
-          - '170788'
+          maxLength: 255
+          description: Subscription creation date.
+          example: '2024-01-01T11:18:50Z'
+        lastUpdatedDate:
+          type: string
+          format: date-time
+          minLength: 1
+          maxLength: 255
+          description: Subscription last updated date.
+          example: '2024-01-01T11:18:50Z'
+    LimitResults:
+      type: integer
+      description: The number of items you asked the list to be limited.
+      minimum: 1
+      maximum: 2147483647
+      example: 10
+    Errors:
+      description: Object that contains the list of errors.
+      type: object
+      required:
+      - Error
+      properties:
+        Error:
+          $ref: '#/components/schemas/ErrorList'
     Error:
       description: A single error.
       type: object
@@ -648,20 +732,153 @@ components:
           maxLength: 512
           description: Details for backwards compatibility.
           example: Invalid JSON payload
-    Status:
+    WebhookUrl:
       type: string
-      description: The status of the event (e.g. active, inactive, pending, removed).
+      description: The webhook Url where the event notifications will be sent. The URL must be aligned with RFC 2396.
       minLength: 1
-      maxLength: 10
-      example: active
-    Errors:
-      description: Object that contains the list of errors.
+      maxLength: 2048
+      example: https://example.com/example_webhook
+    EventStatusUpdate:
       type: object
       required:
-      - Error
+      - status
       properties:
-        Error:
-          $ref: '#/components/schemas/ErrorList'
+        status:
+          type: string
+          description: The status to set for the event. Can be `active`,`inactive` , `pending` or `removed`.
+          minLength: 1
+          maxLength: 10
+          example: active
+    OffsetResults:
+      type: integer
+      description: The number of items you asked the start of the list to be offset.
+      minimum: 1
+      maximum: 2147483647
+      example: 5
+    Event:
+      type: object
+      required:
+      - webhookEventId
+      - name
+      - status
+      properties:
+        webhookEventId:
+          type: string
+          description: A unique UUID identifier for the webhook event.
+          minLength: 36
+          maxLength: 36
+          example: 661f3c48-f596-423b-81f5-d275d4dd1346
+        name:
+          type: string
+          description: The name of the event.
+          minLength: 1
+          maxLength: 255
+          example: authorization.accesstoken.expiry
+        url:
+          $ref: '#/components/schemas/WebhookUrl'
+        status:
+          $ref: '#/components/schemas/Status'
+        condition:
+          $ref: '#/components/schemas/Condition'
+    Subscriptions:
+      type: object
+      required:
+      - count
+      - offset
+      - limit
+      - total
+      - subscriptions
+      properties:
+        count:
+          $ref: '#/components/schemas/CountResults'
+        offset:
+          $ref: '#/components/schemas/OffsetResults'
+        limit:
+          $ref: '#/components/schemas/LimitResults'
+        total:
+          $ref: '#/components/schemas/TotalResults'
+        subscriptions:
+          type: array
+          description: List of subscription objects returned by the API.
+          items:
+            $ref: '#/components/schemas/SubscriptionDetail'
+    WebhookEvent:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: The name of the webhook subscription event.
+          minLength: 1
+          maxLength: 255
+          example: authorization.accesstoken.expiry
+        url:
+          $ref: '#/components/schemas/WebhookUrl'
+        condition:
+          $ref: '#/components/schemas/Condition'
+    ErrorList:
+      description: The list of errors.
+      type: array
+      minItems: 1
+      items:
+        $ref: '#/components/schemas/Error'
+    Condition:
+      type: object
+      required:
+      - subscribeFor
+      properties:
+        subscribeFor:
+          type: string
+          description: The field or entity that the event is subscribed for, such as an institution or account ID.
+          minLength: 1
+          maxLength: 50
+          example: institutionId
+        includes:
+          type: array
+          description: A list of specific IDs or values to include in the subscription condition.
+          items:
+            type: string
+          example:
+          - '100010'
+          - '100011'
+        excludes:
+          type: array
+          description: A list of specific IDs or values to exclude from the subscription condition.
+          items:
+            type: string
+          example:
+          - '170718'
+          - '170788'
+    Subscription:
+      type: object
+      required:
+      - events
+      description: Request body to create or update a subscription.
+      properties:
+        url:
+          $ref: '#/components/schemas/WebhookUrl'
+        events:
+          $ref: '#/components/schemas/WebhookEvents'
+    TotalResults:
+      type: integer
+      description: The total number of items in the collection.
+      minimum: 1
+      maximum: 2147483647
+      example: 10
+    Events:
+      type: array
+      description: List of events for the subscription.
+      items:
+        $ref: '#/components/schemas/Event'
+    ErrorWrapper:
+      description: A top level object for errors.
+      type: object
+      required:
+      - Errors
+      properties:
+        Errors:
+          $ref: '#/components/schemas/Errors'
     AvailableEvent:
       type: object
       required:
@@ -701,136 +918,61 @@ components:
               type: boolean
               description: Indicates whether the fields in the conditional subscription are mandatory.
               example: false
-    OffsetResults:
-      type: integer
-      description: The number of items you asked the start of the list to be offset.
-      minimum: 1
-      maximum: 2147483647
-      example: 5
-    WebhookUrl:
-      type: string
-      description: The webhook Url where the event notifications will be sent. The URL must be aligned with RFC 2396.
-      minLength: 1
-      maxLength: 2048
-      example: https://example.com/example_webhook
-    ErrorList:
-      description: The list of errors.
+    WebhookEvents:
       type: array
-      minItems: 1
+      description: List of webhook subscription event.
       items:
-        $ref: '#/components/schemas/Error'
-    WebhookEvent:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: The name of the webhook subscription event.
-          minLength: 1
-          maxLength: 255
-          example: authorization.accesstoken.expiry
-        url:
-          $ref: '#/components/schemas/WebhookUrl'
-        condition:
-          $ref: '#/components/schemas/Condition'
+        $ref: '#/components/schemas/WebhookEvent'
+    Status:
+      type: string
+      description: The status of the event (e.g. active, inactive, pending, removed).
+      minLength: 1
+      maxLength: 10
+      example: active
     CountResults:
       type: integer
       description: The number of subscriptions currently displayed in the response.
       minimum: 1
       maximum: 2147483647
       example: 10
-    SubscriptionDetail:
-      type: object
-      required:
-      - subscriptionId
-      - events
-      - status
-      - createdDate
-      - lastUpdatedDate
-      properties:
-        subscriptionId:
-          type: string
-          description: A unique UUID identifier for the subscription.
-          minLength: 36
-          maxLength: 36
-          example: 661f3c48-f596-423b-81f5-d275d4dd1345
-        url:
-          $ref: '#/components/schemas/WebhookUrl'
-        events:
-          $ref: '#/components/schemas/Events'
-        status:
-          $ref: '#/components/schemas/Status'
-        createdDate:
-          type: string
-          format: date-time
-          minLength: 1
-          maxLength: 255
-          description: Subscription creation date.
-          example: '2024-01-01T11:18:50Z'
-        lastUpdatedDate:
-          type: string
-          format: date-time
-          minLength: 1
-          maxLength: 255
-          description: Subscription last updated date.
-          example: '2024-01-01T11:18:50Z'
-    ErrorWrapper:
-      description: A top level object for errors.
-      type: object
-      required:
-      - Errors
-      properties:
-        Errors:
-          $ref: '#/components/schemas/Errors'
-    TotalResults:
-      type: integer
-      description: The total number of items in the collection.
-      minimum: 1
-      maximum: 2147483647
-      example: 10
-    EventStatusUpdate:
-      type: object
-      required:
-      - status
-      properties:
-        status:
-          type: string
-          description: The status to set for the event. Can be `active`,`inactive` , `pending` or `removed`.
-          minLength: 1
-          maxLength: 10
-          example: active
-    Event:
-      type: object
-      required:
-      - webhookEventId
-      - name
-      - status
-      properties:
-        webhookEventId:
-          type: string
-          description: A unique UUID identifier for the webhook event.
-          minLength: 36
-          maxLength: 36
-          example: 661f3c48-f596-423b-81f5-d275d4dd1346
-        name:
-          type: string
-          description: The name of the event.
-          minLength: 1
-          maxLength: 255
-          example: authorization.accesstoken.expiry
-        url:
-          $ref: '#/components/schemas/WebhookUrl'
-        status:
-          $ref: '#/components/schemas/Status'
-        condition:
-          $ref: '#/components/schemas/Condition'
-    LimitResults:
-      type: integer
-      description: The number of items you asked the list to be limited.
-      minimum: 1
-      maximum: 2147483647
-      example: 10
+  requestBodies:
+    UpdateEventRequest:
+      description: Request body to update Event
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WebhookEvent'
+          examples:
+            UpdateEventRequestExample:
+              $ref: '#/components/examples/UpdateEventRequestExample'
+    EventStatusUpdateRequest:
+      description: Request body to an event active or inactive.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventStatusUpdate'
+    CreateSubscriptionRequest:
+      description: Request body for creating event subscription.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Subscription'
+          examples:
+            CreateSubscriptionRequestExample:
+              $ref: '#/components/examples/SubscriptionRequestExample'
+    UpdateSubscriptionRequest:
+      description: Request body for updating event subscription.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Subscription'
+          examples:
+            CreateSubscriptionRequestExample:
+              $ref: '#/components/examples/SubscriptionRequestExample'
   parameters:
     ObwmsOffsetParameter:
       name: offset
@@ -843,22 +985,6 @@ components:
         default: 1
         minimum: 1
         example: 1
-    WebhookEventIdPathParameter:
-      name: webhook_event_id
-      in: path
-      description: A unique UUID identifier of a webhook event.
-      required: true
-      schema:
-        type: string
-      example: 661f3c48-f596-423b-81f5-d275d4dd1346
-    RequestIdHeader:
-      in: header
-      name: X-External-Request-Id
-      required: false
-      description: A unique identifier for the request.
-      schema:
-        type: string
-        example: f6250b41-8632-4fe1-9353-899f419ae67b
     ObwmsLimitParameter:
       name: limit
       in: query
@@ -871,6 +997,14 @@ components:
         minimum: 1
         maximum: 100
         example: 20
+    WebhookEventIdPathParameter:
+      name: webhook_event_id
+      in: path
+      description: A unique UUID identifier of a webhook event.
+      required: true
+      schema:
+        type: string
+      example: 661f3c48-f596-423b-81f5-d275d4dd1346
     SubscriptionIdPathParameter:
       name: subscription_id
       in: path
@@ -879,148 +1013,14 @@ components:
       schema:
         type: string
       example: 661f3c48-f596-423b-81f5-d275d4dd1345
-  requestBodies:
-    UpdateSubscriptionRequest:
-      description: Request body for updating event subscription.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Subscription'
-          examples:
-            CreateSubscriptionRequestExample:
-              $ref: '#/components/examples/SubscriptionRequestExample'
-    CreateSubscriptionRequest:
-      description: Request body for creating event subscription.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Subscription'
-          examples:
-            CreateSubscriptionRequestExample:
-              $ref: '#/components/examples/SubscriptionRequestExample'
-    EventStatusUpdateRequest:
-      description: Request body to an event active or inactive.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EventStatusUpdate'
-    UpdateEventRequest:
-      description: Request body to update Event
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/WebhookEvent'
-          examples:
-            UpdateEventRequestExample:
-              $ref: '#/components/examples/UpdateEventRequestExample'
-  responses:
-    EventDeletedResponse:
-      description: Event deleted successfully
-    SubscriptionDeletedResponse:
-      description: Subscription deleted successfully
-    EventStatusUpdatedResponse:
-      description: Event updated successfully
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EventStatusUpdate'
-    ObwmsBadRequestErrorResponse:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorWrapper'
-          examples:
-            BadRequestErrorResponseExample:
-              $ref: '#/components/examples/BadRequestErrorResponseExample'
-    AvailableEventsResponse:
-      description: List of all available events.
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-            - events
-            properties:
-              events:
-                type: array
-                description: List of available events.
-                items:
-                  $ref: '#/components/schemas/AvailableEvent'
-          examples:
-            AvailableEventsResponseExample:
-              $ref: '#/components/examples/AvailableEventsResponseExample'
-    SubscriptionsResponse:
-      description: List of all subscriptions with pagination and availability details.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Subscriptions'
-          examples:
-            SubscriptionsResponseExample:
-              $ref: '#/components/examples/SubscriptionsResponseExample'
-    TestWebhookSubscriptionResponse:
-      description: test subscription submitted successfully.
-    SubscriptionUpdatedResponse:
-      description: Subscription updated successfully
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/SubscriptionDetail'
-          examples:
-            SubscriptionCreatedResponseExample:
-              $ref: '#/components/examples/SubscriptionCreatedResponseExample'
-    ObwmsUnauthorizedErrorResponse:
-      description: The request lacks valid authentication credentials. Check "App-Key" or "App-Token".
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorWrapper'
-          examples:
-            ExpiredTokenExample:
-              $ref: '#/components/examples/ObwmsExpiredTokenExample'
-            MissingAppKeyExample:
-              $ref: '#/components/examples/MissingAppKeyExample'
-    SubscriptionCreatedResponse:
-      description: Subscription created successfully
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/SubscriptionDetail'
-          examples:
-            SubscriptionCreatedResponseExample:
-              $ref: '#/components/examples/SubscriptionCreatedResponseExample'
-    ObwmsResourceNotFounderrorResponse:
-      description: The resource doesn't exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorWrapper'
-          examples:
-            ResourceNotFoundExample:
-              $ref: '#/components/examples/ObmwsResourceNotFoundExample'
-    EventUpdatedResponse:
-      description: Event updated successfully
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/WebhookEvent'
-          examples:
-            SubscriptionCreatedResponseExample:
-              $ref: '#/components/examples/EventUpdatedResponseExample'
-    SubscriptionDetail:
-      description: Subscription detail by ID
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/SubscriptionDetail'
-          examples:
-            SubscriptionDetailExample:
-              $ref: '#/components/examples/SubscriptionDetailResponseExample'
+    RequestIdHeader:
+      in: header
+      name: X-External-Request-Id
+      required: false
+      description: A unique identifier for the request.
+      schema:
+        type: string
+        example: f6250b41-8632-4fe1-9353-899f419ae67b
   securitySchemes:
     FinicityAppKey:
       name: Finicity-App-Key

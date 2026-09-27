@@ -81,53 +81,6 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundErrorResponse'
 components:
   examples:
-    MissingFinicityAppKeyExample:
-      value:
-        code: '10026'
-        message: Missing parameter (Finicity-App-Key)
-    ResourceNotFoundExample:
-      value:
-        code: '14001'
-        message: Resource not found.
-    NoRegisteredApplicationExample:
-      value:
-        code: '50051'
-        message: No registered partner applications found.
-    InvalidConsumerSSNExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
-    ResellerInvalidDateRangeGreaterThanEndDateExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
-    CustomerReportLimitExceedExample:
-      value:
-        code: '20400'
-        message: The max report generation limit was exceeded for this customer.
-    BadCredentialsExample:
-      value:
-        code: '24302'
-        message: Bad credentials
-    ExpiredTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    ResellerInvalidDateRangeGreaterThan31DaysExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
-    InvalidExperienceFieldExample:
-      value:
-        code: '10010'
-        status: '400'
-        message: '"experience" must be a valid GUID'
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    NoConsumerForCustomerExample:
-      value:
-        code: '10100'
-        message: Cannot find consumer for customer with id 5011115315."
     MissingFinicityAppTokenExample:
       value:
         code: '10024'
@@ -139,93 +92,145 @@ components:
         message: Customer ID does not exist or does not belong to this partner
         user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
         tags: ''
-    AccountTypeNotSupportedExample:
-      value:
-        code: '14020'
-        message: Bad request. (Account type not supported).
-    InvalidConsumerPhoneExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.phone.
-    MissingFieldExample:
-      value:
-        code: '10005'
-        message: Missing parameter (partnerId)
     InvalidConsumerEmailExample:
       value:
         code: '10100'
         message: Invalid format for field consumer.email.
-    ResellerInvalidDateRangeLessThanZeroExample:
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    InvalidForesightReportRequestExample:
       value:
         code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
-    ResellerNoReportForPartnerExample:
-      value:
-        code: '10100'
-        message: Cannot find resellerBilling reports with id 2445581559892.
-    BothCraAndFtcPurposeTrueExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
-    ConsumerNotFoundExample:
-      value:
-        code: '10100'
-        message: Cannot find consumer with id 1234.
-    InvalidFinicityAppTokenExample:
-      value:
-        code: '10022'
-        message: Invalid (Finicity-App-Token)
-    InvalidValueExample:
-      value:
-        code: '1618'
-        message: Negative or invalid value entered. Please use positive numbers only.
-    GenericBadRequestExample:
-      value:
-        code: '14020'
-        message: Bad request.
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
     PermissiblePurposeCodeExample:
       value:
         code: '10100'
         status: '400'
         message: Permissible Purpose Code is required
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    InvalidConsumerSSNExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
     NoAccountForInstitutionLoginIdExample:
       value:
         code: '38007'
         message: Customer does not have any accounts associated with institutionLoginId.
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
     ResellerInvalidDateRangeExample:
       value:
         code: '10100'
         message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
-    ResellerPartnerNotAuthorizedExample:
+    NoConsumerForCustomerExample:
       value:
         code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
-    ResellerNoDataForPartnerExample:
+        message: Cannot find consumer for customer with id 5011115315."
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    ResellerInvalidDateRangeLessThanZeroExample:
       value:
         code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
-    CustomerNotFoundExample:
-      value:
-        code: '14001'
-        message: Customer not found.
-    InvalidForesightReportRequestExample:
-      value:
-        code: '10100'
-        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
     ExpiredFinicityAppTokenExample:
       value:
         code: '10023'
         message: Expired (Finicity-App-Token)
+    ResellerNoDataForPartnerExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
   schemas:
-    AssetId:
+    DateTimeWithZone:
       type: string
-      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
-      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
-    PartnerId:
-      type: string
-      description: Your Partner ID displayed in the [Developer Dashboard](https://developer.mastercard.com/account/log-in)
-      example: '1234583871234'
+      format: date-time
+      description: A date-time with time zone
+      example: '2022-03-10T06:06:20.042584549Z'
+    ThirdPartyAccessKeyReceiptData:
+      description: "An object representing the third party access key receipt\n\n  * `customerId`: This is recipient's customerId represented as a\n  pseudo identifier.\n  * `accountId`: This is the value provided to recipient\n  represented as a pseudo identifier for the accountId."
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThirdPartyAccessReceiptData'
     ThirdPartyAccessProduct:
       description: Product for which access token to be generated
       type: object
@@ -248,14 +253,74 @@ components:
           $ref: '#/components/schemas/AccountId'
         accessPeriod:
           $ref: '#/components/schemas/ThirdPartyAccessPeriod'
-    CustomerId:
+    ThirdPartyAccessPeriod:
+      type: object
+      description: Object which describes access validity
+      required:
+      - type
+      - startTime
+      - endTime
+      properties:
+        type:
+          $ref: '#/components/schemas/ThirdPartyAccessPeriodTypes'
+        startTime:
+          $ref: '#/components/schemas/DateTimeWithZone'
+        endTime:
+          $ref: '#/components/schemas/DateTimeWithZone'
+    ConsentReceiptId:
       type: string
-      description: A customer ID. See Add Customer API for how to create a customer ID.
-      example: '1005061234'
+      description: Third party access key receipt ID. Generated by generate third party access key API.
+      example: cr_4pfI3r1X8aOHrDDwrwC01NHFxOXlT1
+    ThirdPartyAccessReceipt:
+      type: object
+      description: An object representing consent receipt
+      properties:
+        profile:
+          type: integer
+          description: Representation of the type of consent receipt
+          example: 3
+        version:
+          type: string
+          description: A schema version of receipt
+          example: '1'
+        receiptId:
+          type: string
+          description: This is officially the Consent Receipt ID, but is aliased as the Access Key ID. This is a unique identifier managed by Finicity that points to the contents of this JSON document.
+          example: cr_4pfI2r1X8aOHrDDwrwC01NHTxOXlT1
+        customerId:
+          type: string
+          description: This is recipient's customerId represented as a pseudo identifier
+          example: '3465230025077724000'
+        partnerId:
+          $ref: '#/components/schemas/PartnerId'
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThirdPartyAccessProduct'
+        provenance:
+          $ref: '#/components/schemas/ThirdPartyAccessProvenance'
+        timestamp:
+          $ref: '#/components/schemas/DateTimeWithZone'
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
     ThirdPartyAccessProductTypes:
       description: "Third party access token can be generated for the following product types:\n\n\n* \"moneyTransferDetails\": Retrieve account details for money transfer\n* \"availableBalance\": Retrieves the latest cached available and cleared\n    account balances for an account.\n* \"availableBalanceLive\": Retrieves the available and cleared account\nbalances live from the financial institution\n* \"accountOwner\": Retrieves names and addresses of the account owner\nfrom a financial institution.\n* \"paymentIndicator\": Get the Payment Success Indicator response,\nscoring the likelihood of payment settlement"
       type: string
       example: moneyTransferDetails
+    ThirdPartyAccessReceiptData:
+      type: object
+      description: An object representing consent access data
+      properties:
+        receipt:
+          $ref: '#/components/schemas/ThirdPartyAccessReceipt'
+        proof:
+          $ref: '#/components/schemas/ThirdPartyAccessProof'
+    ThirdPartyAccessPeriodTypes:
+      description: "Multiple types will be supported. Presently below types are supported.\n* \"timeframe\": Specifies a timeframe bounded by a startTime and endTime.\n  The startTime is the time at which the access was granted and the\naccess key generated,\n  and the endTime is the time at which the access was revoked. Times\nare represented in ISO 8601 format(\"2022-03-10T06:06:20Z\")"
+      type: string
+      example: timeframe
     ThirdPartyAccessProof:
       type: object
       description: An object representing a digital signature of the access key
@@ -270,31 +335,54 @@ components:
           example: 867-530-900
         timestamp:
           $ref: '#/components/schemas/DateTimeWithZone'
-    ThirdPartyAccessReceiptData:
+    ThirdPartyAccessKeyData:
+      description: 'An object representing the third party access key request
+
+
+        * `customerId`: This is recipient''s customer identifier
+
+        * `partnerId`: This is recipient partner identifier
+
+        * `thirdPartyPartnerId`: This is requester''s partner identifier
+
+        * `products`: Array of values representing the Mastercard Open Finance APIs for
+
+        which access needs to be generated.'
       type: object
-      description: An object representing consent access data
+      required:
+      - customerId
+      - partnerId
+      - thirdPartyPartnerId
+      - products
       properties:
-        receipt:
-          $ref: '#/components/schemas/ThirdPartyAccessReceipt'
-        proof:
-          $ref: '#/components/schemas/ThirdPartyAccessProof'
-    ConsentReceiptId:
-      type: string
-      description: Third party access key receipt ID. Generated by generate third party access key API.
-      example: cr_4pfI3r1X8aOHrDDwrwC01NHFxOXlT1
-    DateTimeWithZone:
-      type: string
-      format: date-time
-      description: A date-time with time zone
-      example: '2022-03-10T06:06:20.042584549Z'
-    AccountId:
-      type: string
-      description: An account ID
-      example: '5011648377'
-    ThirdPartyAccessPeriodTypes:
-      description: "Multiple types will be supported. Presently below types are supported.\n* \"timeframe\": Specifies a timeframe bounded by a startTime and endTime.\n  The startTime is the time at which the access was granted and the\naccess key generated,\n  and the endTime is the time at which the access was revoked. Times\nare represented in ISO 8601 format(\"2022-03-10T06:06:20Z\")"
-      type: string
-      example: timeframe
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        partnerId:
+          $ref: '#/components/schemas/PartnerId'
+        thirdPartyPartnerId:
+          $ref: '#/components/schemas/PartnerId'
+        provenance:
+          $ref: '#/components/schemas/ThirdPartyAccessProvenance'
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThirdPartyAccessProduct'
+    ThirdPartyAccessProvenance:
+      description: Provenance regarding the calling client like `clientFingerprint`, `ipAddress` and `token`.
+      type: object
+      properties:
+        clientFingerprint:
+          type: string
+          description: Calling client identifier
+          example: LU9ZYxcDNQCwEmAxH52XFzaRiGMAAAAABclSKxW5S9P8pUMDV4fbpg
+        ipAddress:
+          type: string
+          description: Calling client IP address
+          example: 8.8.8.8
+        token:
+          type: string
+          description: Calling client cookie
+          example: P9YbR+srNVyQI35893d+BzPrhGMAAAAAuacVUt+3m4svbaFjVSbHEA==
     ErrorMessage:
       required:
       - code
@@ -338,115 +426,82 @@ components:
           type: string
           description: Categories that the error belongs to
           example: AGG
-    ThirdPartyAccessReceipt:
-      type: object
-      description: An object representing consent receipt
-      properties:
-        profile:
-          type: integer
-          description: Representation of the type of consent receipt
-          example: 3
-        version:
-          type: string
-          description: A schema version of receipt
-          example: '1'
-        receiptId:
-          type: string
-          description: This is officially the Consent Receipt ID, but is aliased as the Access Key ID. This is a unique identifier managed by Finicity that points to the contents of this JSON document.
-          example: cr_4pfI2r1X8aOHrDDwrwC01NHTxOXlT1
-        customerId:
-          type: string
-          description: This is recipient's customerId represented as a pseudo identifier
-          example: '3465230025077724000'
-        partnerId:
-          $ref: '#/components/schemas/PartnerId'
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/ThirdPartyAccessProduct'
-        provenance:
-          $ref: '#/components/schemas/ThirdPartyAccessProvenance'
-        timestamp:
-          $ref: '#/components/schemas/DateTimeWithZone'
-    ThirdPartyAccessPeriod:
-      type: object
-      description: Object which describes access validity
-      required:
-      - type
-      - startTime
-      - endTime
-      properties:
-        type:
-          $ref: '#/components/schemas/ThirdPartyAccessPeriodTypes'
-        startTime:
-          $ref: '#/components/schemas/DateTimeWithZone'
-        endTime:
-          $ref: '#/components/schemas/DateTimeWithZone'
-    ThirdPartyAccessKeyReceiptData:
-      description: "An object representing the third party access key receipt\n\n  * `customerId`: This is recipient's customerId represented as a\n  pseudo identifier.\n  * `accountId`: This is the value provided to recipient\n  represented as a pseudo identifier for the accountId."
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ThirdPartyAccessReceiptData'
-    ThirdPartyAccessProvenance:
-      description: Provenance regarding the calling client like `clientFingerprint`, `ipAddress` and `token`.
-      type: object
-      properties:
-        clientFingerprint:
-          type: string
-          description: Calling client identifier
-          example: LU9ZYxcDNQCwEmAxH52XFzaRiGMAAAAABclSKxW5S9P8pUMDV4fbpg
-        ipAddress:
-          type: string
-          description: Calling client IP address
-          example: 8.8.8.8
-        token:
-          type: string
-          description: Calling client cookie
-          example: P9YbR+srNVyQI35893d+BzPrhGMAAAAAuacVUt+3m4svbaFjVSbHEA==
-    ThirdPartyAccessKeyData:
-      description: 'An object representing the third party access key request
-
-
-        * `customerId`: This is recipient''s customer identifier
-
-        * `partnerId`: This is recipient partner identifier
-
-        * `thirdPartyPartnerId`: This is requester''s partner identifier
-
-        * `products`: Array of values representing the Mastercard Open Finance APIs for
-
-        which access needs to be generated.'
-      type: object
-      required:
-      - customerId
-      - partnerId
-      - thirdPartyPartnerId
-      - products
-      properties:
-        customerId:
-          $ref: '#/components/schemas/CustomerId'
-        partnerId:
-          $ref: '#/components/schemas/PartnerId'
-        thirdPartyPartnerId:
-          $ref: '#/components/schemas/PartnerId'
-        provenance:
-          $ref: '#/components/schemas/ThirdPartyAccessProvenance'
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/ThirdPartyAccessProduct'
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    PartnerId:
+      type: string
+      description: Your Partner ID displayed in the [Developer Dashboard](https://developer.mastercard.com/account/log-in)
+      example: '1234583871234'
+  parameters:
+    ConsentReceiptIdParameter:
+      description: Third party access key receipt ID
+      name: consentReceiptId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/ConsentReceiptId'
+      example: cr_4pfI3r1X8aOHrDDwrwC01NHFxOXlT1
   responses:
-    RevokeThirdPartyAccessKeyResponse:
-      description: The third party access key was successfully revoked
-    GenerateThirdPartyAccessKeyResponse:
-      description: The third party access key was successfully generated
+    UpdateThirdPartyAccessKeyResponse:
+      description: The third party access key was successfully updated
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ThirdPartyAccessKeyReceiptData'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
+    ResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ConsumerNotFoundExample:
+              $ref: '#/components/examples/ConsumerNotFoundExample'
+            NoAccountForInstitutionLoginIdExample:
+              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            NoConsumerForCustomerExample:
+              $ref: '#/components/examples/NoConsumerForCustomerExample'
+            ResourceNotFoundExample:
+              $ref: '#/components/examples/ResourceNotFoundExample'
+            NoRegisteredApplicationExample:
+              $ref: '#/components/examples/NoRegisteredApplicationExample'
+            ResellerNoDataForPartnerExample:
+              $ref: '#/components/examples/ResellerNoDataForPartnerExample'
+            ResellerNoReportForPartnerExample:
+              $ref: '#/components/examples/ResellerNoReportForPartnerExample'
+    RevokeThirdPartyAccessKeyResponse:
+      description: The third party access key was successfully revoked
     BadRequestErrorResponse:
       description: The request was rejected
       content:
@@ -490,80 +545,25 @@ components:
               $ref: '#/components/examples/InvalidConsumerEmailExample'
             InvalidValue:
               $ref: '#/components/examples/InvalidValueExample'
-    ResourceNotFoundErrorResponse:
-      description: The resource doesn't exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            ConsumerNotFoundExample:
-              $ref: '#/components/examples/ConsumerNotFoundExample'
-            NoAccountForInstitutionLoginIdExample:
-              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
-            CustomerNotFoundExample:
-              $ref: '#/components/examples/CustomerNotFoundExample'
-            NoConsumerForCustomerExample:
-              $ref: '#/components/examples/NoConsumerForCustomerExample'
-            ResourceNotFoundExample:
-              $ref: '#/components/examples/ResourceNotFoundExample'
-            NoRegisteredApplicationExample:
-              $ref: '#/components/examples/NoRegisteredApplicationExample'
-            ResellerNoDataForPartnerExample:
-              $ref: '#/components/examples/ResellerNoDataForPartnerExample'
-            ResellerNoReportForPartnerExample:
-              $ref: '#/components/examples/ResellerNoReportForPartnerExample'
-    UpdateThirdPartyAccessKeyResponse:
-      description: The third party access key was successfully updated
+    GenerateThirdPartyAccessKeyResponse:
+      description: The third party access key was successfully generated
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ThirdPartyAccessKeyReceiptData'
-    UnauthorizedErrorResponse:
-      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            ExpiredTokenExample:
-              $ref: '#/components/examples/ExpiredTokenExample'
-            MissingFinicityAppKeyExample:
-              $ref: '#/components/examples/MissingFinicityAppKeyExample'
-            MissingFinicityAppTokenExample:
-              $ref: '#/components/examples/MissingFinicityAppTokenExample'
-            InvalidFinicityAppTokenExample:
-              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
-            ExpiredFinicityAppTokenExample:
-              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
-            BadCredentialsExample:
-              $ref: '#/components/examples/BadCredentialsExample'
-        text/plain:
-          schema:
-            type: string
-            example: Invalid (Finicity-App-Key)
   requestBodies:
-    UpdateThirdPartyAccessKeyRequest:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ThirdPartyAccessKeyData'
     GenerateThirdPartyAccessKeyRequest:
       required: true
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ThirdPartyAccessKeyData'
-  parameters:
-    ConsentReceiptIdParameter:
-      description: Third party access key receipt ID
-      name: consentReceiptId
-      in: path
+    UpdateThirdPartyAccessKeyRequest:
       required: true
-      schema:
-        $ref: '#/components/schemas/ConsentReceiptId'
-      example: cr_4pfI3r1X8aOHrDDwrwC01NHFxOXlT1
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ThirdPartyAccessKeyData'
   securitySchemes:
     FinicityAppKey:
       name: Finicity-App-Key

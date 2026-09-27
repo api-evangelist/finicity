@@ -133,53 +133,6 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundErrorResponse'
 components:
   examples:
-    MissingFinicityAppKeyExample:
-      value:
-        code: '10026'
-        message: Missing parameter (Finicity-App-Key)
-    ResourceNotFoundExample:
-      value:
-        code: '14001'
-        message: Resource not found.
-    NoRegisteredApplicationExample:
-      value:
-        code: '50051'
-        message: No registered partner applications found.
-    InvalidConsumerSSNExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
-    ResellerInvalidDateRangeGreaterThanEndDateExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
-    CustomerReportLimitExceedExample:
-      value:
-        code: '20400'
-        message: The max report generation limit was exceeded for this customer.
-    BadCredentialsExample:
-      value:
-        code: '24302'
-        message: Bad credentials
-    ExpiredTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    ResellerInvalidDateRangeGreaterThan31DaysExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
-    InvalidExperienceFieldExample:
-      value:
-        code: '10010'
-        status: '400'
-        message: '"experience" must be a valid GUID'
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    NoConsumerForCustomerExample:
-      value:
-        code: '10100'
-        message: Cannot find consumer for customer with id 5011115315."
     MissingFinicityAppTokenExample:
       value:
         code: '10024'
@@ -191,274 +144,188 @@ components:
         message: Customer ID does not exist or does not belong to this partner
         user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
         tags: ''
-    AccountTypeNotSupportedExample:
-      value:
-        code: '14020'
-        message: Bad request. (Account type not supported).
-    InvalidConsumerPhoneExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.phone.
-    MissingFieldExample:
-      value:
-        code: '10005'
-        message: Missing parameter (partnerId)
     InvalidConsumerEmailExample:
       value:
         code: '10100'
         message: Invalid format for field consumer.email.
-    ResellerInvalidDateRangeLessThanZeroExample:
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    InvalidForesightReportRequestExample:
       value:
         code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
-    ResellerNoReportForPartnerExample:
-      value:
-        code: '10100'
-        message: Cannot find resellerBilling reports with id 2445581559892.
-    BothCraAndFtcPurposeTrueExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
-    ConsumerNotFoundExample:
-      value:
-        code: '10100'
-        message: Cannot find consumer with id 1234.
-    InvalidFinicityAppTokenExample:
-      value:
-        code: '10022'
-        message: Invalid (Finicity-App-Token)
-    InvalidValueExample:
-      value:
-        code: '1618'
-        message: Negative or invalid value entered. Please use positive numbers only.
-    GenericBadRequestExample:
-      value:
-        code: '14020'
-        message: Bad request.
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
     PermissiblePurposeCodeExample:
       value:
         code: '10100'
         status: '400'
         message: Permissible Purpose Code is required
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    InvalidConsumerSSNExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
     NoAccountForInstitutionLoginIdExample:
       value:
         code: '38007'
         message: Customer does not have any accounts associated with institutionLoginId.
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
     ResellerInvalidDateRangeExample:
       value:
         code: '10100'
         message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
-    ResellerPartnerNotAuthorizedExample:
+    NoConsumerForCustomerExample:
       value:
         code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+        message: Cannot find consumer for customer with id 5011115315."
+    ResellerInvalidDateRangeLessThanZeroExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
     ResellerNoDataForPartnerExample:
       value:
         code: '10100'
         message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
-    CustomerNotFoundExample:
-      value:
-        code: '14001'
-        message: Customer not found.
-    InvalidForesightReportRequestExample:
-      value:
-        code: '10100'
-        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
     ExpiredFinicityAppTokenExample:
       value:
         code: '10023'
         message: Expired (Finicity-App-Token)
-  schemas:
-    AssetId:
-      type: string
-      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
-      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
-    SubscriptionRecord:
-      required:
-      - id
-      - accountId
-      - type
-      - callbackUrl
-      - signingKey
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/SubscriptionId'
-        accountId:
-          $ref: '#/components/schemas/NumericAccountId'
-        type:
-          $ref: '#/components/schemas/SubscriptionType'
-        callbackUrl:
-          $ref: '#/components/schemas/TxPushCallbackUrl'
-        signingKey:
-          type: string
-          description: Signing key for events
-          example: zg4U0v1IvTzFEHIXzJMxPHnfUwWZAMVpXrUuNuL9IvZI0QzkDdwp39IAKuNOFxOVqCOgHLMS1Zpe4ZL40NX83aJkqI6v0Ez5B7BLBtvr7Ag11kPH3uG1taTeOV0CTyI4LOg7ohSHn0DqaRu2aBq26KI90nYe0CecTCzzhu4yMXL43JV8YfydAexNdkzfg8tY44MlhBPUh2neHW2EFTT2ja4s4Ul10JgID03un8WBSrIm2adHw3QYJB4jk4k1e
-      description: TxPush subscription details
-    TransactionId:
-      type: integer
-      description: A transaction ID
-      format: int64
-      example: 21284820852
-    TxPushSubscriptions:
-      required:
-      - subscriptions
-      type: object
-      properties:
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionRecord'
-    TxPushSubscriptionParameters:
-      required:
-      - callbackUrl
-      type: object
-      properties:
-        callbackUrl:
-          $ref: '#/components/schemas/TxPushCallbackUrl'
-    CustomerId:
-      type: string
-      description: A customer ID. See Add Customer API for how to create a customer ID.
-      example: '1005061234'
-    UnixDate:
-      type: integer
-      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    TestTxPushTransaction:
-      description: A fake transaction for TxPush testing
-      required:
-      - amount
-      - description
-      - transactionDate
-      type: object
-      properties:
-        amount:
-          type: number
-          description: The amount of the transaction
-          example: -4.25
-        description:
-          type: string
-          description: The description of the transaction
-          example: a testing transaction description
-        status:
-          type: string
-          description: '"active" or "pending" (optional)'
-          default: active
-          example: pending
-        postedDate:
-          $ref: '#/components/schemas/UnixDate'
-        transactionDate:
-          $ref: '#/components/schemas/UnixDate'
-    SubscriptionType:
-      type: string
-      description: A TxPush subscription type ("account" or "transaction")
-      example: account
-    AccountId:
-      type: string
-      description: An account ID
-      example: '5011648377'
-    ErrorMessage:
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          type: object
-          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
-          example: '10001'
-        status:
-          type: string
-          description: A status code
-          example: '401'
-        title:
-          type: string
-          description: A title for the error
-          example: Connecting accounts error
-        level:
-          type: string
-          description: An error level
-          example: error
-        message:
-          type: string
-          description: An error message
-          example: Invalid authorization credentials
-        user_message:
-          type: string
-          description: Some more details about the error
-          example: The session has expired or is invalid
-        assetId:
-          $ref: '#/components/schemas/AssetId'
-        accountId:
-          $ref: '#/components/schemas/AccountId'
-        externalTransactionId:
-          type: string
-          description: A unique identifier for the transaction that assists in linking data back to your systems.
-          example: MAC1005061234
-          minLength: 1
-          maxLength: 100
-        tags:
-          type: string
-          description: Categories that the error belongs to
-          example: AGG
-    TxPushCallbackUrl:
-      type: string
-      description: A callback URL to receive TxPush notifications
-      example: https://www.example.com/txpush/listener
-    NumericAccountId:
-      type: integer
-      format: int64
-      description: An account ID represented as a number
-      example: 5011648377
-    CreatedTestTxPushTransaction:
-      required:
-      - id
-      - createdDate
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/TransactionId'
-        createdDate:
-          $ref: '#/components/schemas/UnixDate'
-      description: Response for TxPush test transaction
-    SubscriptionId:
-      description: ID of a TxPush subscription
-      type: integer
-      format: int64
-      example: 17554874
-  parameters:
-    CustomerIdParameter:
-      description: A customer ID
-      name: customerId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/CustomerId'
-      example: '1005061234'
-    SubscriptionIdParameter:
-      description: The subscription ID
-      name: subscriptionId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/SubscriptionId'
-      example: 17554874
-    AccountIdParameter:
-      description: The account ID
-      name: accountId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/AccountId'
-      example: '5011648377'
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
   responses:
-    CreateTxPushTestTransactionResponse:
-      description: The test notification was successfully sent
+    DeleteTxPushSubscriptionResponse:
+      description: The subscription was successfully deleted
+    SubscribeToTxPushNotificationsResponse:
+      description: The subscription was successfully created
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreatedTestTxPushTransaction'
+            $ref: '#/components/schemas/TxPushSubscriptions'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
+    ResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ConsumerNotFoundExample:
+              $ref: '#/components/examples/ConsumerNotFoundExample'
+            NoAccountForInstitutionLoginIdExample:
+              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            NoConsumerForCustomerExample:
+              $ref: '#/components/examples/NoConsumerForCustomerExample'
+            ResourceNotFoundExample:
+              $ref: '#/components/examples/ResourceNotFoundExample'
+            NoRegisteredApplicationExample:
+              $ref: '#/components/examples/NoRegisteredApplicationExample'
+            ResellerNoDataForPartnerExample:
+              $ref: '#/components/examples/ResellerNoDataForPartnerExample'
+            ResellerNoReportForPartnerExample:
+              $ref: '#/components/examples/ResellerNoReportForPartnerExample'
+    DisableTxPushNotificationsResponse:
+      description: Subscriptions were successfully deleted for the given account
     BadRequestErrorResponse:
       description: The request was rejected
       content:
@@ -502,62 +369,195 @@ components:
               $ref: '#/components/examples/InvalidConsumerEmailExample'
             InvalidValue:
               $ref: '#/components/examples/InvalidValueExample'
-    ResourceNotFoundErrorResponse:
-      description: The resource doesn't exist
+    CreateTxPushTestTransactionResponse:
+      description: The test notification was successfully sent
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            ConsumerNotFoundExample:
-              $ref: '#/components/examples/ConsumerNotFoundExample'
-            NoAccountForInstitutionLoginIdExample:
-              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
-            CustomerNotFoundExample:
-              $ref: '#/components/examples/CustomerNotFoundExample'
-            NoConsumerForCustomerExample:
-              $ref: '#/components/examples/NoConsumerForCustomerExample'
-            ResourceNotFoundExample:
-              $ref: '#/components/examples/ResourceNotFoundExample'
-            NoRegisteredApplicationExample:
-              $ref: '#/components/examples/NoRegisteredApplicationExample'
-            ResellerNoDataForPartnerExample:
-              $ref: '#/components/examples/ResellerNoDataForPartnerExample'
-            ResellerNoReportForPartnerExample:
-              $ref: '#/components/examples/ResellerNoReportForPartnerExample'
-    DeleteTxPushSubscriptionResponse:
-      description: The subscription was successfully deleted
-    SubscribeToTxPushNotificationsResponse:
-      description: The subscription was successfully created
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/TxPushSubscriptions'
-    DisableTxPushNotificationsResponse:
-      description: Subscriptions were successfully deleted for the given account
-    UnauthorizedErrorResponse:
-      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            ExpiredTokenExample:
-              $ref: '#/components/examples/ExpiredTokenExample'
-            MissingFinicityAppKeyExample:
-              $ref: '#/components/examples/MissingFinicityAppKeyExample'
-            MissingFinicityAppTokenExample:
-              $ref: '#/components/examples/MissingFinicityAppTokenExample'
-            InvalidFinicityAppTokenExample:
-              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
-            ExpiredFinicityAppTokenExample:
-              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
-            BadCredentialsExample:
-              $ref: '#/components/examples/BadCredentialsExample'
-        text/plain:
-          schema:
-            type: string
-            example: Invalid (Finicity-App-Key)
+            $ref: '#/components/schemas/CreatedTestTxPushTransaction'
+  schemas:
+    SubscriptionRecord:
+      required:
+      - id
+      - accountId
+      - type
+      - callbackUrl
+      - signingKey
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/SubscriptionId'
+        accountId:
+          $ref: '#/components/schemas/NumericAccountId'
+        type:
+          $ref: '#/components/schemas/SubscriptionType'
+        callbackUrl:
+          $ref: '#/components/schemas/TxPushCallbackUrl'
+        signingKey:
+          type: string
+          description: Signing key for events
+          example: zg4U0v1IvTzFEHIXzJMxPHnfUwWZAMVpXrUuNuL9IvZI0QzkDdwp39IAKuNOFxOVqCOgHLMS1Zpe4ZL40NX83aJkqI6v0Ez5B7BLBtvr7Ag11kPH3uG1taTeOV0CTyI4LOg7ohSHn0DqaRu2aBq26KI90nYe0CecTCzzhu4yMXL43JV8YfydAexNdkzfg8tY44MlhBPUh2neHW2EFTT2ja4s4Ul10JgID03un8WBSrIm2adHw3QYJB4jk4k1e
+      description: TxPush subscription details
+    NumericAccountId:
+      type: integer
+      format: int64
+      description: An account ID represented as a number
+      example: 5011648377
+    UnixDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    TransactionId:
+      type: integer
+      description: A transaction ID
+      format: int64
+      example: 21284820852
+    TxPushCallbackUrl:
+      type: string
+      description: A callback URL to receive TxPush notifications
+      example: https://www.example.com/txpush/listener
+    SubscriptionId:
+      description: ID of a TxPush subscription
+      type: integer
+      format: int64
+      example: 17554874
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    TestTxPushTransaction:
+      description: A fake transaction for TxPush testing
+      required:
+      - amount
+      - description
+      - transactionDate
+      type: object
+      properties:
+        amount:
+          type: number
+          description: The amount of the transaction
+          example: -4.25
+        description:
+          type: string
+          description: The description of the transaction
+          example: a testing transaction description
+        status:
+          type: string
+          description: '"active" or "pending" (optional)'
+          default: active
+          example: pending
+        postedDate:
+          $ref: '#/components/schemas/UnixDate'
+        transactionDate:
+          $ref: '#/components/schemas/UnixDate'
+    TxPushSubscriptionParameters:
+      required:
+      - callbackUrl
+      type: object
+      properties:
+        callbackUrl:
+          $ref: '#/components/schemas/TxPushCallbackUrl'
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    SubscriptionType:
+      type: string
+      description: A TxPush subscription type ("account" or "transaction")
+      example: account
+    TxPushSubscriptions:
+      required:
+      - subscriptions
+      type: object
+      properties:
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionRecord'
+    CreatedTestTxPushTransaction:
+      required:
+      - id
+      - createdDate
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/TransactionId'
+        createdDate:
+          $ref: '#/components/schemas/UnixDate'
+      description: Response for TxPush test transaction
+  parameters:
+    SubscriptionIdParameter:
+      description: The subscription ID
+      name: subscriptionId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/SubscriptionId'
+      example: 17554874
+    CustomerIdParameter:
+      description: A customer ID
+      name: customerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
+    AccountIdParameter:
+      description: The account ID
+      name: accountId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AccountId'
+      example: '5011648377'
   requestBodies:
     CreateTxPushTestTransactionRequest:
       required: true
