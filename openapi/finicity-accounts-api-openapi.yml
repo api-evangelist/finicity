@@ -280,336 +280,11 @@ paths:
         '404':
           $ref: '#/components/responses/ResourceNotFoundErrorResponse'
 components:
-  examples:
-    MissingFinicityAppKeyExample:
-      value:
-        code: '10026'
-        message: Missing parameter (Finicity-App-Key)
-    ResellerInvalidDateRangeExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
-    ExpiredFinicityAppTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    InvalidForesightReportRequestExample:
-      value:
-        code: '10100'
-        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
-    InvalidFinicityAppTokenExample:
-      value:
-        code: '10022'
-        message: Invalid (Finicity-App-Token)
-    CustomerNotFoundExample:
-      value:
-        code: '14001'
-        message: Customer not found.
-    InvalidExperienceFieldExample:
-      value:
-        code: '10010'
-        status: '400'
-        message: '"experience" must be a valid GUID'
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    ResellerInvalidDateRangeGreaterThanEndDateExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
-    ResellerInvalidDateRangeGreaterThan31DaysExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
-    ResellerNoReportForPartnerExample:
-      value:
-        code: '10100'
-        message: Cannot find resellerBilling reports with id 2445581559892.
-    MissingFinicityAppTokenExample:
-      value:
-        code: '10024'
-        message: Missing parameter (Finicity-App-Token)
-    BadCredentialsExample:
-      value:
-        code: '24302'
-        message: Bad credentials
-    InvalidStatusParameterExample:
-      value:
-        code: '18017'
-        message: status parameter value must be 'active' or 'pending
-    InvalidConsumerPhoneExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.phone.
-    MissingFieldExample:
-      value:
-        code: '10005'
-        message: Missing parameter (partnerId)
-    ResourceNotFoundExample:
-      value:
-        code: '14001'
-        message: Resource not found.
-    NoConsumerForCustomerExample:
-      value:
-        code: '10100'
-        message: Cannot find consumer for customer with id 5011115315."
-    BothCraAndFtcPurposeTrueExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
-    NoRegisteredApplicationExample:
-      value:
-        code: '50051'
-        message: No registered partner applications found.
-    InvalidConsumerEmailExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.email.
-    ResellerPartnerNotAuthorizedExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
-    ExpiredTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    ResellerNoDataForPartnerExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
-    ResellerInvalidDateRangeLessThanZeroExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
-    AccountTypeNotSupportedExample:
-      value:
-        code: '14020'
-        message: Bad request. (Account type not supported).
-    InvalidFieldExample:
-      value:
-        code: '10010'
-        status: '400'
-        message: Customer ID does not exist or does not belong to this partner
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    PermissiblePurposeCodeExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: Permissible Purpose Code is required
-    InvalidValueExample:
-      value:
-        code: '1618'
-        message: Negative or invalid value entered. Please use positive numbers only.
-    NoAccountForInstitutionLoginIdExample:
-      value:
-        code: '38007'
-        message: Customer does not have any accounts associated with institutionLoginId.
-    GenericBadRequestExample:
-      value:
-        code: '14020'
-        message: Bad request.
-    ConsumerNotFoundExample:
-      value:
-        code: '10100'
-        message: Cannot find consumer with id 1234.
-    CustomerReportLimitExceedExample:
-      value:
-        code: '20400'
-        message: The max report generation limit was exceeded for this customer.
-    InvalidConsumerSSNExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
-  parameters:
-    CustomerIdParameter:
-      description: A customer ID
-      name: customerId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/CustomerId'
-      example: '1005061234'
-    InstitutionLoginIdParameter:
-      description: The institution login ID
-      name: institutionLoginId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/InstitutionLoginId'
-      example: '1007302745'
-    AccountIdParameter:
-      description: The account ID
-      name: accountId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/AccountId'
-      example: '5011648377'
-    InstitutionIdParameter:
-      description: The institution ID
-      name: institutionId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/NumericInstitutionId'
-      example: 4222
-    ToDateParameterForRefreshAccounts:
-      description: Transactions up to and including this date will be included. It should be later than the fromDate.
-      name: toDate
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/UnixDate'
-      example: 1670504017
-    AccountTypeParameter:
-      description: 'A filter to fetch accounts for the given type. Currently supported types: "ava"'
-      name: account_type
-      in: query
-      required: false
-      schema:
-        type: string
-      example: ava
-    FromDateParameterForRefreshAccounts:
-      description: Transactions starting from this date will be included.
-      name: fromDate
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/UnixDate'
-      example: 1607450357
-    AccountStatusParameter:
-      description: A filter to fetch account in the given status
-      name: status
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/AccountStatus'
-      example: pending
   schemas:
-    LinkedAccountDate:
-      type: integer
-      description: 'A timestamp showing when the customer first linked the account via Data Connect. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    CustomerAccountCreatedDate:
-      type: integer
-      description: 'A timestamp showing when the account record was created. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    AuthorizationEndDate:
-      type: integer
-      format: int64
-      description: Authorization end date and time in epoch format (not used if AuthorizationExpires is false).
-      example: 1641030399
-    OriginalMaturityDate:
-      type: integer
-      description: '(Mortgage/Loan) Original date of loan maturity. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    CustomerAccountParentAccountId:
+    InstitutionId:
+      description: The ID of a financial institution
       type: string
-      description: The assigned account ID for the account one level higher in the student loan account hierarchy
-      example: '5011648377'
-    LoanStatusStartDate:
-      type: integer
-      description: '(Student Loan) The start date of the current status. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    CustomerAccount:
-      description: An account represents a bank account such as a checking or savings that the customer has added via the Connect interface.
-      required:
-      - id
-      - accountNumberDisplay
-      - name
-      - accountNickname
-      - number
-      - type
-      - status
-      - customerId
-      - institutionId
-      - createdDate
-      - currency
-      - institutionLoginId
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AccountId'
-        number:
-          type: string
-          deprecated: true
-          description: 'Account number provided by the financial institution. The format varies depending on the institution. Some digits may be masked. If an ACH number is needed, call the ACH endpoints.
-
-            Below is a non-exhaustive list of examples for the `number` field.
-
-            * 8089258
-
-            * 103275057=01
-
-            * 2000004444'
-          example: '201940541'
-        accountNumberDisplay:
-          $ref: '#/components/schemas/AccountNumberDisplay'
-        realAccountNumberLast4:
-          $ref: '#/components/schemas/AccountNumberLast4'
-        name:
-          $ref: '#/components/schemas/Name'
-        balance:
-          type: number
-          description: The cleared balance of the account as of `balanceDate`
-          example: 401.26
-        type:
-          $ref: '#/components/schemas/AccountType'
-        aggregationStatusCode:
-          $ref: '#/components/schemas/AggregationStatusCode'
-        status:
-          $ref: '#/components/schemas/AggregationStatus'
-        customerId:
-          $ref: '#/components/schemas/CustomerId'
-        institutionId:
-          $ref: '#/components/schemas/InstitutionId'
-        balanceDate:
-          $ref: '#/components/schemas/CustomerAccountBalanceDate'
-        aggregationSuccessDate:
-          $ref: '#/components/schemas/CustomerAccountAggregationSuccessDate'
-        aggregationAttemptDate:
-          $ref: '#/components/schemas/CustomerAccountAggregationAttemptDate'
-        createdDate:
-          $ref: '#/components/schemas/CustomerAccountCreatedDate'
-        lastUpdatedDate:
-          $ref: '#/components/schemas/CustomerLastUpdatedDate'
-        marketSegment:
-          $ref: '#/components/schemas/CustomerAccountMarketSegment'
-        currency:
-          $ref: '#/components/schemas/Currency'
-        lastTransactionDate:
-          $ref: '#/components/schemas/CustomerAccountLastTransactionDate'
-        oldestTransactionDate:
-          $ref: '#/components/schemas/CustomerAccountOldestTransactionDate'
-        institutionLoginId:
-          $ref: '#/components/schemas/NumericInstitutionLoginId'
-        authorizationStartDate:
-          $ref: '#/components/schemas/AuthorizationStartDate'
-        authorizationEndDate:
-          $ref: '#/components/schemas/AuthorizationEndDate'
-        authorizationExpires:
-          $ref: '#/components/schemas/AuthorizationExpires'
-        detail:
-          $ref: '#/components/schemas/CustomerAccountDetail'
-        position:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerAccountPosition'
-          description: Investment holdings
-        displayPosition:
-          $ref: '#/components/schemas/DisplayPosition'
-        parentAccount:
-          $ref: '#/components/schemas/CustomerAccountParentAccountId'
-        linkedAccountDate:
-          $ref: '#/components/schemas/LinkedAccountDate'
-    AggregationStatusCode:
-      type: integer
-      description: The status of the most recent aggregation attempt (see [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes)). Won't be present until you have run your first aggregation for the account.
+      example: '4222'
     SecurityIdType:
       type: string
       description: 'The security type. This field is related to the `securityId` field. Possible values:
@@ -631,14 +306,133 @@ components:
 
         * "WKN"'
       example: CUSIP
-    FirstPaymentDate:
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    ConvertToRepayment:
       type: integer
-      description: '(Mortgage/Loan) First payment due date. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      description: '(Student Loan) The date the loan enters into repayment. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
       format: int64
       example: 1607450357
-    LastPaymentDueDate:
+    AuthorizationExpires:
+      type: boolean
+      description: A Boolean flag that indicates whether the customer’s authorization period has a defined authorization end date.
+      example: true
+      default: false
+    CustomerAccountAggregationAttemptDate:
       type: integer
-      description: '(Mortgage/Loan) Due date of last payment. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      description: 'A timestamp showing the last aggregation attempt, whether successful or not. This will not be present until you have run your first aggregation for the account. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    AggregationStatus:
+      type: string
+      description: "\"pending\" during account discovery, always \"active\" following\n  successful account activation"
+      example: active
+    DateAsOf:
+      type: integer
+      description: '(All Account Types) Most recent date of the following information. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    AccountNumberLast4:
+      type: string
+      description: The last 4 digits of the account number, derived by Mastercard from the account number provided by the financial institution. This is only returned for ACH-enabled accounts.
+      example: '5678'
+    UnixDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    PaymentDueDate:
+      type: integer
+      description: '(Credit Card/Line Of Credit) Due date for the next payment. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    LoanStatusEndDate:
+      type: integer
+      description: '(Student Loan) The end date of the current status. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    MaturityDate:
+      type: integer
+      description: '(Checking/Savings/CD/MoneyMarket) Maturity date of account type. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    NumericInstitutionLoginId:
+      type: integer
+      format: int64
+      description: An institution login ID (from the account record), represented as a number
+      example: 1007302745
+    CustomerAccounts:
+      description: A list of customer accounts
+      required:
+      - accounts
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerAccount'
+          description: List of customer accounts
+    OpenDate:
+      type: integer
+      description: '(Checking/Savings/CD/MoneyMarket) Date when account was opened. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    ExpectedPayoffDate:
+      type: integer
+      description: '(Student Loan) The expected date of the payoff date. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
       format: int64
       example: 1607450357
     CustomerAccountBalanceDate:
@@ -646,13 +440,19 @@ components:
       description: 'A timestamp showing when the balance was captured by the FI. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
       format: int64
       example: 1607450357
-    AccountId:
-      type: string
-      description: An account ID
-      example: '5011648377'
-    CustomerLastUpdatedDate:
+    CustomerAccountAggregationSuccessDate:
       type: integer
-      description: 'A timestamp showing when the account was last modified. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      description: 'A timestamp showing the last successful aggregation of the account. This will not be present until you have run your first aggregation for the account. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    PeriodStartDate:
+      type: integer
+      description: '(Checking/Savings/CD/MoneyMarket) Start date of period. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    OutOfSchoolDate:
+      type: integer
+      description: '(Student Loan) The date the borrower graduated or dropped below half-time enrollment in school. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
       format: int64
       example: 1607450357
     CustomerAccountPosition:
@@ -797,38 +597,47 @@ components:
           type: number
           description: The current day's gain and loss of the position at the time of aggregation in percentage
           example: 18.89
-    CustomerAccounts:
-      description: A list of customer accounts
-      required:
-      - accounts
-      type: object
-      properties:
-        accounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerAccount'
-          description: List of customer accounts
-    CustomerAccountOldestTransactionDate:
+    AuthorizationStartDate:
       type: integer
-      description: 'The date of the oldest transaction in the transactions for the account. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
       format: int64
-      example: 1607450357
-    LastPaymentReceiveDate:
+      description: Authorization start date and time in epoch format.
+      example: 1541030399
+    CustomerAccountLastTransactionDate:
       type: integer
-      description: '(Mortgage/Loan) The date of the last payment. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      description: 'The date of the latest transaction on the account. This will not be present until you have run your first aggregation for the account. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
       format: int64
       example: 1607450357
     Currency:
       type: string
       description: A currency code
       example: USD
+    LastPaymentReceiveDate:
+      type: integer
+      description: '(Mortgage/Loan) The date of the last payment. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    StatementStartDate:
+      type: integer
+      description: '(Credit Card/Line Of Credit) Start date of statement period. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
     InstitutionLoginId:
       type: string
       description: An institution login ID (from the account record)
       example: '1007302745'
-    OpenDate:
+    DisplayPosition:
       type: integer
-      description: '(Checking/Savings/CD/MoneyMarket) Date when account was opened. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      description: "Display position of the account at the financial institution, \"1\"\n    being the top listed account"
+      format: int32
+      example: 2
+    CustomerAccountCreatedDate:
+      type: integer
+      description: 'A timestamp showing when the account record was created. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    InitialMlDate:
+      type: integer
+      description: '(Mortgage/Loan) Original date of loan. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
       format: int64
       example: 1607450357
     CustomerAccountDetail:
@@ -1303,25 +1112,44 @@ components:
           type: string
           description: (Mortgage/Loan) Description of the mortgage or loan type
           example: Conventional 30-Year Mortgage
-    DateAsOf:
-      type: integer
-      description: '(All Account Types) Most recent date of the following information. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    AuthorizationExpires:
-      type: boolean
-      description: A Boolean flag that indicates whether the customer’s authorization period has a defined authorization end date.
-      example: true
-      default: false
-    StatementCloseDate:
-      type: integer
-      description: '(Mortgage/Loan) Date the statement closed. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://docs.finicity.com/endpoint-syntax-and-format/).'
-      format: int64
-      example: 1607450357
-    AssetId:
+    CustomerAccountMarketSegment:
       type: string
-      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
-      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+      description: 'The market segment of the account. Possible values: personal, business'
+      example: personal
+    OriginalMaturityDate:
+      type: integer
+      description: '(Mortgage/Loan) Original date of loan maturity. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    LoanStatusStartDate:
+      type: integer
+      description: '(Student Loan) The start date of the current status. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    AuthorizationEndDate:
+      type: integer
+      format: int64
+      description: Authorization end date and time in epoch format (not used if AuthorizationExpires is false).
+      example: 1641030399
+    LinkedAccountDate:
+      type: integer
+      description: 'A timestamp showing when the customer first linked the account via Data Connect. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    CustomerLastUpdatedDate:
+      type: integer
+      description: 'A timestamp showing when the account was last modified. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    PeriodEndDate:
+      type: integer
+      description: 'End date of period. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    AccountStatus:
+      description: An account status
+      type: string
+      example: pending
     AccountNumberDisplay:
       type: string
       description: 'Account identifier derived by Mastercard from the account number provided by the financial institution. The format varies depending on the institution. We recommend using this to identify accounts if available.
@@ -1336,162 +1164,26 @@ components:
 
         * 0824-S0050'
       example: '7528'
-    CustomerAccountMarketSegment:
-      type: string
-      description: 'The market segment of the account. Possible values: personal, business'
-      example: personal
-    LastPaymentDate:
+    AggregationStatusCode:
       type: integer
-      description: '(Credit Card/Line Of Credit) The date of the last payment. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    ErrorMessage:
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          type: object
-          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
-          example: '10001'
-        status:
-          type: string
-          description: A status code
-          example: '401'
-        title:
-          type: string
-          description: A title for the error
-          example: Connecting accounts error
-        level:
-          type: string
-          description: An error level
-          example: error
-        message:
-          type: string
-          description: An error message
-          example: Invalid authorization credentials
-        user_message:
-          type: string
-          description: Some more details about the error
-          example: The session has expired or is invalid
-        assetId:
-          $ref: '#/components/schemas/AssetId'
-        accountId:
-          $ref: '#/components/schemas/AccountId'
-        externalTransactionId:
-          type: string
-          description: A unique identifier for the transaction that assists in linking data back to your systems.
-          example: MAC1005061234
-          minLength: 1
-          maxLength: 100
-        tags:
-          type: string
-          description: Categories that the error belongs to
-          example: AGG
-    AggregationStatus:
-      type: string
-      description: "\"pending\" during account discovery, always \"active\" following\n  successful account activation"
-      example: active
-    UnixDate:
-      type: integer
-      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    OutOfSchoolDate:
-      type: integer
-      description: '(Student Loan) The date the borrower graduated or dropped below half-time enrollment in school. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
+      description: The status of the most recent aggregation attempt (see [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes)). Won't be present until you have run your first aggregation for the account.
     NextPaymentDate:
       type: integer
       description: '(Mortgage/Loan) Due date for the next payment. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    InitialMlDate:
-      type: integer
-      description: '(Mortgage/Loan) Original date of loan. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    ConvertToRepayment:
-      type: integer
-      description: '(Student Loan) The date the loan enters into repayment. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    AccountStatus:
-      description: An account status
-      type: string
-      example: pending
-    DisplayPosition:
-      type: integer
-      description: "Display position of the account at the financial institution, \"1\"\n    being the top listed account"
-      format: int32
-      example: 2
-    NumericInstitutionId:
-      description: The ID of a financial institution, represented as a number
-      type: integer
-      format: int64
-      example: 4222
-    CustomerAccountAggregationAttemptDate:
-      type: integer
-      description: 'A timestamp showing the last aggregation attempt, whether successful or not. This will not be present until you have run your first aggregation for the account. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
       format: int64
       example: 1607450357
     Name:
       type: string
       description: The account name from the institution
       example: Super Checking
-    CustomerAccountLastTransactionDate:
-      type: integer
-      description: 'The date of the latest transaction on the account. This will not be present until you have run your first aggregation for the account. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    LoanStatusEndDate:
-      type: integer
-      description: '(Student Loan) The end date of the current status. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    PayoffAmountDate:
-      type: integer
-      description: '(Mortgage/Loan) Date of final payment. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    PeriodStartDate:
-      type: integer
-      description: '(Checking/Savings/CD/MoneyMarket) Start date of period. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    MaturityDate:
-      type: integer
-      description: '(Checking/Savings/CD/MoneyMarket) Maturity date of account type. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    CustomerAccountAggregationSuccessDate:
-      type: integer
-      description: 'A timestamp showing the last successful aggregation of the account. This will not be present until you have run your first aggregation for the account. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    PeriodEndDate:
-      type: integer
-      description: 'End date of period. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    AuthorizationStartDate:
+    NumericInstitutionId:
+      description: The ID of a financial institution, represented as a number
       type: integer
       format: int64
-      description: Authorization start date and time in epoch format.
-      example: 1541030399
-    CustomerId:
-      type: string
-      description: A customer ID. See Add Customer API for how to create a customer ID.
-      example: '1005061234'
-    RepaymentPlanStartDate:
+      example: 4222
+    CustomerAccountOldestTransactionDate:
       type: integer
-      description: '(Student Loan) The start date of the current repayment plan. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    ExpectedPayoffDate:
-      type: integer
-      description: '(Student Loan) The expected date of the payoff date. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      description: 'The date of the oldest transaction in the transactions for the account. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
       format: int64
       example: 1607450357
     RepaymentPlanEndDate:
@@ -1499,28 +1191,114 @@ components:
       description: '(Student Loan) The end date of the current repayment plan. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
       format: int64
       example: 1607450357
-    NumericInstitutionLoginId:
+    StatementCloseDate:
       type: integer
-      format: int64
-      description: An institution login ID (from the account record), represented as a number
-      example: 1007302745
-    StatementEndDate:
-      type: integer
-      description: '(Credit Card/Line Of Credit) End date of statement period. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      description: '(Mortgage/Loan) Date the statement closed. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://docs.finicity.com/endpoint-syntax-and-format/).'
       format: int64
       example: 1607450357
-    PaymentDueDate:
+    PayoffAmountDate:
       type: integer
-      description: '(Credit Card/Line Of Credit) Due date for the next payment. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      description: '(Mortgage/Loan) Date of final payment. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
       format: int64
       example: 1607450357
-    InstitutionId:
-      description: The ID of a financial institution
+    CustomerAccountParentAccountId:
       type: string
-      example: '4222'
-    StatementStartDate:
+      description: The assigned account ID for the account one level higher in the student loan account hierarchy
+      example: '5011648377'
+    CustomerAccount:
+      description: An account represents a bank account such as a checking or savings that the customer has added via the Connect interface.
+      required:
+      - id
+      - accountNumberDisplay
+      - name
+      - accountNickname
+      - number
+      - type
+      - status
+      - customerId
+      - institutionId
+      - createdDate
+      - currency
+      - institutionLoginId
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AccountId'
+        number:
+          type: string
+          deprecated: true
+          description: 'Account number provided by the financial institution. The format varies depending on the institution. Some digits may be masked. If an ACH number is needed, call the ACH endpoints.
+
+            Below is a non-exhaustive list of examples for the `number` field.
+
+            * 8089258
+
+            * 103275057=01
+
+            * 2000004444'
+          example: '201940541'
+        accountNumberDisplay:
+          $ref: '#/components/schemas/AccountNumberDisplay'
+        realAccountNumberLast4:
+          $ref: '#/components/schemas/AccountNumberLast4'
+        name:
+          $ref: '#/components/schemas/Name'
+        balance:
+          type: number
+          description: The cleared balance of the account as of `balanceDate`
+          example: 401.26
+        type:
+          $ref: '#/components/schemas/AccountType'
+        aggregationStatusCode:
+          $ref: '#/components/schemas/AggregationStatusCode'
+        status:
+          $ref: '#/components/schemas/AggregationStatus'
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        institutionId:
+          $ref: '#/components/schemas/InstitutionId'
+        balanceDate:
+          $ref: '#/components/schemas/CustomerAccountBalanceDate'
+        aggregationSuccessDate:
+          $ref: '#/components/schemas/CustomerAccountAggregationSuccessDate'
+        aggregationAttemptDate:
+          $ref: '#/components/schemas/CustomerAccountAggregationAttemptDate'
+        createdDate:
+          $ref: '#/components/schemas/CustomerAccountCreatedDate'
+        lastUpdatedDate:
+          $ref: '#/components/schemas/CustomerLastUpdatedDate'
+        marketSegment:
+          $ref: '#/components/schemas/CustomerAccountMarketSegment'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        lastTransactionDate:
+          $ref: '#/components/schemas/CustomerAccountLastTransactionDate'
+        oldestTransactionDate:
+          $ref: '#/components/schemas/CustomerAccountOldestTransactionDate'
+        institutionLoginId:
+          $ref: '#/components/schemas/NumericInstitutionLoginId'
+        authorizationStartDate:
+          $ref: '#/components/schemas/AuthorizationStartDate'
+        authorizationEndDate:
+          $ref: '#/components/schemas/AuthorizationEndDate'
+        authorizationExpires:
+          $ref: '#/components/schemas/AuthorizationExpires'
+        detail:
+          $ref: '#/components/schemas/CustomerAccountDetail'
+        position:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerAccountPosition'
+          description: Investment holdings
+        displayPosition:
+          $ref: '#/components/schemas/DisplayPosition'
+        parentAccount:
+          $ref: '#/components/schemas/CustomerAccountParentAccountId'
+        linkedAccountDate:
+          $ref: '#/components/schemas/LinkedAccountDate'
+    FirstPaymentDate:
       type: integer
-      description: '(Credit Card/Line Of Credit) Start date of statement period. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      description: '(Mortgage/Loan) First payment due date. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
       format: int64
       example: 1607450357
     AccountType:
@@ -1599,17 +1377,291 @@ components:
 
         * "studentLoanAccount": Student Loan Account'
       example: checking
-    AccountNumberLast4:
-      type: string
-      description: The last 4 digits of the account number, derived by Mastercard from the account number provided by the financial institution. This is only returned for ACH-enabled accounts.
-      example: '5678'
+    RepaymentPlanStartDate:
+      type: integer
+      description: '(Student Loan) The start date of the current repayment plan. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    LastPaymentDate:
+      type: integer
+      description: '(Credit Card/Line Of Credit) The date of the last payment. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    LastPaymentDueDate:
+      type: integer
+      description: '(Mortgage/Loan) Due date of last payment. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    StatementEndDate:
+      type: integer
+      description: '(Credit Card/Line Of Credit) End date of statement period. A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+  parameters:
+    AccountStatusParameter:
+      description: A filter to fetch account in the given status
+      name: status
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/AccountStatus'
+      example: pending
+    AccountIdParameter:
+      description: The account ID
+      name: accountId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AccountId'
+      example: '5011648377'
+    InstitutionLoginIdParameter:
+      description: The institution login ID
+      name: institutionLoginId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/InstitutionLoginId'
+      example: '1007302745'
+    AccountTypeParameter:
+      description: 'A filter to fetch accounts for the given type. Currently supported types: "ava"'
+      name: account_type
+      in: query
+      required: false
+      schema:
+        type: string
+      example: ava
+    ToDateParameterForRefreshAccounts:
+      description: Transactions up to and including this date will be included. It should be later than the fromDate.
+      name: toDate
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/UnixDate'
+      example: 1670504017
+    FromDateParameterForRefreshAccounts:
+      description: Transactions starting from this date will be included.
+      name: fromDate
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/UnixDate'
+      example: 1607450357
+    CustomerIdParameter:
+      description: A customer ID
+      name: customerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
+    InstitutionIdParameter:
+      description: The institution ID
+      name: institutionId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/NumericInstitutionId'
+      example: 4222
+  examples:
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    ResellerInvalidDateRangeLessThanZeroExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
+    InvalidForesightReportRequestExample:
+      value:
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    InvalidStatusParameterExample:
+      value:
+        code: '18017'
+        message: status parameter value must be 'active' or 'pending
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    InvalidFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: Customer ID does not exist or does not belong to this partner
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    ResellerInvalidDateRangeExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    InvalidConsumerEmailExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.email.
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    NoAccountForInstitutionLoginIdExample:
+      value:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
+    InvalidConsumerSSNExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    NoConsumerForCustomerExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer for customer with id 5011115315."
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    ResellerNoDataForPartnerExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    PermissiblePurposeCodeExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: Permissible Purpose Code is required
   responses:
-    RefreshCustomerAccountsResponse:
-      description: The account list was successfully refreshed
+    GetAccountsInstitutionIdResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CustomerAccounts'
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            NoAccountForInstitutionLoginIdExample:
+              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
+    GenericBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+    GetAccountsInstitutionIdBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            InvalidStatusParameterExample:
+              $ref: '#/components/examples/InvalidStatusParameterExample'
+    DeleteCustomerAccountsByInstitutionLoginResponse:
+      description: Access to the customer accounts was successfully removed
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
     ResourceNotFoundErrorResponse:
       description: The resource doesn't exist
       content:
@@ -1633,49 +1685,6 @@ components:
               $ref: '#/components/examples/ResellerNoDataForPartnerExample'
             ResellerNoReportForPartnerExample:
               $ref: '#/components/examples/ResellerNoReportForPartnerExample'
-    GetCustomerAccountsResponse:
-      description: The account list was successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CustomerAccounts'
-    GenericBadRequestErrorResponse:
-      description: The request was rejected
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            GenericBadRequestExample:
-              $ref: '#/components/examples/GenericBadRequestExample'
-    GetAccountsInstitutionIdResourceNotFoundErrorResponse:
-      description: The resource doesn't exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            CustomerNotFoundExample:
-              $ref: '#/components/examples/CustomerNotFoundExample'
-            NoAccountForInstitutionLoginIdExample:
-              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
-    RefreshCustomerV2AccountsResponse:
-      description: The account list was successfully refreshed
-    DeleteCustomerAccountResponse:
-      description: Access to the customer account was successfully removed
-    GetAccountsInstitutionIdBadRequestErrorResponse:
-      description: The request was rejected
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            MissingFieldExample:
-              $ref: '#/components/examples/MissingFieldExample'
-            GenericBadRequestExample:
-              $ref: '#/components/examples/GenericBadRequestExample'
-            InvalidStatusParameterExample:
-              $ref: '#/components/examples/InvalidStatusParameterExample'
     BadRequestErrorResponse:
       description: The request was rejected
       content:
@@ -1725,31 +1734,22 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CustomerAccount'
-    DeleteCustomerAccountsByInstitutionLoginResponse:
-      description: Access to the customer accounts was successfully removed
-    UnauthorizedErrorResponse:
-      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+    GetCustomerAccountsResponse:
+      description: The account list was successfully retrieved
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            ExpiredTokenExample:
-              $ref: '#/components/examples/ExpiredTokenExample'
-            MissingFinicityAppKeyExample:
-              $ref: '#/components/examples/MissingFinicityAppKeyExample'
-            MissingFinicityAppTokenExample:
-              $ref: '#/components/examples/MissingFinicityAppTokenExample'
-            InvalidFinicityAppTokenExample:
-              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
-            ExpiredFinicityAppTokenExample:
-              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
-            BadCredentialsExample:
-              $ref: '#/components/examples/BadCredentialsExample'
-        text/plain:
+            $ref: '#/components/schemas/CustomerAccounts'
+    RefreshCustomerV2AccountsResponse:
+      description: The account list was successfully refreshed
+    DeleteCustomerAccountResponse:
+      description: Access to the customer account was successfully removed
+    RefreshCustomerAccountsResponse:
+      description: The account list was successfully refreshed
+      content:
+        application/json:
           schema:
-            type: string
-            example: Invalid (Finicity-App-Key)
+            $ref: '#/components/schemas/CustomerAccounts'
   securitySchemes:
     FinicityAppKey:
       name: Finicity-App-Key

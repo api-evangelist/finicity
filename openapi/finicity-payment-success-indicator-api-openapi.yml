@@ -179,39 +179,289 @@ paths:
         '404':
           $ref: '#/components/responses/GetPaymentSuccessIndicatorNotFoundResponse'
 components:
-  parameters:
-    CustomerIdParameter:
-      description: A customer ID
-      name: customerId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/CustomerId'
-      example: '1005061234'
-    AccountIdParameter:
-      description: The account ID
-      name: accountId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/AccountId'
-      example: '5011648377'
-    PayPurposeCodeParameter:
-      description: 'The 2-digit code (1P) assigned to indicate the intended purpose. 1P represents the following permissible purpose: “Determine whether a consumers payment method may be accepted or authorized”, which falls under the “Legitimate Business Need” permissible purpose under section 604 of the FCRA.'
-      name: purposeCode
-      in: query
-      required: true
-      schema:
-        $ref: '#/components/schemas/PayPurposeCode'
-    PayRequestIdParameter:
-      name: payRequestId
-      in: path
-      required: true
-      description: Unique identifier of the Payments request
-      schema:
-        $ref: '#/components/schemas/PayRequestId'
-      example: '476412776235977427'
-    SettleByDateParameter:
+  responses:
+    RetrievePaymentSuccessIndicatorsResponse:
+      description: Successfully requested to retrieve a Payment Success Indicators score
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentSuccessIndicators'
+          examples:
+            PaymentSuccessIndicatorsNoReasonsSuccessResponseExample:
+              $ref: '#/components/examples/PaymentSuccessIndicatorsNoReasonsSuccessResponseExample'
+            PaymentSuccessIndicatorsSuccessResponseExample:
+              $ref: '#/components/examples/PaymentSuccessIndicatorsSuccessResponseExample'
+            PaymentSuccessIndicatorsInProgressResponseExample:
+              $ref: '#/components/examples/PaymentSuccessIndicatorsInProgressResponseExample'
+            PaymentSuccessIndicatorsFailureResponseExample:
+              $ref: '#/components/examples/PaymentSuccessIndicatorsFailureResponseExample'
+    ForbiddenErrorResponse:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ForbiddenErrorResponseExample:
+              $ref: '#/components/examples/ForbiddenErrorResponseExample'
+    GeneratePaymentSuccessIndicatorsResponse:
+      description: Successfully requested to generate a Payment Success Indicators score
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentSuccessIndicators'
+          examples:
+            PaymentSuccessIndicatorsInProgressResponseExample:
+              $ref: '#/components/examples/PaymentSuccessIndicatorsInProgressResponseExample'
+    NotAllowedErrorResponse:
+      description: Not allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            NotAllowedErrorResponseExample:
+              $ref: '#/components/examples/NotAllowedErrorResponseExample'
+    GetPaymentSuccessIndicatorResponse:
+      description: The payment success indicator was successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentSuccessIndicator'
+          examples:
+            PaymentSuccessIndicatorExample:
+              $ref: '#/components/examples/PaymentSuccessIndicatorExample'
+            PaymentSuccessIndicatorWarningExample:
+              $ref: '#/components/examples/PaymentSuccessIndicatorWarningExample'
+    GetPaymentSuccessIndicatorFcraBadRequestResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            MissingSettleByDateExample:
+              $ref: '#/components/examples/MissingSettleByDateExample'
+            MissingSettlementAmountExample:
+              $ref: '#/components/examples/MissingSettlementAmountExample'
+            InvalidPurposeCodeExample:
+              $ref: '#/components/examples/InvalidPurposeCodeExample'
+            InvalidSettleByDateExample:
+              $ref: '#/components/examples/InvalidSettleByDateExample'
+            IncorrectFieldTypeExample:
+              $ref: '#/components/examples/IncorrectFieldTypeExample'
+            AccountHasNoTransactionExample:
+              $ref: '#/components/examples/AccountHasNoTransactionExample'
+            RequiredFieldParameterExample:
+              $ref: '#/components/examples/RequiredFieldParameterExample'
+            InactiveAccountExample:
+              $ref: '#/components/examples/InactiveAccountExample'
+            MissingEmailExample:
+              $ref: '#/components/examples/MissingEmailExample'
+    GetPaymentSuccessIndicatorBadRequestResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            MissingSettleByDateExample:
+              $ref: '#/components/examples/MissingSettleByDateExample'
+            MissingSettlementAmountExample:
+              $ref: '#/components/examples/MissingSettlementAmountExample'
+            InvalidSettleByDateExample:
+              $ref: '#/components/examples/InvalidSettleByDateExample'
+            IncorrectFieldTypeExample:
+              $ref: '#/components/examples/IncorrectFieldTypeExample'
+            AccountHasNoTransactionExample:
+              $ref: '#/components/examples/AccountHasNoTransactionExample'
+            RequiredFieldParameterExample:
+              $ref: '#/components/examples/RequiredFieldParameterExample'
+            InactiveAccountExample:
+              $ref: '#/components/examples/InactiveAccountExample'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
+    GetPaymentSuccessIndicatorNotFoundResponse:
+      description: Required details not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            InvalidAccountIdExample:
+              $ref: '#/components/examples/InvalidAccountIdExample'
+    ResourceNotFoundErrorResponse:
+      description: The resource doesn't exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ConsumerNotFoundExample:
+              $ref: '#/components/examples/ConsumerNotFoundExample'
+            NoAccountForInstitutionLoginIdExample:
+              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
+            CustomerNotFoundExample:
+              $ref: '#/components/examples/CustomerNotFoundExample'
+            NoConsumerForCustomerExample:
+              $ref: '#/components/examples/NoConsumerForCustomerExample'
+            ResourceNotFoundExample:
+              $ref: '#/components/examples/ResourceNotFoundExample'
+            NoRegisteredApplicationExample:
+              $ref: '#/components/examples/NoRegisteredApplicationExample'
+            ResellerNoDataForPartnerExample:
+              $ref: '#/components/examples/ResellerNoDataForPartnerExample'
+            ResellerNoReportForPartnerExample:
+              $ref: '#/components/examples/ResellerNoReportForPartnerExample'
+    BadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            PermissiblePurposeCodeExample:
+              $ref: '#/components/examples/PermissiblePurposeCodeExample'
+            InvalidForesightReportRequestExample:
+              $ref: '#/components/examples/InvalidForesightReportRequestExample'
+            BothCraAndFtcPurposeTrueExample:
+              $ref: '#/components/examples/BothCraAndFtcPurposeTrueExample'
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            InvalidExperienceFieldExample:
+              $ref: '#/components/examples/InvalidExperienceFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+            ResellerPartnerNotAuthorizedExample:
+              $ref: '#/components/examples/ResellerPartnerNotAuthorizedExample'
+            ResellerInvalidDateRangeExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeExample'
+            ResellerInvalidDateRangeLessThanZeroExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeLessThanZeroExample'
+            ResellerInvalidDateRangeGreaterThanEndDateExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThanEndDateExample'
+            ResellerInvalidDateRangeGreaterThan31DaysExample:
+              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThan31DaysExample'
+            CustomerReportLimitExceedExample:
+              $ref: '#/components/examples/CustomerReportLimitExceedExample'
+            InvalidConsumerSSNExample:
+              $ref: '#/components/examples/InvalidConsumerSSNExample'
+            InvalidConsumerPhoneExample:
+              $ref: '#/components/examples/InvalidConsumerPhoneExample'
+            InvalidConsumerEmailExample:
+              $ref: '#/components/examples/InvalidConsumerEmailExample'
+            InvalidValue:
+              $ref: '#/components/examples/InvalidValueExample'
+    RetrieveFcraPaymentSuccessIndicatorsResponse:
+      description: Successfully requested to retrieve a Payment Success Indicators score
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FcraPaymentSuccessIndicators'
+          examples:
+            PaymentSuccessIndicatorsNoReasonsSuccessResponseExample:
+              $ref: '#/components/examples/PaymentSuccessIndicatorsNoReasonsSuccessResponseExample'
+            PaymentSuccessIndicatorsSuccessResponseExample:
+              $ref: '#/components/examples/PaymentSuccessIndicatorsSuccessResponseExample'
+            PaymentSuccessIndicatorsInProgressResponseExample:
+              $ref: '#/components/examples/PaymentSuccessIndicatorsInProgressResponseExample'
+            PaymentSuccessIndicatorsFailureResponseExample:
+              $ref: '#/components/examples/PaymentSuccessIndicatorsFailureResponseExample'
+  schemas:
+    FcraNsfReturnRiskResult:
+      description: The successful result of the execution of the nsf return risk
+      type: object
+      properties:
+        disputeStatement:
+          type: string
+          description: A message mentioning if/what type of dispute exists for the customer"
+          example: An active dispute exists
+        availableBalance:
+          type: number
+          description: The available balance provided, by the consumer’s financial institution, at the time of the request.
+          example: 315.01
+        dailyResults:
+          $ref: '#/components/schemas/NsfDailyResults'
+      required:
+      - availableBalance
+      - dailyResults
+    FcraPaymentSuccessIndicators:
+      description: A Payment Success Indicators score response, indicating how likely a transaction is to be returned. NSF and Unauthorized return risks are provided if the score has a status of SUCCESS, or the captured errors are listed if the score has a status of FAILURE.
+      type: object
+      properties:
+        payRequestId:
+          $ref: '#/components/schemas/PayRequestId'
+        status:
+          description: Current status of the score generation. Possible values are "IN PROGRESS", "SUCCESS", "FAILURE"
+          type: string
+          example: IN PROGRESS
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        requestDate:
+          type: string
+          description: The ISO 8601 format (YYYY-MM-DD) date of the request.
+          example: '2024-04-01'
+          format: date
+        transaction:
+          $ref: '#/components/schemas/PaymentSuccessIndicatorsTransaction'
+        nsfReturnRisk:
+          $ref: '#/components/schemas/FcraNsfReturnRisk'
+        unauthorizedReturnRisk:
+          $ref: '#/components/schemas/UnauthorizedReturnRisk'
+      required:
+      - payRequestId
+      - status
+      - customerId
+      - accountId
+      - requestDate
+      - transaction
+    PaymentSuccessIndicatorsTransaction:
+      description: An object containing the requested transaction info.
+      type: object
+      properties:
+        settleByDate:
+          $ref: '#/components/schemas/SettleByDate'
+        amount:
+          $ref: '#/components/schemas/PaymentSuccessIndicatorsTransactionAmount'
+      required:
+      - settleByDate
+      - amount
+    SettleByDate:
+      type: string
+      format: date
       description: 'The expected date that the funds, from the consumer’s account, will be moved to the receiving account.
 
 
@@ -224,38 +474,174 @@ components:
         2. If `settleByDate` is between 3 and 8 days out from today, the response includes 4-9 days of data, `day3-8`.
 
         3. If `settleByDate` is between today and 2 days out from today, the response includes 3 days of data, `day0` through `day2`.'
-      name: settleByDate
-      in: query
-      required: true
-      schema:
-        $ref: '#/components/schemas/SettleByDate'
       example: '2023-03-30'
-    IncludeReasonsParameter:
-      name: include_reasons
-      in: query
-      required: false
-      description: If this parameter is true, the reasons codes will be provided in the results. Otherwise, the reasons will be omitted.
-      schema:
-        type: boolean
-        example: true
-      allowEmptyValue: true
-    PurposeParameter:
-      name: purpose
-      in: query
-      required: false
-      description: 2-digit code from [Permissible Purpose Codes](https://developer.mastercard.com/open-finance-us/documentation/products/lend/permissible-purpose-codes/), specifying the reason for retrieving this report. Required for retrieving CRA reports. Validation enforcing the use of a valid [Permissible Purpose Code](https://developer.mastercard.com/open-finance-us/documentation/products/lend/permissible-purpose-codes/) for CRA reports will be enabled on 11 August 2026.
-      schema:
-        $ref: '#/components/schemas/PurposeCode'
-      example: 3F
-    SettlementAmountParameter:
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    PayRequestId:
+      description: Unique identifier of the Payments request
+      type: string
+      example: '476412776235977427'
+      minLength: 18
+      maxLength: 18
+    NsfReturnRiskResult:
+      description: The successful result of the execution of the nsf return risk
+      type: object
+      properties:
+        availableBalance:
+          type: number
+          description: The available balance provided, by the consumer’s financial institution, at the time of the request.
+          example: 315.01
+        dailyResults:
+          $ref: '#/components/schemas/NsfDailyResults'
+      required:
+      - availableBalance
+      - dailyResults
+    PayPurposeCode:
+      type: string
+      description: 'The 2-digit code (1P) assigned to indicate the intended purpose. 1P represents the following permissible purpose: “Determine whether a consumers payment method may be accepted or authorized”, which falls under the “Legitimate Business Need” permissible purpose under section 604 of the FCRA.'
+      example: 1P
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    ScoreIndicator:
+      type: string
+      description: '`scoreIndicator` conveys the `compositeScore`, projecting 3 possible values: "Highly Likely to Settle", "Likely to Settle", and "Less Likely to Settle"'
+      example: Likely to Settle
+      minLength: 1
+      maxLength: 50
+    PaymentSuccessIndicatorsAddress:
+      description: The customer's address
+      type: object
+      properties:
+        streetLine1:
+          description: The first line of the street part in the structured address.
+          example: 434 Ascension Way
+          type: string
+          minLength: 0
+          maxLength: 1000
+        streetLine2:
+          description: The second line of the street part in the structured address.
+          example: Suite 200
+          type: string
+          minLength: 0
+          maxLength: 1000
+        city:
+          description: The name of the city in the structured address.
+          example: Salt Lake City
+          type: string
+          minLength: 0
+          maxLength: 500
+        state:
+          description: The state/province/parent subdivision code of the structured address.
+          example: UT
+          type: string
+          minLength: 1
+          maxLength: 3
+        postalCode:
+          description: The postal code of the structured address.
+          example: '84124'
+          type: string
+          minLength: 0
+          maxLength: 100
+        country:
+          description: The ISO-3166 alpha-2 country code of the address.
+          example: US
+          type: string
+          pattern: ^[A-Za-z]+$
+          format: ISO-3166-2
+          minLength: 2
+          maxLength: 2
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    PaymentSuccessIndicators:
+      description: A Payment Success Indicators score response, indicating how likely a transaction is to be returned. NSF and Unauthorized return risks are provided if the score has a status of SUCCESS, or the captured errors are listed if the score has a status of FAILURE.
+      type: object
+      properties:
+        payRequestId:
+          $ref: '#/components/schemas/PayRequestId'
+        status:
+          description: Current status of the score generation. Possible values are "IN PROGRESS", "SUCCESS", "FAILURE"
+          type: string
+          example: IN PROGRESS
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        requestDate:
+          type: string
+          description: The ISO 8601 format (YYYY-MM-DD) date of the request.
+          example: '2024-04-01'
+          format: date
+        transaction:
+          $ref: '#/components/schemas/PaymentSuccessIndicatorsTransaction'
+        nsfReturnRisk:
+          $ref: '#/components/schemas/NsfReturnRisk'
+        unauthorizedReturnRisk:
+          $ref: '#/components/schemas/UnauthorizedReturnRisk'
+      required:
+      - payRequestId
+      - status
+      - customerId
+      - accountId
+      - requestDate
+      - transaction
+    PotentialSettlementDate:
+      type: string
+      format: date
+      description: The date for all days included in the response.
+      example: '2023-03-30'
+    SettlementAmount:
+      type: number
       description: The transaction amount in USD $.
-      name: settlementAmount
-      in: query
-      required: true
-      schema:
-        $ref: '#/components/schemas/SettlementAmount'
       example: 10.05
-  schemas:
     ReasonItem:
       type: object
       description: A collection of 8 reason codes, with a score ranging from 0-100, that explains the drivers that caused the score.
@@ -324,255 +710,6 @@ components:
         $ref: '#/components/schemas/NsfIndicator'
       minItems: 3
       maxItems: 10
-    PaymentSuccessIndicatorsUser:
-      description: The user's information
-      type: object
-      properties:
-        name:
-          description: The name provided by the customer for the transaction.
-          example: Jane Doe
-          type: string
-        email:
-          description: The email provided by the customer for the transaction.
-          example: Jane.Doe@mastercard.com
-          type: string
-        address:
-          $ref: '#/components/schemas/PaymentSuccessIndicatorsAddress'
-        phone:
-          $ref: '#/components/schemas/PaymentSuccessIndicatorsPhone'
-    PayPurposeCode:
-      type: string
-      description: 'The 2-digit code (1P) assigned to indicate the intended purpose. 1P represents the following permissible purpose: “Determine whether a consumers payment method may be accepted or authorized”, which falls under the “Legitimate Business Need” permissible purpose under section 604 of the FCRA.'
-      example: 1P
-    AccountId:
-      type: string
-      description: An account ID
-      example: '5011648377'
-    NsfIndicator:
-      type: object
-      properties:
-        potentialSettlementDate:
-          type: string
-          description: The date for a potential settlement date
-          example: '2024-04-24'
-          format: date
-        score:
-          type: integer
-          description: A risk score from 0-100 that indicates the likelihood of a nsf return risk, where a higher score indicates a higher likelihood of settlement or lower likelihood of return.
-          example: 6
-          minimum: 0
-          maximum: 100
-          format: int32
-        indicator:
-          type: string
-          description: '`indicator` conveys the `score`, projecting 3 possible values: "Low Risk", "Medium Risk", or "High Risk"'
-          example: Low Risk
-          minLength: 1
-          maxLength: 50
-        reasons:
-          $ref: '#/components/schemas/NsfReasonItem'
-      required:
-      - potentialSettlementDate
-      - score
-      - indicator
-    PaymentSuccessIndicator:
-      type: object
-      properties:
-        code:
-          type: string
-          description: PSI error code for this scenario
-          example: '10001'
-        message:
-          type: string
-          description: Detailed reason about the source of the error
-          example: Account Error - use different account
-        customerId:
-          $ref: '#/components/schemas/CustomerId'
-        accountId:
-          $ref: '#/components/schemas/AccountId'
-        payReqId:
-          type: string
-          description: The unique ID that represents the response generated for that specific, customer, account, and transaction.
-          example: '453752752892280957'
-        settleByDate:
-          $ref: '#/components/schemas/SettleByDate'
-        settlementAmount:
-          $ref: '#/components/schemas/SettlementAmount'
-        availableBalance:
-          type: number
-          description: The available balance provided, by the consumer’s financial institution, at the time of the request.
-          example: 315.01
-        indicatorsByDay:
-          $ref: '#/components/schemas/IndicatorsByDay'
-      required:
-      - customerId
-      - accountId
-      - payReqId
-      - settleByDate
-      - settlementAmount
-      - availableBalance
-      - indicatorsByDay
-    PaymentSuccessIndicatorsTransaction:
-      description: An object containing the requested transaction info.
-      type: object
-      properties:
-        settleByDate:
-          $ref: '#/components/schemas/SettleByDate'
-        amount:
-          $ref: '#/components/schemas/PaymentSuccessIndicatorsTransactionAmount'
-      required:
-      - settleByDate
-      - amount
-    NsfReturnRiskResult:
-      description: The successful result of the execution of the nsf return risk
-      type: object
-      properties:
-        availableBalance:
-          type: number
-          description: The available balance provided, by the consumer’s financial institution, at the time of the request.
-          example: 315.01
-        dailyResults:
-          $ref: '#/components/schemas/NsfDailyResults'
-      required:
-      - availableBalance
-      - dailyResults
-    FcraNsfReturnRiskResult:
-      description: The successful result of the execution of the nsf return risk
-      type: object
-      properties:
-        disputeStatement:
-          type: string
-          description: A message mentioning if/what type of dispute exists for the customer"
-          example: An active dispute exists
-        availableBalance:
-          type: number
-          description: The available balance provided, by the consumer’s financial institution, at the time of the request.
-          example: 315.01
-        dailyResults:
-          $ref: '#/components/schemas/NsfDailyResults'
-      required:
-      - availableBalance
-      - dailyResults
-    UnauthorizedReturnRisk:
-      description: The result or error occurred during the execution of the unauthorized return risk prediction
-      type: object
-      properties:
-        result:
-          description: The result object containing the unauthorized return risk score
-          properties:
-            score:
-              description: A risk score from 0-100 that indicates the likelihood of an unauthorized return risk, where a higher score indicates a higher likelihood of settlement or lower likelihood of return.
-              example: 89
-              type: integer
-              minimum: 0
-              maximum: 100
-            indicator:
-              description: '`indicator` conveys the `score`, projecting 3 possible values: "Low Risk", "Medium Risk", or "High Risk"'
-              example: Low Risk
-              type: string
-          required:
-          - score
-          - indicator
-          type: object
-        error:
-          $ref: '#/components/schemas/ErrorMessage'
-    PayRequestId:
-      description: Unique identifier of the Payments request
-      type: string
-      example: '476412776235977427'
-      minLength: 18
-      maxLength: 18
-    PaymentSuccessIndicators:
-      description: A Payment Success Indicators score response, indicating how likely a transaction is to be returned. NSF and Unauthorized return risks are provided if the score has a status of SUCCESS, or the captured errors are listed if the score has a status of FAILURE.
-      type: object
-      properties:
-        payRequestId:
-          $ref: '#/components/schemas/PayRequestId'
-        status:
-          description: Current status of the score generation. Possible values are "IN PROGRESS", "SUCCESS", "FAILURE"
-          type: string
-          example: IN PROGRESS
-        customerId:
-          $ref: '#/components/schemas/CustomerId'
-        accountId:
-          $ref: '#/components/schemas/AccountId'
-        requestDate:
-          type: string
-          description: The ISO 8601 format (YYYY-MM-DD) date of the request.
-          example: '2024-04-01'
-          format: date
-        transaction:
-          $ref: '#/components/schemas/PaymentSuccessIndicatorsTransaction'
-        nsfReturnRisk:
-          $ref: '#/components/schemas/NsfReturnRisk'
-        unauthorizedReturnRisk:
-          $ref: '#/components/schemas/UnauthorizedReturnRisk'
-      required:
-      - payRequestId
-      - status
-      - customerId
-      - accountId
-      - requestDate
-      - transaction
-    AssetId:
-      type: string
-      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
-      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
-    PaymentSuccessIndicatorsTransactionAmount:
-      description: The transaction amount
-      example: 12.45
-      type: number
-      exclusiveMinimum: 0
-    ErrorMessage:
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          type: object
-          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
-          example: '10001'
-        status:
-          type: string
-          description: A status code
-          example: '401'
-        title:
-          type: string
-          description: A title for the error
-          example: Connecting accounts error
-        level:
-          type: string
-          description: An error level
-          example: error
-        message:
-          type: string
-          description: An error message
-          example: Invalid authorization credentials
-        user_message:
-          type: string
-          description: Some more details about the error
-          example: The session has expired or is invalid
-        assetId:
-          $ref: '#/components/schemas/AssetId'
-        accountId:
-          $ref: '#/components/schemas/AccountId'
-        externalTransactionId:
-          type: string
-          description: A unique identifier for the transaction that assists in linking data back to your systems.
-          example: MAC1005061234
-          minLength: 1
-          maxLength: 100
-        tags:
-          type: string
-          description: Categories that the error belongs to
-          example: AGG
-    IndicatorsByDay:
-      type: array
-      description: An Array of 3-10 days, providing the potentialSettlementDate, compositeScore, scoreIndicator, and reasons.
-      items:
-        $ref: '#/components/schemas/Indicator'
-      minItems: 3
-      maxItems: 10
     Indicator:
       type: object
       properties:
@@ -589,117 +726,6 @@ components:
       - compositeScore
       - scoreIndicator
       - reasons
-    PaymentSuccessIndicatorsAddress:
-      description: The customer's address
-      type: object
-      properties:
-        streetLine1:
-          description: The first line of the street part in the structured address.
-          example: 434 Ascension Way
-          type: string
-          minLength: 0
-          maxLength: 1000
-        streetLine2:
-          description: The second line of the street part in the structured address.
-          example: Suite 200
-          type: string
-          minLength: 0
-          maxLength: 1000
-        city:
-          description: The name of the city in the structured address.
-          example: Salt Lake City
-          type: string
-          minLength: 0
-          maxLength: 500
-        state:
-          description: The state/province/parent subdivision code of the structured address.
-          example: UT
-          type: string
-          minLength: 1
-          maxLength: 3
-        postalCode:
-          description: The postal code of the structured address.
-          example: '84124'
-          type: string
-          minLength: 0
-          maxLength: 100
-        country:
-          description: The ISO-3166 alpha-2 country code of the address.
-          example: US
-          type: string
-          pattern: ^[A-Za-z]+$
-          format: ISO-3166-2
-          minLength: 2
-          maxLength: 2
-    FcraNsfReturnRisk:
-      description: The result or error occurred during the execution of the nsf return risk prediction
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/FcraNsfReturnRiskResult'
-        error:
-          $ref: '#/components/schemas/ErrorMessage'
-    PaymentSuccessIndicatorsPhone:
-      description: The phone information
-      type: object
-      properties:
-        countryHint:
-          description: The ISO-3166 alpha-2 country code of the phone number.
-          format: ISO-3166-2
-          example: US
-          type: string
-        number:
-          description: 'The phone number in E.164 or local format. The default country calling code is +1 (USA). Note: This field is required only if email is not provided.'
-          example: '7785732875'
-          pattern: ^\+?[\d-]*(x\d*)?
-          type: string
-    NsfReturnRisk:
-      description: The result or error occurred during the execution of the nsf return risk prediction
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/NsfReturnRiskResult'
-        error:
-          $ref: '#/components/schemas/ErrorMessage'
-    CompositeScore:
-      type: integer
-      format: int32
-      minimum: 0
-      maximum: 100
-      description: A risk score from 0-100 that indicates the likelihood of return risk, where a higher score indicates a higher likelihood of settlement or lower likelihood of return.
-      example: 6
-    FcraPaymentSuccessIndicators:
-      description: A Payment Success Indicators score response, indicating how likely a transaction is to be returned. NSF and Unauthorized return risks are provided if the score has a status of SUCCESS, or the captured errors are listed if the score has a status of FAILURE.
-      type: object
-      properties:
-        payRequestId:
-          $ref: '#/components/schemas/PayRequestId'
-        status:
-          description: Current status of the score generation. Possible values are "IN PROGRESS", "SUCCESS", "FAILURE"
-          type: string
-          example: IN PROGRESS
-        customerId:
-          $ref: '#/components/schemas/CustomerId'
-        accountId:
-          $ref: '#/components/schemas/AccountId'
-        requestDate:
-          type: string
-          description: The ISO 8601 format (YYYY-MM-DD) date of the request.
-          example: '2024-04-01'
-          format: date
-        transaction:
-          $ref: '#/components/schemas/PaymentSuccessIndicatorsTransaction'
-        nsfReturnRisk:
-          $ref: '#/components/schemas/FcraNsfReturnRisk'
-        unauthorizedReturnRisk:
-          $ref: '#/components/schemas/UnauthorizedReturnRisk'
-      required:
-      - payRequestId
-      - status
-      - customerId
-      - accountId
-      - requestDate
-      - transaction
     PaymentSuccessIndicatorsProperties:
       description: Properties to request a Payment Success Indicator score
       type: object
@@ -710,45 +736,11 @@ components:
           $ref: '#/components/schemas/PaymentSuccessIndicatorsUser'
       required:
       - transaction
-    PotentialSettlementDate:
-      type: string
-      format: date
-      description: The date for all days included in the response.
-      example: '2023-03-30'
-    SettlementAmount:
+    PaymentSuccessIndicatorsTransactionAmount:
+      description: The transaction amount
+      example: 12.45
       type: number
-      description: The transaction amount in USD $.
-      example: 10.05
-    CustomerId:
-      type: string
-      description: A customer ID. See Add Customer API for how to create a customer ID.
-      example: '1005061234'
-    PurposeCode:
-      type: string
-      description: FCRA required 2-digit Permissible Purpose Code, specifying the reason for retrieving this report.
-      example: '31'
-    ScoreIndicator:
-      type: string
-      description: '`scoreIndicator` conveys the `compositeScore`, projecting 3 possible values: "Highly Likely to Settle", "Likely to Settle", and "Less Likely to Settle"'
-      example: Likely to Settle
-      minLength: 1
-      maxLength: 50
-    SettleByDate:
-      type: string
-      format: date
-      description: 'The expected date that the funds, from the consumer’s account, will be moved to the receiving account.
-
-
-        `settleByDate` in ISO 8601 date format (YYYY-MM-DD).
-
-        `settleByDate` dictates the number of days the model responds with. The response can range from 3-10 days, including `day0`. Details explained below:
-
-        1. If `settleByDate` is 9 or more days out from today, the response includes 10 days of data, `day0` through `day9`.
-
-        2. If `settleByDate` is between 3 and 8 days out from today, the response includes 4-9 days of data, `day3-8`.
-
-        3. If `settleByDate` is between today and 2 days out from today, the response includes 3 days of data, `day0` through `day2`.'
-      example: '2023-03-30'
+      exclusiveMinimum: 0
     NsfReasonItem:
       type: object
       description: A collection of 8 reason codes, with a score ranging from 0-100, that explains the drivers that caused the nsf score.
@@ -810,47 +802,198 @@ components:
       - recurringNsf
       - spendHistory
       - transactionAmount
+    PurposeCode:
+      type: string
+      description: FCRA required 2-digit Permissible Purpose Code, specifying the reason for retrieving this report.
+      example: '31'
+    PaymentSuccessIndicatorsUser:
+      description: The user's information
+      type: object
+      properties:
+        name:
+          description: The name provided by the customer for the transaction.
+          example: Jane Doe
+          type: string
+        email:
+          description: The email provided by the customer for the transaction.
+          example: Jane.Doe@mastercard.com
+          type: string
+        address:
+          $ref: '#/components/schemas/PaymentSuccessIndicatorsAddress'
+        phone:
+          $ref: '#/components/schemas/PaymentSuccessIndicatorsPhone'
+    CompositeScore:
+      type: integer
+      format: int32
+      minimum: 0
+      maximum: 100
+      description: A risk score from 0-100 that indicates the likelihood of return risk, where a higher score indicates a higher likelihood of settlement or lower likelihood of return.
+      example: 6
+    IndicatorsByDay:
+      type: array
+      description: An Array of 3-10 days, providing the potentialSettlementDate, compositeScore, scoreIndicator, and reasons.
+      items:
+        $ref: '#/components/schemas/Indicator'
+      minItems: 3
+      maxItems: 10
+    PaymentSuccessIndicator:
+      type: object
+      properties:
+        code:
+          type: string
+          description: PSI error code for this scenario
+          example: '10001'
+        message:
+          type: string
+          description: Detailed reason about the source of the error
+          example: Account Error - use different account
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        payReqId:
+          type: string
+          description: The unique ID that represents the response generated for that specific, customer, account, and transaction.
+          example: '453752752892280957'
+        settleByDate:
+          $ref: '#/components/schemas/SettleByDate'
+        settlementAmount:
+          $ref: '#/components/schemas/SettlementAmount'
+        availableBalance:
+          type: number
+          description: The available balance provided, by the consumer’s financial institution, at the time of the request.
+          example: 315.01
+        indicatorsByDay:
+          $ref: '#/components/schemas/IndicatorsByDay'
+      required:
+      - customerId
+      - accountId
+      - payReqId
+      - settleByDate
+      - settlementAmount
+      - availableBalance
+      - indicatorsByDay
+    FcraNsfReturnRisk:
+      description: The result or error occurred during the execution of the nsf return risk prediction
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/FcraNsfReturnRiskResult'
+        error:
+          $ref: '#/components/schemas/ErrorMessage'
+    NsfIndicator:
+      type: object
+      properties:
+        potentialSettlementDate:
+          type: string
+          description: The date for a potential settlement date
+          example: '2024-04-24'
+          format: date
+        score:
+          type: integer
+          description: A risk score from 0-100 that indicates the likelihood of a nsf return risk, where a higher score indicates a higher likelihood of settlement or lower likelihood of return.
+          example: 6
+          minimum: 0
+          maximum: 100
+          format: int32
+        indicator:
+          type: string
+          description: '`indicator` conveys the `score`, projecting 3 possible values: "Low Risk", "Medium Risk", or "High Risk"'
+          example: Low Risk
+          minLength: 1
+          maxLength: 50
+        reasons:
+          $ref: '#/components/schemas/NsfReasonItem'
+      required:
+      - potentialSettlementDate
+      - score
+      - indicator
+    UnauthorizedReturnRisk:
+      description: The result or error occurred during the execution of the unauthorized return risk prediction
+      type: object
+      properties:
+        result:
+          description: The result object containing the unauthorized return risk score
+          properties:
+            score:
+              description: A risk score from 0-100 that indicates the likelihood of an unauthorized return risk, where a higher score indicates a higher likelihood of settlement or lower likelihood of return.
+              example: 89
+              type: integer
+              minimum: 0
+              maximum: 100
+            indicator:
+              description: '`indicator` conveys the `score`, projecting 3 possible values: "Low Risk", "Medium Risk", or "High Risk"'
+              example: Low Risk
+              type: string
+          required:
+          - score
+          - indicator
+          type: object
+        error:
+          $ref: '#/components/schemas/ErrorMessage'
+    PaymentSuccessIndicatorsPhone:
+      description: The phone information
+      type: object
+      properties:
+        countryHint:
+          description: The ISO-3166 alpha-2 country code of the phone number.
+          format: ISO-3166-2
+          example: US
+          type: string
+        number:
+          description: 'The phone number in E.164 or local format. The default country calling code is +1 (USA). Note: This field is required only if email is not provided.'
+          example: '7785732875'
+          pattern: ^\+?[\d-]*(x\d*)?
+          type: string
+    NsfReturnRisk:
+      description: The result or error occurred during the execution of the nsf return risk prediction
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/NsfReturnRiskResult'
+        error:
+          $ref: '#/components/schemas/ErrorMessage'
   examples:
-    ResellerInvalidDateRangeExample:
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    ResellerInvalidDateRangeLessThanZeroExample:
       value:
         code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
-    ExpiredFinicityAppTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
     InvalidForesightReportRequestExample:
       value:
         code: '10100'
         message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
-    PaymentSuccessIndicatorsFailureResponseExample:
+    MissingSettlementAmountExample:
+      summary: Missing parameter (settlementAmount)
       value:
-        payRequestId: '476412776235977427'
-        status: FAILURE
-        customerId: '1005061234'
-        accountId: '20050961233'
-        requestDate: '2025-04-24'
-        transaction:
-          settleByDate: '2025-04-25'
-          amount: 12.98
-        nsfReturnRisk:
-          error:
-            code: 185
-            status: '500'
-            message: MFA Required
-        unauthorizedReturnRisk:
-          error:
-            code: 185
-            status: '500'
-            message: MFA Required
-    InvalidFinicityAppTokenExample:
+        code: 10009
+        message: Missing parameter (settlementAmount)
+    ExpiredFinicityAppTokenExample:
       value:
-        code: '10022'
-        message: Invalid (Finicity-App-Token)
-    CustomerNotFoundExample:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    IncorrectFieldTypeExample:
       value:
-        code: '14001'
-        message: Customer not found.
+        code: '10007'
+        message: '[FIELD] is the incorrect type'
+    InvalidFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: Customer ID does not exist or does not belong to this partner
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
     PaymentSuccessIndicatorsInProgressResponseExample:
       value:
         payRequestId: '476412776235977427'
@@ -861,10 +1004,106 @@ components:
         transaction:
           settleByDate: '2025-04-25'
           amount: 12.98
-    InvalidSettleByDateExample:
+    InactiveAccountExample:
       value:
-        code: '10006'
-        message: settleByDate must not be in the past
+        code: '10013'
+        message: Only active accounts can be used, please use a different account
+    RequiredFieldParameterExample:
+      value:
+        code: '10009'
+        message: '[FIELD] is a required parameter'
+    ResellerInvalidDateRangeExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    NotAllowedErrorResponseExample:
+      value:
+        code: '20000'
+        status: '406'
+        message: Only 'application/json' is supported.
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    InvalidConsumerEmailExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.email.
+    MissingSettleByDateExample:
+      summary: Missing parameter (settleByDate)
+      value:
+        code: 10009
+        message: Missing parameter (settleByDate)
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    PaymentSuccessIndicatorsNoReasonsSuccessResponseExample:
+      value:
+        payRequestId: '476412776235977427'
+        status: SUCCESS
+        customerId: '1005061234'
+        accountId: '20050961233'
+        requestDate: '2025-04-24'
+        transaction:
+          settleByDate: '2025-04-25'
+          amount: 12.98
+        nsfReturnRisk:
+          result:
+            availableBalance: 82.32
+            dailyResults:
+            - potentialSettlementDate: '2024-04-24'
+              score: 7
+              indicator: High Risk
+            - potentialSettlementDate: '2024-04-25'
+              score: 6
+              indicator: High Risk
+            - potentialSettlementDate: '2024-04-26'
+              score: 8
+              indicator: High Risk
+          unauthorizedReturnRisk:
+            score: 89
+            indicator: Low Risk
+    NoAccountForInstitutionLoginIdExample:
+      value:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
     PaymentSuccessIndicatorsSuccessResponseExample:
       value:
         payRequestId: '476412776235977427'
@@ -918,63 +1157,124 @@ components:
           unauthorizedReturnRisk:
             score: 89
             indicator: Low Risk
-    InvalidExperienceFieldExample:
+    MissingFinicityAppKeyExample:
       value:
-        code: '10010'
-        status: '400'
-        message: '"experience" must be a valid GUID'
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    NotAllowedErrorResponseExample:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    PaymentSuccessIndicatorExample:
       value:
-        code: '20000'
-        status: '406'
-        message: Only 'application/json' is supported.
-    ResellerInvalidDateRangeGreaterThanEndDateExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
-    ResellerInvalidDateRangeGreaterThan31DaysExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
-    ResellerNoReportForPartnerExample:
-      value:
-        code: '10100'
-        message: Cannot find resellerBilling reports with id 2445581559892.
-    MissingFinicityAppTokenExample:
-      value:
-        code: '10024'
-        message: Missing parameter (Finicity-App-Token)
+        customerId: '453752752892'
+        accountId: '453752772892'
+        payReqId: '484265782033818817'
+        settleByDate: '2023-06-07'
+        settlementAmount: 10.05
+        availableBalance: 823.32
+        indicatorsByDay:
+        - potentialSettlementDate: '2023-06-07'
+          compositeScore: 7
+          scoreIndicator: Less Likely to Settle
+          reasons:
+            recentBalance: 12
+            balanceHistory: 23
+            nsfHistory: 40
+            recentNsfHistory: 78
+            recurringNsf: 34
+            spendHistory: 44
+            depositHistory: 10
+            transactionAmount: 65
+        - potentialSettlementDate: '2023-06-08'
+          compositeScore: 6
+          scoreIndicator: Less Likely to Settle
+          reasons:
+            recentBalance: 12
+            balanceHistory: 23
+            nsfHistory: 40
+            recentNsfHistory: 78
+            recurringNsf: 34
+            spendHistory: 44
+            depositHistory: 10
+            transactionAmount: 65
+        - potentialSettlementDate: '2023-06-09'
+          compositeScore: 5
+          scoreIndicator: Less Likely to Settle
+          reasons:
+            recentBalance: 12
+            balanceHistory: 23
+            nsfHistory: 40
+            recentNsfHistory: 78
+            recurringNsf: 34
+            spendHistory: 44
+            depositHistory: 10
+            transactionAmount: 65
     BadCredentialsExample:
       value:
         code: '24302'
         message: Bad credentials
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
+    InvalidSettleByDateExample:
+      value:
+        code: '10006'
+        message: settleByDate must not be in the past
+    InvalidConsumerSSNExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
     ForbiddenErrorResponseExample:
       value:
         code: '10405'
         status: '403'
         message: An active security freeze for this customer exists.
+    AccountHasNoTransactionExample:
+      value:
+        code: '10008'
+        message: account has no transactions
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
     InvalidAccountIdExample:
       value:
         code: '38003'
         message: customer does not have given account (customerId = 6018989036,    accountId = [6024048234])
-    InvalidConsumerPhoneExample:
+    PaymentSuccessIndicatorsFailureResponseExample:
       value:
-        code: '10100'
-        message: Invalid format for field consumer.phone.
-    MissingFieldExample:
+        payRequestId: '476412776235977427'
+        status: FAILURE
+        customerId: '1005061234'
+        accountId: '20050961233'
+        requestDate: '2025-04-24'
+        transaction:
+          settleByDate: '2025-04-25'
+          amount: 12.98
+        nsfReturnRisk:
+          error:
+            code: 185
+            status: '500'
+            message: MFA Required
+        unauthorizedReturnRisk:
+          error:
+            code: 185
+            status: '500'
+            message: MFA Required
+    InvalidFinicityAppTokenExample:
       value:
-        code: '10005'
-        message: Missing parameter (partnerId)
-    ResourceNotFoundExample:
-      value:
-        code: '14001'
-        message: Resource not found.
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
     NoConsumerForCustomerExample:
       value:
         code: '10100'
         message: Cannot find consumer for customer with id 5011115315."
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
     PaymentSuccessIndicatorWarningExample:
       value:
         code: '2000'
@@ -1022,403 +1322,103 @@ components:
             spendHistory: 44
             depositHistory: 10
             transactionAmount: 65
-    BothCraAndFtcPurposeTrueExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
-    PaymentSuccessIndicatorsNoReasonsSuccessResponseExample:
-      value:
-        payRequestId: '476412776235977427'
-        status: SUCCESS
-        customerId: '1005061234'
-        accountId: '20050961233'
-        requestDate: '2025-04-24'
-        transaction:
-          settleByDate: '2025-04-25'
-          amount: 12.98
-        nsfReturnRisk:
-          result:
-            availableBalance: 82.32
-            dailyResults:
-            - potentialSettlementDate: '2024-04-24'
-              score: 7
-              indicator: High Risk
-            - potentialSettlementDate: '2024-04-25'
-              score: 6
-              indicator: High Risk
-            - potentialSettlementDate: '2024-04-26'
-              score: 8
-              indicator: High Risk
-          unauthorizedReturnRisk:
-            score: 89
-            indicator: Low Risk
-    NoRegisteredApplicationExample:
-      value:
-        code: '50051'
-        message: No registered partner applications found.
-    InvalidPurposeCodeExample:
-      value:
-        code: '10005'
-        message: invalid purpose code
-    InvalidConsumerEmailExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.email.
-    ResellerPartnerNotAuthorizedExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
-    MissingSettlementAmountExample:
-      summary: Missing parameter (settlementAmount)
-      value:
-        code: 10009
-        message: Missing parameter (settlementAmount)
-    ExpiredTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    AccountHasNoTransactionExample:
-      value:
-        code: '10008'
-        message: account has no transactions
     MissingEmailExample:
       value:
         code: '12022'
         message: An email is required when registering a customer for PSI-FCRA
+    InvalidPurposeCodeExample:
+      value:
+        code: '10005'
+        message: invalid purpose code
     ResellerNoDataForPartnerExample:
       value:
         code: '10100'
         message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
-    MissingSettleByDateExample:
-      summary: Missing parameter (settleByDate)
-      value:
-        code: 10009
-        message: Missing parameter (settleByDate)
-    ResellerInvalidDateRangeLessThanZeroExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
-    IncorrectFieldTypeExample:
-      value:
-        code: '10007'
-        message: '[FIELD] is the incorrect type'
-    RequiredFieldParameterExample:
-      value:
-        code: '10009'
-        message: '[FIELD] is a required parameter'
-    AccountTypeNotSupportedExample:
-      value:
-        code: '14020'
-        message: Bad request. (Account type not supported).
-    InvalidFieldExample:
-      value:
-        code: '10010'
-        status: '400'
-        message: Customer ID does not exist or does not belong to this partner
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    PaymentSuccessIndicatorExample:
-      value:
-        customerId: '453752752892'
-        accountId: '453752772892'
-        payReqId: '484265782033818817'
-        settleByDate: '2023-06-07'
-        settlementAmount: 10.05
-        availableBalance: 823.32
-        indicatorsByDay:
-        - potentialSettlementDate: '2023-06-07'
-          compositeScore: 7
-          scoreIndicator: Less Likely to Settle
-          reasons:
-            recentBalance: 12
-            balanceHistory: 23
-            nsfHistory: 40
-            recentNsfHistory: 78
-            recurringNsf: 34
-            spendHistory: 44
-            depositHistory: 10
-            transactionAmount: 65
-        - potentialSettlementDate: '2023-06-08'
-          compositeScore: 6
-          scoreIndicator: Less Likely to Settle
-          reasons:
-            recentBalance: 12
-            balanceHistory: 23
-            nsfHistory: 40
-            recentNsfHistory: 78
-            recurringNsf: 34
-            spendHistory: 44
-            depositHistory: 10
-            transactionAmount: 65
-        - potentialSettlementDate: '2023-06-09'
-          compositeScore: 5
-          scoreIndicator: Less Likely to Settle
-          reasons:
-            recentBalance: 12
-            balanceHistory: 23
-            nsfHistory: 40
-            recentNsfHistory: 78
-            recurringNsf: 34
-            spendHistory: 44
-            depositHistory: 10
-            transactionAmount: 65
     PermissiblePurposeCodeExample:
       value:
         code: '10100'
         status: '400'
         message: Permissible Purpose Code is required
-    InvalidValueExample:
-      value:
-        code: '1618'
-        message: Negative or invalid value entered. Please use positive numbers only.
-    NoAccountForInstitutionLoginIdExample:
-      value:
-        code: '38007'
-        message: Customer does not have any accounts associated with institutionLoginId.
-    GenericBadRequestExample:
-      value:
-        code: '14020'
-        message: Bad request.
-    ConsumerNotFoundExample:
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
       value:
         code: '10100'
-        message: Cannot find consumer with id 1234.
-    CustomerReportLimitExceedExample:
-      value:
-        code: '20400'
-        message: The max report generation limit was exceeded for this customer.
-    InvalidConsumerSSNExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
-    InactiveAccountExample:
-      value:
-        code: '10013'
-        message: Only active accounts can be used, please use a different account
-    MissingFinicityAppKeyExample:
-      value:
-        code: '10026'
-        message: Missing parameter (Finicity-App-Key)
-  responses:
-    GetPaymentSuccessIndicatorResponse:
-      description: The payment success indicator was successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PaymentSuccessIndicator'
-          examples:
-            PaymentSuccessIndicatorExample:
-              $ref: '#/components/examples/PaymentSuccessIndicatorExample'
-            PaymentSuccessIndicatorWarningExample:
-              $ref: '#/components/examples/PaymentSuccessIndicatorWarningExample'
-    ResourceNotFoundErrorResponse:
-      description: The resource doesn't exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            ConsumerNotFoundExample:
-              $ref: '#/components/examples/ConsumerNotFoundExample'
-            NoAccountForInstitutionLoginIdExample:
-              $ref: '#/components/examples/NoAccountForInstitutionLoginIdExample'
-            CustomerNotFoundExample:
-              $ref: '#/components/examples/CustomerNotFoundExample'
-            NoConsumerForCustomerExample:
-              $ref: '#/components/examples/NoConsumerForCustomerExample'
-            ResourceNotFoundExample:
-              $ref: '#/components/examples/ResourceNotFoundExample'
-            NoRegisteredApplicationExample:
-              $ref: '#/components/examples/NoRegisteredApplicationExample'
-            ResellerNoDataForPartnerExample:
-              $ref: '#/components/examples/ResellerNoDataForPartnerExample'
-            ResellerNoReportForPartnerExample:
-              $ref: '#/components/examples/ResellerNoReportForPartnerExample'
-    RetrieveFcraPaymentSuccessIndicatorsResponse:
-      description: Successfully requested to retrieve a Payment Success Indicators score
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/FcraPaymentSuccessIndicators'
-          examples:
-            PaymentSuccessIndicatorsNoReasonsSuccessResponseExample:
-              $ref: '#/components/examples/PaymentSuccessIndicatorsNoReasonsSuccessResponseExample'
-            PaymentSuccessIndicatorsSuccessResponseExample:
-              $ref: '#/components/examples/PaymentSuccessIndicatorsSuccessResponseExample'
-            PaymentSuccessIndicatorsInProgressResponseExample:
-              $ref: '#/components/examples/PaymentSuccessIndicatorsInProgressResponseExample'
-            PaymentSuccessIndicatorsFailureResponseExample:
-              $ref: '#/components/examples/PaymentSuccessIndicatorsFailureResponseExample'
-    NotAllowedErrorResponse:
-      description: Not allowed
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            NotAllowedErrorResponseExample:
-              $ref: '#/components/examples/NotAllowedErrorResponseExample'
-    GeneratePaymentSuccessIndicatorsResponse:
-      description: Successfully requested to generate a Payment Success Indicators score
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PaymentSuccessIndicators'
-          examples:
-            PaymentSuccessIndicatorsInProgressResponseExample:
-              $ref: '#/components/examples/PaymentSuccessIndicatorsInProgressResponseExample'
-    GetPaymentSuccessIndicatorNotFoundResponse:
-      description: Required details not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            CustomerNotFoundExample:
-              $ref: '#/components/examples/CustomerNotFoundExample'
-            InvalidAccountIdExample:
-              $ref: '#/components/examples/InvalidAccountIdExample'
-    RetrievePaymentSuccessIndicatorsResponse:
-      description: Successfully requested to retrieve a Payment Success Indicators score
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PaymentSuccessIndicators'
-          examples:
-            PaymentSuccessIndicatorsNoReasonsSuccessResponseExample:
-              $ref: '#/components/examples/PaymentSuccessIndicatorsNoReasonsSuccessResponseExample'
-            PaymentSuccessIndicatorsSuccessResponseExample:
-              $ref: '#/components/examples/PaymentSuccessIndicatorsSuccessResponseExample'
-            PaymentSuccessIndicatorsInProgressResponseExample:
-              $ref: '#/components/examples/PaymentSuccessIndicatorsInProgressResponseExample'
-            PaymentSuccessIndicatorsFailureResponseExample:
-              $ref: '#/components/examples/PaymentSuccessIndicatorsFailureResponseExample'
-    BadRequestErrorResponse:
-      description: The request was rejected
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            PermissiblePurposeCodeExample:
-              $ref: '#/components/examples/PermissiblePurposeCodeExample'
-            InvalidForesightReportRequestExample:
-              $ref: '#/components/examples/InvalidForesightReportRequestExample'
-            BothCraAndFtcPurposeTrueExample:
-              $ref: '#/components/examples/BothCraAndFtcPurposeTrueExample'
-            MissingFieldExample:
-              $ref: '#/components/examples/MissingFieldExample'
-            InvalidFieldExample:
-              $ref: '#/components/examples/InvalidFieldExample'
-            InvalidExperienceFieldExample:
-              $ref: '#/components/examples/InvalidExperienceFieldExample'
-            GenericBadRequestExample:
-              $ref: '#/components/examples/GenericBadRequestExample'
-            AccountTypeNotSupportedExample:
-              $ref: '#/components/examples/AccountTypeNotSupportedExample'
-            ResellerPartnerNotAuthorizedExample:
-              $ref: '#/components/examples/ResellerPartnerNotAuthorizedExample'
-            ResellerInvalidDateRangeExample:
-              $ref: '#/components/examples/ResellerInvalidDateRangeExample'
-            ResellerInvalidDateRangeLessThanZeroExample:
-              $ref: '#/components/examples/ResellerInvalidDateRangeLessThanZeroExample'
-            ResellerInvalidDateRangeGreaterThanEndDateExample:
-              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThanEndDateExample'
-            ResellerInvalidDateRangeGreaterThan31DaysExample:
-              $ref: '#/components/examples/ResellerInvalidDateRangeGreaterThan31DaysExample'
-            CustomerReportLimitExceedExample:
-              $ref: '#/components/examples/CustomerReportLimitExceedExample'
-            InvalidConsumerSSNExample:
-              $ref: '#/components/examples/InvalidConsumerSSNExample'
-            InvalidConsumerPhoneExample:
-              $ref: '#/components/examples/InvalidConsumerPhoneExample'
-            InvalidConsumerEmailExample:
-              $ref: '#/components/examples/InvalidConsumerEmailExample'
-            InvalidValue:
-              $ref: '#/components/examples/InvalidValueExample'
-    UnauthorizedErrorResponse:
-      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            ExpiredTokenExample:
-              $ref: '#/components/examples/ExpiredTokenExample'
-            MissingFinicityAppKeyExample:
-              $ref: '#/components/examples/MissingFinicityAppKeyExample'
-            MissingFinicityAppTokenExample:
-              $ref: '#/components/examples/MissingFinicityAppTokenExample'
-            InvalidFinicityAppTokenExample:
-              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
-            ExpiredFinicityAppTokenExample:
-              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
-            BadCredentialsExample:
-              $ref: '#/components/examples/BadCredentialsExample'
-        text/plain:
-          schema:
-            type: string
-            example: Invalid (Finicity-App-Key)
-    GetPaymentSuccessIndicatorBadRequestResponse:
-      description: The request was rejected
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            GenericBadRequestExample:
-              $ref: '#/components/examples/GenericBadRequestExample'
-            MissingSettleByDateExample:
-              $ref: '#/components/examples/MissingSettleByDateExample'
-            MissingSettlementAmountExample:
-              $ref: '#/components/examples/MissingSettlementAmountExample'
-            InvalidSettleByDateExample:
-              $ref: '#/components/examples/InvalidSettleByDateExample'
-            IncorrectFieldTypeExample:
-              $ref: '#/components/examples/IncorrectFieldTypeExample'
-            AccountHasNoTransactionExample:
-              $ref: '#/components/examples/AccountHasNoTransactionExample'
-            RequiredFieldParameterExample:
-              $ref: '#/components/examples/RequiredFieldParameterExample'
-            InactiveAccountExample:
-              $ref: '#/components/examples/InactiveAccountExample'
-    ForbiddenErrorResponse:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            ForbiddenErrorResponseExample:
-              $ref: '#/components/examples/ForbiddenErrorResponseExample'
-    GetPaymentSuccessIndicatorFcraBadRequestResponse:
-      description: The request was rejected
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            GenericBadRequestExample:
-              $ref: '#/components/examples/GenericBadRequestExample'
-            MissingSettleByDateExample:
-              $ref: '#/components/examples/MissingSettleByDateExample'
-            MissingSettlementAmountExample:
-              $ref: '#/components/examples/MissingSettlementAmountExample'
-            InvalidPurposeCodeExample:
-              $ref: '#/components/examples/InvalidPurposeCodeExample'
-            InvalidSettleByDateExample:
-              $ref: '#/components/examples/InvalidSettleByDateExample'
-            IncorrectFieldTypeExample:
-              $ref: '#/components/examples/IncorrectFieldTypeExample'
-            AccountHasNoTransactionExample:
-              $ref: '#/components/examples/AccountHasNoTransactionExample'
-            RequiredFieldParameterExample:
-              $ref: '#/components/examples/RequiredFieldParameterExample'
-            InactiveAccountExample:
-              $ref: '#/components/examples/InactiveAccountExample'
-            MissingEmailExample:
-              $ref: '#/components/examples/MissingEmailExample'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+  parameters:
+    AccountIdParameter:
+      description: The account ID
+      name: accountId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AccountId'
+      example: '5011648377'
+    IncludeReasonsParameter:
+      name: include_reasons
+      in: query
+      required: false
+      description: If this parameter is true, the reasons codes will be provided in the results. Otherwise, the reasons will be omitted.
+      schema:
+        type: boolean
+        example: true
+      allowEmptyValue: true
+    PayPurposeCodeParameter:
+      description: 'The 2-digit code (1P) assigned to indicate the intended purpose. 1P represents the following permissible purpose: “Determine whether a consumers payment method may be accepted or authorized”, which falls under the “Legitimate Business Need” permissible purpose under section 604 of the FCRA.'
+      name: purposeCode
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/PayPurposeCode'
+    SettleByDateParameter:
+      description: 'The expected date that the funds, from the consumer’s account, will be moved to the receiving account.
+
+
+        `settleByDate` in ISO 8601 date format (YYYY-MM-DD).
+
+        `settleByDate` dictates the number of days the model responds with. The response can range from 3-10 days, including `day0`. Details explained below:
+
+        1. If `settleByDate` is 9 or more days out from today, the response includes 10 days of data, `day0` through `day9`.
+
+        2. If `settleByDate` is between 3 and 8 days out from today, the response includes 4-9 days of data, `day3-8`.
+
+        3. If `settleByDate` is between today and 2 days out from today, the response includes 3 days of data, `day0` through `day2`.'
+      name: settleByDate
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/SettleByDate'
+      example: '2023-03-30'
+    PurposeParameter:
+      name: purpose
+      in: query
+      required: false
+      description: 2-digit code from [Permissible Purpose Codes](https://developer.mastercard.com/open-finance-us/documentation/products/lend/permissible-purpose-codes/), specifying the reason for retrieving this report. Required for retrieving CRA reports. Validation enforcing the use of a valid [Permissible Purpose Code](https://developer.mastercard.com/open-finance-us/documentation/products/lend/permissible-purpose-codes/) for CRA reports will be enabled on 11 August 2026.
+      schema:
+        $ref: '#/components/schemas/PurposeCode'
+      example: 3F
+    SettlementAmountParameter:
+      description: The transaction amount in USD $.
+      name: settlementAmount
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/SettlementAmount'
+      example: 10.05
+    PayRequestIdParameter:
+      name: payRequestId
+      in: path
+      required: true
+      description: Unique identifier of the Payments request
+      schema:
+        $ref: '#/components/schemas/PayRequestId'
+      example: '476412776235977427'
+    CustomerIdParameter:
+      description: A customer ID
+      name: customerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
   requestBodies:
     GeneratePaymentSuccessIndicatorsRequest:
       required: true

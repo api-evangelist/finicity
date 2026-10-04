@@ -93,39 +93,6 @@ paths:
         '404':
           $ref: '#/components/responses/PortfolioNotFoundResponse'
 components:
-  parameters:
-    CustomerIdParameter:
-      description: A customer ID
-      name: customerId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/CustomerId'
-      example: '1005061234'
-    PortfolioIdParameter:
-      description: A portfolio ID with the portfolio version number. Using the portfolio number without a version number will return the most recently generated reports.
-      name: portfolioId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/PortfolioId'
-      example: y4zsgccj4xpw-6-port
-    ConsumerIdParameter:
-      description: The consumer ID
-      name: consumerId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/ConsumerId'
-      example: 0bf46322c167b562e6cbed9d40e19a4c
-    PortfolioIdPathParameter:
-      description: A portfolio ID
-      name: portfolioId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/PortfolioId'
-      example: y4zsgccj4xpw-port
   responses:
     BadRequestPortfolioResponse:
       description: Bad request - can be either a BadRequest exception (Error format) or FanniePortfolioException with status 400 (FannieErrorMessage format)
@@ -138,23 +105,47 @@ components:
               $ref: '#/components/examples/InvalidPortfolioIdFormatExample'
             FannieBadRequestPortfolioExample:
               $ref: '#/components/examples/FannieBadRequestPortfolioExample'
-    NoFannieReportsFoundResponse:
-      description: No Fannie Mae reports found for the specified portfolio ID.
-    SecurityFreezeErrorResponse:
-      description: The active security freeze for this consumer exists.
+    GetPortfolioResponse:
+      description: The portfolio summary was successfully retrieved
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/SecurityFreezeErrorMessage'
+            $ref: '#/components/schemas/PortfolioSummaryForSinglePortfolio'
           examples:
-            SecurityFreezeErrorExample:
-              $ref: '#/components/examples/SecurityFreezeErrorExample'
-    GetPortfolioByConsumerResponse:
-      description: The portfolio was successfully retrieved
+            PortfolioSummaryExample:
+              $ref: '#/components/examples/PortfolioSummaryExample'
+    PortfolioNotFoundResponse:
+      description: Portfolio not found or no valid reports for portfolio
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PortfolioWithConsumerSummary'
+            $ref: '#/components/schemas/FannieErrorMessage'
+          examples:
+            PortfolioNotFoundExample:
+              $ref: '#/components/examples/PortfolioNotFoundExample'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
     ResourceNotFoundErrorResponse:
       description: The resource doesn't exist
       content:
@@ -178,33 +169,6 @@ components:
               $ref: '#/components/examples/ResellerNoDataForPartnerExample'
             ResellerNoReportForPartnerExample:
               $ref: '#/components/examples/ResellerNoReportForPartnerExample'
-    PortfolioForbiddenResponse:
-      description: Access forbidden - insufficient permissions to access portfolio
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/FannieErrorMessage'
-          examples:
-            PortfolioForbiddenExample:
-              $ref: '#/components/examples/PortfolioForbiddenExample'
-    GetPortfolioResponse:
-      description: The portfolio summary was successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PortfolioSummaryForSinglePortfolio'
-          examples:
-            PortfolioSummaryExample:
-              $ref: '#/components/examples/PortfolioSummaryExample'
-    PortfolioNotFoundResponse:
-      description: Portfolio not found or no valid reports for portfolio
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/FannieErrorMessage'
-          examples:
-            PortfolioNotFoundExample:
-              $ref: '#/components/examples/PortfolioNotFoundExample'
     BadRequestErrorResponse:
       description: The request was rejected
       content:
@@ -248,112 +212,39 @@ components:
               $ref: '#/components/examples/InvalidConsumerEmailExample'
             InvalidValue:
               $ref: '#/components/examples/InvalidValueExample'
-    UnauthorizedErrorResponse:
-      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+    GetPortfolioByConsumerResponse:
+      description: The portfolio was successfully retrieved
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            ExpiredTokenExample:
-              $ref: '#/components/examples/ExpiredTokenExample'
-            MissingFinicityAppKeyExample:
-              $ref: '#/components/examples/MissingFinicityAppKeyExample'
-            MissingFinicityAppTokenExample:
-              $ref: '#/components/examples/MissingFinicityAppTokenExample'
-            InvalidFinicityAppTokenExample:
-              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
-            ExpiredFinicityAppTokenExample:
-              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
-            BadCredentialsExample:
-              $ref: '#/components/examples/BadCredentialsExample'
-        text/plain:
+            $ref: '#/components/schemas/PortfolioWithConsumerSummary'
+    PortfolioForbiddenResponse:
+      description: Access forbidden - insufficient permissions to access portfolio
+      content:
+        application/json:
           schema:
-            type: string
-            example: Invalid (Finicity-App-Key)
+            $ref: '#/components/schemas/FannieErrorMessage'
+          examples:
+            PortfolioForbiddenExample:
+              $ref: '#/components/examples/PortfolioForbiddenExample'
     GetPortfolioByCustomerResponse:
       description: The portfolio was successfully retrieved
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PortfolioSummary'
+    SecurityFreezeErrorResponse:
+      description: The active security freeze for this consumer exists.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SecurityFreezeErrorMessage'
+          examples:
+            SecurityFreezeErrorExample:
+              $ref: '#/components/examples/SecurityFreezeErrorExample'
+    NoFannieReportsFoundResponse:
+      description: No Fannie Mae reports found for the specified portfolio ID.
   examples:
-    ResellerInvalidDateRangeExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
-    ExpiredFinicityAppTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    InvalidForesightReportRequestExample:
-      value:
-        code: '10100'
-        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
-    InvalidFinicityAppTokenExample:
-      value:
-        code: '10022'
-        message: Invalid (Finicity-App-Token)
-    CustomerNotFoundExample:
-      value:
-        code: '14001'
-        message: Customer not found.
-    InvalidExperienceFieldExample:
-      value:
-        code: '10010'
-        status: '400'
-        message: '"experience" must be a valid GUID'
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    ResellerInvalidDateRangeGreaterThanEndDateExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
-    ResellerInvalidDateRangeGreaterThan31DaysExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
-    ResellerNoReportForPartnerExample:
-      value:
-        code: '10100'
-        message: Cannot find resellerBilling reports with id 2445581559892.
-    MissingFinicityAppTokenExample:
-      value:
-        code: '10024'
-        message: Missing parameter (Finicity-App-Token)
-    BadCredentialsExample:
-      value:
-        code: '24302'
-        message: Bad credentials
-    InvalidConsumerPhoneExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.phone.
-    MissingFieldExample:
-      value:
-        code: '10005'
-        message: Missing parameter (partnerId)
-    ResourceNotFoundExample:
-      value:
-        code: '14001'
-        message: Resource not found.
-    NoConsumerForCustomerExample:
-      value:
-        code: '10100'
-        message: Cannot find consumer for customer with id 5011115315."
-    BothCraAndFtcPurposeTrueExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
-    NoRegisteredApplicationExample:
-      value:
-        code: '50051'
-        message: No registered partner applications found.
-    InvalidConsumerEmailExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.email.
     PortfolioSummaryExample:
       value:
         portfolioId: y4zsgccj4xpw1-port
@@ -391,41 +282,35 @@ components:
           type: voieTxVerify
           status: success
           createdDate: 1743292752
-    ResellerPartnerNotAuthorizedExample:
+    GenericBadRequestExample:
       value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
-    ExpiredTokenExample:
+        code: '14020'
+        message: Bad request.
+    MissingFieldExample:
       value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    SecurityFreezeErrorExample:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    CustomerReportLimitExceedExample:
       value:
-        code: '10405'
-        status: '403'
-        message: The active security freeze for this consumer exists.
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
     PortfolioNotFoundExample:
       value:
         trackingId: 69a6933d-befe-48c2-8ed0-ab5b04082f02
         code: '10010'
         message: No report found for portfolioId y4zsgccj4xpw-port.
-    FannieBadRequestPortfolioExample:
-      value:
-        trackingId: 69a6933d-befe-48c2-8ed0-ab5b04082f02
-        code: '10010'
-        message: Invalid portfolio ID format
-    ResellerNoDataForPartnerExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
     ResellerInvalidDateRangeLessThanZeroExample:
       value:
         code: '10100'
         message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
-    AccountTypeNotSupportedExample:
+    InvalidForesightReportRequestExample:
       value:
-        code: '14020'
-        message: Bad request. (Account type not supported).
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
     InvalidFieldExample:
       value:
         code: '10010'
@@ -438,54 +323,259 @@ components:
         trackingId: 69a6933d-befe-48c2-8ed0-ab5b04082f02
         code: '10100'
         message: 'Invalid portfolioId format, cannot parse version. portfolioId: y4zsgccj4xpw-port'
-    PermissiblePurposeCodeExample:
+    ResellerInvalidDateRangeExample:
       value:
         code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
         status: '400'
-        message: Permissible Purpose Code is required
-    InvalidValueExample:
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    ResellerNoReportForPartnerExample:
       value:
-        code: '1618'
-        message: Negative or invalid value entered. Please use positive numbers only.
-    NoAccountForInstitutionLoginIdExample:
-      value:
-        code: '38007'
-        message: Customer does not have any accounts associated with institutionLoginId.
-    GenericBadRequestExample:
-      value:
-        code: '14020'
-        message: Bad request.
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
     ConsumerNotFoundExample:
       value:
         code: '10100'
         message: Cannot find consumer with id 1234.
-    CustomerReportLimitExceedExample:
+    InvalidConsumerEmailExample:
       value:
-        code: '20400'
-        message: The max report generation limit was exceeded for this customer.
+        code: '10100'
+        message: Invalid format for field consumer.email.
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    NoAccountForInstitutionLoginIdExample:
+      value:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    FannieBadRequestPortfolioExample:
+      value:
+        trackingId: 69a6933d-befe-48c2-8ed0-ab5b04082f02
+        code: '10010'
+        message: Invalid portfolio ID format
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    SecurityFreezeErrorExample:
+      value:
+        code: '10405'
+        status: '403'
+        message: The active security freeze for this consumer exists.
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
     InvalidConsumerSSNExample:
       value:
         code: '10100'
         message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    NoConsumerForCustomerExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer for customer with id 5011115315."
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
     PortfolioForbiddenExample:
       value:
         trackingId: 69a6933d-befe-48c2-8ed0-ab5b04082f02
         code: '10405'
         status: '403'
         message: Access forbidden - insufficient permissions to access portfolio
-    MissingFinicityAppKeyExample:
+    ResellerNoDataForPartnerExample:
       value:
-        code: '10026'
-        message: Missing parameter (Finicity-App-Key)
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    PermissiblePurposeCodeExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: Permissible Purpose Code is required
+    ResellerInvalidDateRangeGreaterThan31DaysExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
   schemas:
-    EmailAddress:
+    SecurityFreezeErrorMessage:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: integer
+          description: 'An error code for security freeze. Useful links: [API Errors](https://developer.mastercard.com/open-finance-us/documentation/errors/), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/aggregation-status-codes/).'
+          format: int32
+          example: 10405
+        status:
+          type: string
+          description: A status code
+          example: '403'
+        message:
+          type: string
+          description: An error message
+          example: The active security freeze for this consumer exists.
+    AssetId:
       type: string
-      description: An email address
-      example: myname@mycompany.com
-    AccountId:
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    PhoneNumber:
       type: string
-      description: An account ID
-      example: '5011648377'
+      description: A phone number (max length 15).
+      example: 1-801-984-4200
+    Consumer:
+      description: A Mastercard Open Finance consumer record
+      required:
+      - id
+      - firstName
+      - lastName
+      - customerId
+      - address
+      - city
+      - state
+      - zip
+      - phone
+      - ssn
+      - birthday
+      - email
+      - createdDate
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ConsumerId'
+        firstName:
+          $ref: '#/components/schemas/FirstName'
+        lastName:
+          $ref: '#/components/schemas/LastName'
+        customerId:
+          $ref: '#/components/schemas/NumericCustomerId'
+        address:
+          $ref: '#/components/schemas/Address'
+        city:
+          $ref: '#/components/schemas/City'
+        state:
+          $ref: '#/components/schemas/State'
+        zip:
+          $ref: '#/components/schemas/ZipCode'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        ssn:
+          $ref: '#/components/schemas/SocialSecurityNumberLastDigits'
+        birthday:
+          $ref: '#/components/schemas/Birthday'
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+        createdDate:
+          $ref: '#/components/schemas/UnixDate'
+        suffix:
+          $ref: '#/components/schemas/Suffix'
+        endUser:
+          $ref: '#/components/schemas/ConsumerEndUser'
+    Address:
+      type: string
+      description: A street address
+      example: '434 W Ascension Way Suite #200 Murray UT 84123'
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    UnixDate:
+      type: integer
+      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      format: int64
+      example: 1607450357
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
     ReportStatus:
       type: string
       description: 'A report generation status. Possible values:
@@ -501,22 +591,35 @@ components:
 
         '
       example: inProgress
-    PortfolioId:
+    AccountId:
       type: string
-      description: A unique identifier that will be consistent across all reports created for the same customer
-      example: y4zsgccj4xpw-6-port
-    ZipCode:
+      description: An account ID
+      example: '5011648377'
+    EndUserUrl:
       type: string
-      description: A ZIP code
-      example: '84123'
-    ReportId:
+      description: Reseller end user URL
+      minLength: 2
+      maximum: 999
+      example: testurl.com
+    City:
       type: string
-      description: A report ID
-      example: u4hstnnak45g
-    AssetId:
+      description: City
+      example: Murray
+    PortfolioWithConsumerSummary:
+      required:
+      - portfolioId
+      - consumer
+      - reports
+      allOf:
+      - $ref: '#/components/schemas/PortfolioSummary'
+      - type: object
+        properties:
+          consumer:
+            $ref: '#/components/schemas/PortfolioConsumer'
+    ConsumerId:
       type: string
-      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
-      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+      description: A consumer ID. See Create Consumer API for how to create a consumer ID.
+      example: 0bf46322c167b562e6cbed9d40e19a4c
     ReportType:
       description: 'A report type. Possible values:
 
@@ -643,177 +746,6 @@ components:
         '
       type: string
       example: voi
-    ErrorMessage:
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          type: object
-          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
-          example: '10001'
-        status:
-          type: string
-          description: A status code
-          example: '401'
-        title:
-          type: string
-          description: A title for the error
-          example: Connecting accounts error
-        level:
-          type: string
-          description: An error level
-          example: error
-        message:
-          type: string
-          description: An error message
-          example: Invalid authorization credentials
-        user_message:
-          type: string
-          description: Some more details about the error
-          example: The session has expired or is invalid
-        assetId:
-          $ref: '#/components/schemas/AssetId'
-        accountId:
-          $ref: '#/components/schemas/AccountId'
-        externalTransactionId:
-          type: string
-          description: A unique identifier for the transaction that assists in linking data back to your systems.
-          example: MAC1005061234
-          minLength: 1
-          maxLength: 100
-        tags:
-          type: string
-          description: Categories that the error belongs to
-          example: AGG
-    UnixDate:
-      type: integer
-      description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      format: int64
-      example: 1607450357
-    Address:
-      type: string
-      description: A street address
-      example: '434 W Ascension Way Suite #200 Murray UT 84123'
-    PortfolioWithConsumerSummary:
-      required:
-      - portfolioId
-      - consumer
-      - reports
-      allOf:
-      - $ref: '#/components/schemas/PortfolioSummary'
-      - type: object
-        properties:
-          consumer:
-            $ref: '#/components/schemas/PortfolioConsumer'
-    Consumer:
-      description: A Mastercard Open Finance consumer record
-      required:
-      - id
-      - firstName
-      - lastName
-      - customerId
-      - address
-      - city
-      - state
-      - zip
-      - phone
-      - ssn
-      - birthday
-      - email
-      - createdDate
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/ConsumerId'
-        firstName:
-          $ref: '#/components/schemas/FirstName'
-        lastName:
-          $ref: '#/components/schemas/LastName'
-        customerId:
-          $ref: '#/components/schemas/NumericCustomerId'
-        address:
-          $ref: '#/components/schemas/Address'
-        city:
-          $ref: '#/components/schemas/City'
-        state:
-          $ref: '#/components/schemas/State'
-        zip:
-          $ref: '#/components/schemas/ZipCode'
-        phone:
-          $ref: '#/components/schemas/PhoneNumber'
-        ssn:
-          $ref: '#/components/schemas/SocialSecurityNumberLastDigits'
-        birthday:
-          $ref: '#/components/schemas/Birthday'
-        email:
-          $ref: '#/components/schemas/EmailAddress'
-        createdDate:
-          $ref: '#/components/schemas/UnixDate'
-        suffix:
-          $ref: '#/components/schemas/Suffix'
-        endUser:
-          $ref: '#/components/schemas/ConsumerEndUser'
-    PortfolioReport:
-      required:
-      - id
-      - portfolioId
-      - type
-      - status
-      - createdDate
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/ReportId'
-        portfolioId:
-          $ref: '#/components/schemas/PortfolioId'
-        type:
-          $ref: '#/components/schemas/ReportType'
-        status:
-          $ref: '#/components/schemas/ReportStatus'
-        createdDate:
-          $ref: '#/components/schemas/UnixDate'
-    LastName:
-      type: string
-      description: The last name of the account holder
-      example: Smith
-    AddressLine1:
-      type: string
-      description: Address line 1
-      example: 434 W Ascension Way
-    SocialSecurityNumber:
-      type: string
-      description: A full SSN with or without hyphens
-      example: 999-99-9999
-    PortfolioSummaryForSinglePortfolio:
-      type: object
-      description: A portfolio summary of a single portfolio report and consumer information
-      required:
-      - portfolioId
-      - consumer
-      - reports
-      properties:
-        portfolioId:
-          $ref: '#/components/schemas/PortfolioId'
-        consumer:
-          $ref: '#/components/schemas/Consumer'
-        reports:
-          type: array
-          description: A list of a single portfolio report in the portfolio
-          items:
-            $ref: '#/components/schemas/PortfolioReport'
-    FirstName:
-      type: string
-      description: The first name of the account holder
-      example: John
-    ConsumerId:
-      type: string
-      description: A consumer ID. See Create Consumer API for how to create a consumer ID.
-      example: 0bf46322c167b562e6cbed9d40e19a4c
-    SocialSecurityNumberLastDigits:
-      type: string
-      description: Last 4 digits of a SSN
-      example: '9999'
     ConsumerEndUser:
       description: Reseller end user information. This is populated only when the report requires a consumer record to be generated and the consumer object includes end user details. The partner is expected to include endUser details when creating a consumer if the end user of the consumer reports is another entity than the partner generating the report.
       required:
@@ -841,29 +773,6 @@ components:
           $ref: '#/components/schemas/EmailAddress'
         url:
           $ref: '#/components/schemas/EndUserUrl'
-    City:
-      type: string
-      description: City
-      example: Murray
-    NumericCustomerId:
-      type: integer
-      format: int64
-      description: A customer ID represented as a number. See Add Customer API for how to create a customer ID.
-      example: 1005061234
-    PhoneNumber:
-      type: string
-      description: A phone number (max length 15).
-      example: 1-801-984-4200
-    CustomerId:
-      type: string
-      description: A customer ID. See Add Customer API for how to create a customer ID.
-      example: '1005061234'
-    EndUserUrl:
-      type: string
-      description: Reseller end user URL
-      minLength: 2
-      maximum: 999
-      example: testurl.com
     Birthday:
       type: object
       properties:
@@ -883,51 +792,18 @@ components:
           format: int32
           example: 13
       description: A birth date
-    PortfolioSummary:
-      required:
-      - portfolioId
-      - reports
-      type: object
-      properties:
-        portfolioId:
-          $ref: '#/components/schemas/PortfolioId'
-        reports:
-          type: array
-          items:
-            $ref: '#/components/schemas/PortfolioReport'
-          description: A list of reports in the portfolio
-    FannieErrorMessage:
-      required:
-      - trackingId
-      - code
-      - message
-      type: object
-      properties:
-        trackingId:
-          type: string
-          description: Unique key that can be used to track requests
-          example: 69a6933d-befe-48c2-8ed0-ab5b04082f02
-          pattern: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}'
-        code:
-          type: object
-          description: An error code (can be returned as a number or a string).
-          example: '10100'
-        status:
-          type: string
-          description: A status code
-          example: '403'
-        message:
-          type: string
-          description: An error message
-          example: No reports found for portfolioId.
+    LastName:
+      type: string
+      description: The last name of the account holder
+      example: Smith
     Suffix:
       type: string
       description: A generational or academic suffix
       example: PhD
-    State:
+    AddressLine1:
       type: string
-      description: State
-      example: UT
+      description: Address line 1
+      example: 434 W Ascension Way
     PortfolioConsumer:
       required:
       - id
@@ -952,17 +828,66 @@ components:
           $ref: '#/components/schemas/Birthday'
         suffix:
           $ref: '#/components/schemas/Suffix'
-    SecurityFreezeErrorMessage:
+    PortfolioReport:
       required:
+      - id
+      - portfolioId
+      - type
+      - status
+      - createdDate
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ReportId'
+        portfolioId:
+          $ref: '#/components/schemas/PortfolioId'
+        type:
+          $ref: '#/components/schemas/ReportType'
+        status:
+          $ref: '#/components/schemas/ReportStatus'
+        createdDate:
+          $ref: '#/components/schemas/UnixDate'
+    PortfolioId:
+      type: string
+      description: A unique identifier that will be consistent across all reports created for the same customer
+      example: y4zsgccj4xpw-6-port
+    EmailAddress:
+      type: string
+      description: An email address
+      example: myname@mycompany.com
+    ZipCode:
+      type: string
+      description: A ZIP code
+      example: '84123'
+    NumericCustomerId:
+      type: integer
+      format: int64
+      description: A customer ID represented as a number. See Add Customer API for how to create a customer ID.
+      example: 1005061234
+    State:
+      type: string
+      description: State
+      example: UT
+    SocialSecurityNumber:
+      type: string
+      description: A full SSN with or without hyphens
+      example: 999-99-9999
+    FannieErrorMessage:
+      required:
+      - trackingId
       - code
       - message
       type: object
       properties:
+        trackingId:
+          type: string
+          description: Unique key that can be used to track requests
+          example: 69a6933d-befe-48c2-8ed0-ab5b04082f02
+          pattern: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}'
         code:
-          type: integer
-          description: 'An error code for security freeze. Useful links: [API Errors](https://developer.mastercard.com/open-finance-us/documentation/errors/), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/aggregation-status-codes/).'
-          format: int32
-          example: 10405
+          type: object
+          description: An error code (can be returned as a number or a string).
+          example: '10100'
         status:
           type: string
           description: A status code
@@ -970,7 +895,82 @@ components:
         message:
           type: string
           description: An error message
-          example: The active security freeze for this consumer exists.
+          example: No reports found for portfolioId.
+    PortfolioSummary:
+      required:
+      - portfolioId
+      - reports
+      type: object
+      properties:
+        portfolioId:
+          $ref: '#/components/schemas/PortfolioId'
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioReport'
+          description: A list of reports in the portfolio
+    SocialSecurityNumberLastDigits:
+      type: string
+      description: Last 4 digits of a SSN
+      example: '9999'
+    ReportId:
+      type: string
+      description: A report ID
+      example: u4hstnnak45g
+    PortfolioSummaryForSinglePortfolio:
+      type: object
+      description: A portfolio summary of a single portfolio report and consumer information
+      required:
+      - portfolioId
+      - consumer
+      - reports
+      properties:
+        portfolioId:
+          $ref: '#/components/schemas/PortfolioId'
+        consumer:
+          $ref: '#/components/schemas/Consumer'
+        reports:
+          type: array
+          description: A list of a single portfolio report in the portfolio
+          items:
+            $ref: '#/components/schemas/PortfolioReport'
+    FirstName:
+      type: string
+      description: The first name of the account holder
+      example: John
+  parameters:
+    PortfolioIdPathParameter:
+      description: A portfolio ID
+      name: portfolioId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/PortfolioId'
+      example: y4zsgccj4xpw-port
+    CustomerIdParameter:
+      description: A customer ID
+      name: customerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
+    ConsumerIdParameter:
+      description: The consumer ID
+      name: consumerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/ConsumerId'
+      example: 0bf46322c167b562e6cbed9d40e19a4c
+    PortfolioIdParameter:
+      description: A portfolio ID with the portfolio version number. Using the portfolio number without a version number will return the most recently generated reports.
+      name: portfolioId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/PortfolioId'
+      example: y4zsgccj4xpw-6-port
   securitySchemes:
     FinicityAppKey:
       name: Finicity-App-Key

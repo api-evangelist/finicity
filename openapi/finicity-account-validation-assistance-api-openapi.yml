@@ -104,42 +104,69 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundErrorResponse'
 components:
   examples:
-    MissingFinicityAppKeyExample:
-      value:
-        code: '10026'
-        message: Missing parameter (Finicity-App-Key)
-    ConsumerExistsConflictExample:
-      value:
-        code: '11000'
-        message: A consumer already exists for customer 4025024821
-    ResellerInvalidDateRangeExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
-    ExpiredFinicityAppTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    InvalidAccountNameExample:
-      value:
-        code: '3100001'
-        message: Account already exist
-    InvalidForesightReportRequestExample:
-      value:
-        code: '10100'
-        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
     MicrodepositVerificationAttemptsExample:
       value:
         code: '3200003'
         message: Microdeposit verification attempts exceeded
-    InvalidFinicityAppTokenExample:
+    InvalidAccountNameExample:
       value:
-        code: '10022'
-        message: Invalid (Finicity-App-Token)
-    CustomerNotFoundExample:
+        code: '3100001'
+        message: Account already exist
+    GenericBadRequestExample:
       value:
-        code: '14001'
-        message: Customer not found.
+        code: '14020'
+        message: Bad request.
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    MicrodepositAmountsDidNotMatchExample:
+      value:
+        code: '3200004'
+        message: Microdeposit amounts didn't match
+    ResellerInvalidDateRangeLessThanZeroExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
+    InvalidForesightReportRequestExample:
+      value:
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    ExpiredFinicityAppTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    InvalidAmountFormatExample:
+      value:
+        code: '3000003'
+        message: Invalid amount format
+    InvalidAccountNumberExample:
+      value:
+        code: '3000001'
+        message: Invalid account number
+    TooManyRequestsExample:
+      value:
+        code: '3300001'
+        message: Too many request. Please try after some time
+    InvalidFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: Customer ID does not exist or does not belong to this partner
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    MicrodepositsInitiationFailedExample:
+      value:
+        code: '3200001'
+        message: Microdeposits initiation failed
+    ResellerInvalidDateRangeExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
     InvalidExperienceFieldExample:
       value:
         code: '10010'
@@ -147,10 +174,116 @@ components:
         message: '"experience" must be a valid GUID'
         user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
         tags: ''
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    InvalidConsumerEmailExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.email.
+    ConsumerExistsConflictExample:
+      value:
+        code: '11000'
+        message: A consumer already exists for customer 4025024821
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
     ResellerInvalidDateRangeGreaterThanEndDateExample:
       value:
         code: '10100'
         message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    NoAccountForInstitutionLoginIdExample:
+      value:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    InvalidMemoExample:
+      value:
+        code: '3000003'
+        message: Invalid memo
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    AccountAlreadyExistsExample:
+      value:
+        code: '3100001'
+        message: Account already exist
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    MicrodepositStatusErrorExample:
+      value:
+        code: '3200002'
+        message: Microdeposit is in <status> status
+    AccountTypeNotSupportedExample:
+      value:
+        code: '14020'
+        message: Bad request. (Account type not supported).
+    InvalidRoutingNumberExample:
+      value:
+        code: '20024'
+        message: Invalid routing number
+    InvalidConsumerSSNExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    NoConsumerForCustomerExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer for customer with id 5011115315."
+    ResourceNotFoundExample:
+      value:
+        code: '14001'
+        message: Resource not found.
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    ResellerNoDataForPartnerExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    PermissiblePurposeCodeExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: Permissible Purpose Code is required
     MicrodepositsProcessingFailedExample:
       value:
         code: '3000000'
@@ -159,148 +292,7 @@ components:
       value:
         code: '10100'
         message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
-    ResellerNoReportForPartnerExample:
-      value:
-        code: '10100'
-        message: Cannot find resellerBilling reports with id 2445581559892.
-    MissingFinicityAppTokenExample:
-      value:
-        code: '10024'
-        message: Missing parameter (Finicity-App-Token)
-    BadCredentialsExample:
-      value:
-        code: '24302'
-        message: Bad credentials
-    InvalidConsumerPhoneExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.phone.
-    MissingFieldExample:
-      value:
-        code: '10005'
-        message: Missing parameter (partnerId)
-    MicrodepositsInitiationFailedExample:
-      value:
-        code: '3200001'
-        message: Microdeposits initiation failed
-    ResourceNotFoundExample:
-      value:
-        code: '14001'
-        message: Resource not found.
-    NoConsumerForCustomerExample:
-      value:
-        code: '10100'
-        message: Cannot find consumer for customer with id 5011115315."
-    BothCraAndFtcPurposeTrueExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
-    AccountAlreadyExistsExample:
-      value:
-        code: '3100001'
-        message: Account already exist
-    NoRegisteredApplicationExample:
-      value:
-        code: '50051'
-        message: No registered partner applications found.
-    InvalidMemoExample:
-      value:
-        code: '3000003'
-        message: Invalid memo
-    InvalidConsumerEmailExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.email.
-    ResellerPartnerNotAuthorizedExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
-    ExpiredTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    InvalidAmountFormatExample:
-      value:
-        code: '3000003'
-        message: Invalid amount format
-    ResellerNoDataForPartnerExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
-    ResellerInvalidDateRangeLessThanZeroExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
-    AccountTypeNotSupportedExample:
-      value:
-        code: '14020'
-        message: Bad request. (Account type not supported).
-    InvalidFieldExample:
-      value:
-        code: '10010'
-        status: '400'
-        message: Customer ID does not exist or does not belong to this partner
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    InvalidRoutingNumberExample:
-      value:
-        code: '20024'
-        message: Invalid routing number
-    MicrodepositStatusErrorExample:
-      value:
-        code: '3200002'
-        message: Microdeposit is in <status> status
-    PermissiblePurposeCodeExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: Permissible Purpose Code is required
-    TooManyRequestsExample:
-      value:
-        code: '3300001'
-        message: Too many request. Please try after some time
-    InvalidValueExample:
-      value:
-        code: '1618'
-        message: Negative or invalid value entered. Please use positive numbers only.
-    NoAccountForInstitutionLoginIdExample:
-      value:
-        code: '38007'
-        message: Customer does not have any accounts associated with institutionLoginId.
-    GenericBadRequestExample:
-      value:
-        code: '14020'
-        message: Bad request.
-    MicrodepositAmountsDidNotMatchExample:
-      value:
-        code: '3200004'
-        message: Microdeposit amounts didn't match
-    ConsumerNotFoundExample:
-      value:
-        code: '10100'
-        message: Cannot find consumer with id 1234.
-    InvalidAccountNumberExample:
-      value:
-        code: '3000001'
-        message: Invalid account number
-    CustomerReportLimitExceedExample:
-      value:
-        code: '20400'
-        message: The max report generation limit was exceeded for this customer.
-    InvalidConsumerSSNExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
   parameters:
-    CustomerIdParameter:
-      description: A customer ID
-      name: customerId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/CustomerId'
-      example: '1005061234'
     AccountIdParameter:
       description: The account ID
       name: accountId
@@ -309,71 +301,57 @@ components:
       schema:
         $ref: '#/components/schemas/AccountId'
       example: '5011648377'
+    CustomerIdParameter:
+      description: A customer ID
+      name: customerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+      example: '1005061234'
   schemas:
-    NoZoneDateTime:
+    AssetId:
       type: string
-      description: A date-time without time zone
-      example: '2022-04-12T11:51:23'
-    MicroDepositVerification:
-      description: A list of amounts
-      required:
-      - amounts
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    MicroDepositVerificationError:
       type: object
       properties:
-        amounts:
-          description: The list of amounts to be verified
-          type: array
-          items:
-            $ref: '#/components/schemas/DecimalNumber'
-          example:
-          - 0.12
-          - 0.15
-    RailType:
+        status:
+          $ref: '#/components/schemas/MicroDepositStatus'
+        statusDescription:
+          $ref: '#/components/schemas/MicroDepositStatusDescription'
+    DecimalNumber:
+      type: number
+      format: float
+      description: Decimal number
+      example: 0.12
+    MicroDepositCount:
+      type: integer
+      format: int32
+      example: 2
+      description: Count of micro entries
+    CustomerId:
       type: string
-      description: The Rail (ACH / RTP) used for initiating bank deposit(s).
-      example: ach
-    AccountId:
-      type: string
-      description: An account ID
-      example: '5011648377'
-    Receiver:
-      required:
-      - routingNumber
-      - accountNumber
-      - accountType
-      - name
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
+    InitiatedMicroDeposit:
       type: object
       properties:
-        routingNumber:
-          $ref: '#/components/schemas/RoutingNumber'
-        accountNumber:
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        status:
           type: string
-          example: '123456'
-          description: Micro entries receiving account number of bank
-        accountType:
+          example: Pending
+          description: Micro entries successful initiation status
+        depositCount:
+          $ref: '#/components/schemas/MicroDepositCount'
+        statusDescription:
           type: string
-          example: personalChecking
-          description: 'The list of supported account types.
-
-            * "personalChecking": Personal Checking
-
-            * "businessChecking": Business Checking
-
-            * "personalSavings": Personal Savings
-
-            * "businessSavings": Business Savings
-
-            * "checking": Standard checking, will be deprecated
-
-            * "savings": Standard savings, will be deprecated'
-        name:
-          type: string
-          example: Bob Smith
-          description: Name of the customer
-        memo:
-          type: string
-          example: micro deposit transfer
-          description: Transaction memo to be displayed for transactions
+          example: Micro entries successfully initiated
+          description: Micro entries successful initiation description
+        railType:
+          $ref: '#/components/schemas/RailType'
     MicroDepositStatus:
       type: string
       description: 'The following values may be returned in the field of a status:
@@ -395,28 +373,10 @@ components:
 
         certain defined days'
       example: Pending
-    MicroDepositCallbackUrl:
+    AccountNumberLast4:
       type: string
-      format: uri
-      description: A callback URL where to receive micro deposit notifications
-      example: https://www.example.com/listener
-    InstitutionLoginId:
-      type: string
-      description: An institution login ID (from the account record)
-      example: '1007302745'
-    AutoVerifiedAccount:
-      type: integer
-      format: int64
-      description: This field stores an ID for the linked bank account to verify the microdeposits. It will have a value populated only when the microdeposits are auto verified successfully via account aggregation, otherwise this field will not be present.
-      example: 9876543210
-    AssetId:
-      type: string
-      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
-      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
-    MicroDepositStatusDescription:
-      type: string
-      example: Micro entries are in pending status
-      description: Micro entries status description
+      description: The last 4 digits of the account number, derived by Mastercard from the account number provided by the financial institution. This is only returned for ACH-enabled accounts.
+      example: '5678'
     ErrorMessage:
       required:
       - code
@@ -460,19 +420,45 @@ components:
           type: string
           description: Categories that the error belongs to
           example: AGG
-    DecimalNumber:
-      type: number
-      format: float
-      description: Decimal number
-      example: 0.12
-    RoutingNumber:
+    MicroDepositVerification:
+      description: A list of amounts
+      required:
+      - amounts
+      type: object
+      properties:
+        amounts:
+          description: The list of amounts to be verified
+          type: array
+          items:
+            $ref: '#/components/schemas/DecimalNumber'
+          example:
+          - 0.12
+          - 0.15
+    AccountId:
       type: string
-      example: '123456789'
-      description: Routing number of receiving bank
-    AccountNumberLast4:
+      description: An account ID
+      example: '5011648377'
+    RailType:
       type: string
-      description: The last 4 digits of the account number, derived by Mastercard from the account number provided by the financial institution. This is only returned for ACH-enabled accounts.
-      example: '5678'
+      description: The Rail (ACH / RTP) used for initiating bank deposit(s).
+      example: ach
+    NoZoneDateTime:
+      type: string
+      description: A date-time without time zone
+      example: '2022-04-12T11:51:23'
+    InstitutionLoginId:
+      type: string
+      description: An institution login ID (from the account record)
+      example: '1007302745'
+    MicroDepositStatusDescription:
+      type: string
+      example: Micro entries are in pending status
+      description: Micro entries status description
+    MicroDepositCallbackUrl:
+      type: string
+      format: uri
+      description: A callback URL where to receive micro deposit notifications
+      example: https://www.example.com/listener
     VerifiedMicroDeposit:
       type: object
       properties:
@@ -495,22 +481,11 @@ components:
           $ref: '#/components/schemas/Receiver'
         callbackUrl:
           $ref: '#/components/schemas/MicroDepositCallbackUrl'
-    CustomerId:
-      type: string
-      description: A customer ID. See Add Customer API for how to create a customer ID.
-      example: '1005061234'
-    MicroDepositVerificationError:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/MicroDepositStatus'
-        statusDescription:
-          $ref: '#/components/schemas/MicroDepositStatusDescription'
-    MicroDepositCount:
+    AutoVerifiedAccount:
       type: integer
-      format: int32
-      example: 2
-      description: Count of micro entries
+      format: int64
+      description: This field stores an ID for the linked bank account to verify the microdeposits. It will have a value populated only when the microdeposits are auto verified successfully via account aggregation, otherwise this field will not be present.
+      example: 9876543210
     MicroDepositDetails:
       type: object
       properties:
@@ -528,37 +503,55 @@ components:
           $ref: '#/components/schemas/AutoVerifiedAccount'
         railType:
           $ref: '#/components/schemas/RailType'
-    InitiatedMicroDeposit:
+    RoutingNumber:
+      type: string
+      example: '123456789'
+      description: Routing number of receiving bank
+    Receiver:
+      required:
+      - routingNumber
+      - accountNumber
+      - accountType
+      - name
       type: object
       properties:
-        accountId:
-          $ref: '#/components/schemas/AccountId'
-        status:
+        routingNumber:
+          $ref: '#/components/schemas/RoutingNumber'
+        accountNumber:
           type: string
-          example: Pending
-          description: Micro entries successful initiation status
-        depositCount:
-          $ref: '#/components/schemas/MicroDepositCount'
-        statusDescription:
+          example: '123456'
+          description: Micro entries receiving account number of bank
+        accountType:
           type: string
-          example: Micro entries successfully initiated
-          description: Micro entries successful initiation description
-        railType:
-          $ref: '#/components/schemas/RailType'
-  requestBodies:
-    InitiateMicroAmountDepositsRequest:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/MicroDepositInitiation'
-    VerifyMicroAmountDepositsRequest:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/MicroDepositVerification'
+          example: personalChecking
+          description: 'The list of supported account types.
+
+            * "personalChecking": Personal Checking
+
+            * "businessChecking": Business Checking
+
+            * "personalSavings": Personal Savings
+
+            * "businessSavings": Business Savings
+
+            * "checking": Standard checking, will be deprecated
+
+            * "savings": Standard savings, will be deprecated'
+        name:
+          type: string
+          example: Bob Smith
+          description: Name of the customer
+        memo:
+          type: string
+          example: micro deposit transfer
+          description: Transaction memo to be displayed for transactions
   responses:
+    VerifyMicroAmountDepositsResponse:
+      description: Micro entries were successfully verified
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VerifiedMicroDeposit'
     VerifyMicroAmountDepositsBadRequestErrorResponse:
       description: Micro entries verification failed. status field could be any except "Verified" and "Completed".
       content:
@@ -576,6 +569,29 @@ components:
               $ref: '#/components/examples/MicrodepositAmountsDidNotMatchExample'
             GenericBadRequestExample:
               $ref: '#/components/examples/GenericBadRequestExample'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
     ResourceNotFoundErrorResponse:
       description: The resource doesn't exist
       content:
@@ -599,18 +615,6 @@ components:
               $ref: '#/components/examples/ResellerNoDataForPartnerExample'
             ResellerNoReportForPartnerExample:
               $ref: '#/components/examples/ResellerNoReportForPartnerExample'
-    VerifyMicroAmountDepositsResponse:
-      description: Micro entries were successfully verified
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/VerifiedMicroDeposit'
-    GetMicroDepositsDetailsResponse:
-      description: Micro entries were successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/MicroDepositDetails'
     BadRequestErrorResponse:
       description: The request was rejected
       content:
@@ -654,31 +658,23 @@ components:
               $ref: '#/components/examples/InvalidConsumerEmailExample'
             InvalidValue:
               $ref: '#/components/examples/InvalidValueExample'
-    UnauthorizedErrorResponse:
-      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+    GetMicroDepositsDetailsResponse:
+      description: Micro entries were successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MicroDepositDetails'
+    TooManyRequestsErrorResponse:
+      description: The service can't accept more requests or is not available from the Test Drive.
+    ConflictErrorResponse:
+      description: The resource already exists
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorMessage'
           examples:
-            ExpiredTokenExample:
-              $ref: '#/components/examples/ExpiredTokenExample'
-            MissingFinicityAppKeyExample:
-              $ref: '#/components/examples/MissingFinicityAppKeyExample'
-            MissingFinicityAppTokenExample:
-              $ref: '#/components/examples/MissingFinicityAppTokenExample'
-            InvalidFinicityAppTokenExample:
-              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
-            ExpiredFinicityAppTokenExample:
-              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
-            BadCredentialsExample:
-              $ref: '#/components/examples/BadCredentialsExample'
-        text/plain:
-          schema:
-            type: string
-            example: Invalid (Finicity-App-Key)
-    TooManyRequestsErrorResponse:
-      description: The service can't accept more requests or is not available from the Test Drive.
+            ConsumerExistsConflictExample:
+              $ref: '#/components/examples/ConsumerExistsConflictExample'
     InitiateMicroEntriesBadRequestErrorResponse:
       description: The request was rejected
       content:
@@ -710,15 +706,19 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/InitiatedMicroDeposit'
-    ConflictErrorResponse:
-      description: The resource already exists
+  requestBodies:
+    VerifyMicroAmountDepositsRequest:
+      required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            ConsumerExistsConflictExample:
-              $ref: '#/components/examples/ConsumerExistsConflictExample'
+            $ref: '#/components/schemas/MicroDepositVerification'
+    InitiateMicroAmountDepositsRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MicroDepositInitiation'
   securitySchemes:
     FinicityAppKey:
       name: Finicity-App-Key
