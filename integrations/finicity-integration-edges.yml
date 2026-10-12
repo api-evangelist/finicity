@@ -1,0 +1,16 @@
+generated: '2026-10-12'
+method: none
+source:
+- https://zapier.com/apps/finicity/integrations
+- https://n8n.io/integrations/finicity/
+- https://composio.dev/toolkits/finicity
+- https://monid.ai/tools/finicity
+checked:
+- https://composio.dev/toolkits/finicity
+- https://monid.ai/tools/finicity
+- https://n8n.io/integrations/finicity/
+- https://zapier.com/apps/finicity/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []
