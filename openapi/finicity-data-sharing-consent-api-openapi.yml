@@ -114,122 +114,7 @@ paths:
       - FinicityAppKey: []
         FinicityAppToken: []
 components:
-  responses:
-    DataSharingConsentsByCustomerIdResponse:
-      description: List of consent receipts
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DataSharingConsentReceipts'
-    DataSharingConsentNotFoundError:
-      description: Consent receipt not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ConsentErrorMessage'
-          examples:
-            DataSharingConsentNotFoundError:
-              $ref: '#/components/examples/DataSharingConsentNotFoundError'
-    ConsentBadRequestErrorResponse:
-      description: The request was rejected
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ConsentErrorMessage'
-          examples:
-            InvalidFieldExample:
-              $ref: '#/components/examples/ConsentInvalidFieldExample'
-            GenericBadRequestExample:
-              $ref: '#/components/examples/ConsentGenericBadRequestExample'
-    DataSharingConsentResponse:
-      description: Data sharing consent retrieved successfully
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DataSharingConsentReceipt'
-    ConsentUnauthorizedErrorResponse:
-      description: The request lacks valid authentication credentials. Check "App-Key" or "App-Token".
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ConsentErrorMessage'
-          examples:
-            ExpiredTokenExample:
-              $ref: '#/components/examples/ConsentExpiredTokenExample'
-            MissingAppKeyExample:
-              $ref: '#/components/examples/ConsentMissingAppKeyExample'
   schemas:
-    ConsentCustomerId:
-      type: string
-      pattern: ^[0-9]+$
-      description: 'A Mastercard Open Finance customer ID. See also: "Add Customer".'
-      example: '1005061234'
-      minLength: 1
-    InstitutionInfo:
-      required:
-      - institutionId
-      - institutionName
-      - statusDetails
-      - accessPeriod
-      - isBusinessConsumerStatement
-      - accountOwnerCategory
-      - dataScopes
-      - createdDate
-      description: Represents the institution which has data that the user consents to share
-      properties:
-        institutionId:
-          type: string
-          description: Unique identifier representing a financial institution
-          minLength: 1
-          maxLength: 40
-          pattern: \d+
-          example: '2000003'
-        institutionLoginId:
-          type: string
-          pattern: \d+
-          minLength: 1
-          maxLength: 40
-          description: Unique identifier for account login credentials
-          example: '111566'
-        institutionName:
-          type: string
-          description: Name of the financial institution
-          minLength: 1
-          maxLength: 50
-          example: FinBank
-        accounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConsentAccountDetails'
-          description: The list of account details
-        createdDate:
-          type: string
-          example: '2022-03-10T06:06:20Z'
-          description: The ISO-8601 format date when data holder was added to consent receipt
-        dataHandling:
-          $ref: '#/components/schemas/DataHandling'
-        lastUpdatedBy:
-          type: string
-          example: CUSTOMER
-          description: "Represents who updated the status of the Institution and the possible values are:\n\n  1. CUSTOMER - when the update is made by customer, e.g. arrangement is revoked.\n  2. PARTNER - when the update is made by a partner, e.g customer is deleted.\n  3. INSTITUTION - when the update is made by the institution, e.g. the arrangement is revoked by the institution on behalf of customer.\n  4. SYSTEM - when the update is made by the automated processes in the Mastercard Open Banking system, e.g. arrangement expires.\n  5. INTERNAL - when the update is made via internal Mastercard services, e.g. dispute resolution team revokes the consent on the customer’s request.\n"
-        statusDetails:
-          $ref: '#/components/schemas/InstitutionArrangementStatusDetails'
-        accessPeriod:
-          $ref: '#/components/schemas/InstitutionArrangementAccessPeriod'
-        isBusinessConsumerStatement:
-          type: string
-          description: 'Indicates that customer has given Business type of declaration
-
-            '
-          example: 'false'
-        accountOwnerCategory:
-          type: string
-          description: 'Indicates whether account owner type is INDIVIDUAL or a BUSINESS entity. Possible values are INDIVIDUAL, BUSINESS or undefined
-
-            '
-          example: INDIVIDUAL
-        dataScopes:
-          $ref: '#/components/schemas/DataScopes'
     DataSharingConsentReceipts:
       type: object
       description: List of consent receipts
@@ -258,153 +143,6 @@ components:
           description: List of consent receipts
           items:
             $ref: '#/components/schemas/DataSharingConsentReceipt'
-    DataHandling:
-      required:
-      - postUsageStorage
-      - statement
-      type: object
-      properties:
-        postUsageStorage:
-          type: string
-          pattern: ^(\S)*$
-          description: What to do with the data after expiration of the consent access period. For Example - deIdentification
-          example: deIdentification
-        statement:
-          type: string
-          description: The purpose for which the partner is using the De-Idenified data
-          example: To improve the fraud detection
-    InstitutionArrangementAccessPeriod:
-      type: object
-      description: 'A period of time allowed for accessing the customer’s data for the particular institution. This information must be displayed to the customers in the consent agreement.
-
-        '
-      required:
-      - startDate
-      - endDate
-      properties:
-        startDate:
-          $ref: '#/components/schemas/ISODateTime'
-        endDate:
-          $ref: '#/components/schemas/ISODateTime'
-    AssetId:
-      type: string
-      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
-      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
-    DataSharingConsentContext:
-      type: string
-      description: 'Represents the context in which consent receipt was created.
-
-        Possible values are
-
-
-
-
-        1. partner - User grants consent to access account data
-
-
-        2. crossPartner - User grants consent to access account data from
-
-        connections manager to another partner or associated applications
-
-
-        Context is mandatory in ![🇺🇸](https://flagcdn.com/20x15/us.png).
-
-        '
-      example: crossPartner
-    ConsentAccessPeriod:
-      required:
-      - startDate
-      - endDate
-      type: object
-      description: 'A period of time allowed for accessing the customer’s data granted by this consent.
-
-        If the consent contains more than one institution arrangement, then this period is defined by the longest one.
-
-        This information is displayed to the customers in the consent agreement and consent receipt.'
-      properties:
-        startDate:
-          $ref: '#/components/schemas/ISODateTime'
-        endDate:
-          $ref: '#/components/schemas/ISODateTime'
-    ConsentStatusDetails:
-      type: object
-      required:
-      - status
-      - statusDate
-      description: 'Details on the status of the consent.
-
-        '
-      properties:
-        status:
-          type: string
-          description: "Status of the consent. Possible values are:\n\n\n ACTIVE - One of the institution arrangements under the consent is\nACTIVE.\n   Customer’s data can be accessed using this consent.\n\n INACTIVE - None of the institution arrangements under the consent\nis ACTIVE. Customer’s data cannot be accessed further using this consent.\n"
-          minLength: 5
-          maxLength: 10
-          example: ACTIVE
-        statusDate:
-          type: string
-          description: 'Date and time (in ISO 8601 format) when the consent was updated.
-
-            '
-          example: 2022-07-16 06:06:20+00:00
-    ISODateTime:
-      type: string
-      description: 'A date and time in ISO 8601 format (YYYY-MM-DDThh:mm:ssTZD). See also: [How do I handle Dates and Times?](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
-      example: '2022-07-16T06:06:20Z'
-    DataScopes:
-      type: array
-      description: List of data scopes requested or granted for this operation.
-      items:
-        type: object
-        properties:
-          id:
-            type: string
-            description: Unique identifier for the data scope.
-          name:
-            type: string
-            description: Human‑readable description of the data scope.
-        required:
-        - id
-        - name
-      example:
-      - id: ACCOUNT_DETAILED
-        name: Account Information - Basic + account balances, credit limits, due dates, interest rates, rewards balances, recurrences
-      - id: CUSTOMER_PERSONAL
-        name: Name, Email, Address, Phone, Date of Birth, Tax ID, SSN on file with this institution
-      - id: ACCOUNT_BASIC
-        name: Account display name, masked account number, type, description
-      - id: STATEMENTS
-        name: Periodic PDF statement showing personal information, account and transaction details
-    InstitutionArrangementStatusDetails:
-      type: object
-      description: 'Details of the Institution status.
-
-        '
-      required:
-      - status
-      - statusDate
-      properties:
-        status:
-          type: string
-          description: 'Status of the Institution. Possible values are:
-
-
-            ACTIVE - Accounts data of an Institution can be accessed.
-
-
-            REVOKED - When the status of the Institution is revoked. Accounts data of an Institution can''t be accessed anymore.
-
-
-            EXPIRED - When the status of the Institution is expired. Accounts data of an institution can''t be accessed anymore.
-
-            '
-          example: ACTIVE
-        statusDate:
-          type: string
-          description: 'Date and time (in ISO 8601 format) when the consent was updated.
-
-            '
-          example: 2022-07-16 06:06:20+00:00
     DataSharingConsentReceipt:
       required:
       - consentReceiptId
@@ -497,13 +235,147 @@ components:
             $ref: '#/components/schemas/InstitutionInfo'
         accessPeriod:
           $ref: '#/components/schemas/ConsentAccessPeriod'
-    ConsentInstitutionLoginId:
+    ISODateTime:
+      type: string
+      description: 'A date and time in ISO 8601 format (YYYY-MM-DDThh:mm:ssTZD). See also: [How do I handle Dates and Times?](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
+      example: '2022-07-16T06:06:20Z'
+    AssetId:
+      type: string
+      description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
+      example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    InstitutionArrangementStatusDetails:
+      type: object
+      description: 'Details of the Institution status.
+
+        '
+      required:
+      - status
+      - statusDate
+      properties:
+        status:
+          type: string
+          description: 'Status of the Institution. Possible values are:
+
+
+            ACTIVE - Accounts data of an Institution can be accessed.
+
+
+            REVOKED - When the status of the Institution is revoked. Accounts data of an Institution can''t be accessed anymore.
+
+
+            EXPIRED - When the status of the Institution is expired. Accounts data of an institution can''t be accessed anymore.
+
+            '
+          example: ACTIVE
+        statusDate:
+          type: string
+          description: 'Date and time (in ISO 8601 format) when the consent was updated.
+
+            '
+          example: 2022-07-16 06:06:20+00:00
+    InstitutionInfo:
+      required:
+      - institutionId
+      - institutionName
+      - statusDetails
+      - accessPeriod
+      - isBusinessConsumerStatement
+      - accountOwnerCategory
+      - dataScopes
+      - createdDate
+      description: Represents the institution which has data that the user consents to share
+      properties:
+        institutionId:
+          type: string
+          description: Unique identifier representing a financial institution
+          minLength: 1
+          maxLength: 40
+          pattern: \d+
+          example: '2000003'
+        institutionLoginId:
+          type: string
+          pattern: \d+
+          minLength: 1
+          maxLength: 40
+          description: Unique identifier for account login credentials
+          example: '111566'
+        institutionName:
+          type: string
+          description: Name of the financial institution
+          minLength: 1
+          maxLength: 50
+          example: FinBank
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsentAccountDetails'
+          description: The list of account details
+        createdDate:
+          type: string
+          example: '2022-03-10T06:06:20Z'
+          description: The ISO-8601 format date when data holder was added to consent receipt
+        dataHandling:
+          $ref: '#/components/schemas/DataHandling'
+        lastUpdatedBy:
+          type: string
+          example: CUSTOMER
+          description: "Represents who updated the status of the Institution and the possible values are:\n\n  1. CUSTOMER - when the update is made by customer, e.g. arrangement is revoked.\n  2. PARTNER - when the update is made by a partner, e.g customer is deleted.\n  3. INSTITUTION - when the update is made by the institution, e.g. the arrangement is revoked by the institution on behalf of customer.\n  4. SYSTEM - when the update is made by the automated processes in the Mastercard Open Banking system, e.g. arrangement expires.\n  5. INTERNAL - when the update is made via internal Mastercard services, e.g. dispute resolution team revokes the consent on the customer’s request.\n"
+        statusDetails:
+          $ref: '#/components/schemas/InstitutionArrangementStatusDetails'
+        accessPeriod:
+          $ref: '#/components/schemas/InstitutionArrangementAccessPeriod'
+        isBusinessConsumerStatement:
+          type: string
+          description: 'Indicates that customer has given Business type of declaration
+
+            '
+          example: 'false'
+        accountOwnerCategory:
+          type: string
+          description: 'Indicates whether account owner type is INDIVIDUAL or a BUSINESS entity. Possible values are INDIVIDUAL, BUSINESS or undefined
+
+            '
+          example: INDIVIDUAL
+        dataScopes:
+          $ref: '#/components/schemas/DataScopes'
+    ConsentCustomerId:
       type: string
       pattern: ^[0-9]+$
+      description: 'A Mastercard Open Finance customer ID. See also: "Add Customer".'
+      example: '1005061234'
       minLength: 1
-      maxLength: 20
-      description: A unique identifier of the authentication session with the Financial Institution within the Mastercard Open Banking system.
-      example: '1007302745'
+    DataHandling:
+      required:
+      - postUsageStorage
+      - statement
+      type: object
+      properties:
+        postUsageStorage:
+          type: string
+          pattern: ^(\S)*$
+          description: What to do with the data after expiration of the consent access period. For Example - deIdentification
+          example: deIdentification
+        statement:
+          type: string
+          description: The purpose for which the partner is using the De-Idenified data
+          example: To improve the fraud detection
+    ConsentAccountId:
+      type: string
+      description: A unique identifier of an account within the Mastercard Open Banking system.
+      example: '11894700'
+    InstitutionArrangementAccessPeriod:
+      type: object
+      description: 'A period of time allowed for accessing the customer’s data for the particular institution. This information must be displayed to the customers in the consent agreement.
+
+        '
+      required:
+      - startDate
+      - endDate
+      properties:
+        startDate:
+          $ref: '#/components/schemas/ISODateTime'
+        endDate:
+          $ref: '#/components/schemas/ISODateTime'
     ConsentErrorMessage:
       required:
       - code
@@ -537,10 +409,51 @@ components:
           $ref: '#/components/schemas/AssetId'
         accountId:
           $ref: '#/components/schemas/ConsentAccountId'
-    ConsentAccountId:
-      type: string
-      description: A unique identifier of an account within the Mastercard Open Banking system.
-      example: '11894700'
+    ConsentStatusDetails:
+      type: object
+      required:
+      - status
+      - statusDate
+      description: 'Details on the status of the consent.
+
+        '
+      properties:
+        status:
+          type: string
+          description: "Status of the consent. Possible values are:\n\n\n ACTIVE - One of the institution arrangements under the consent is\nACTIVE.\n   Customer’s data can be accessed using this consent.\n\n INACTIVE - None of the institution arrangements under the consent\nis ACTIVE. Customer’s data cannot be accessed further using this consent.\n"
+          minLength: 5
+          maxLength: 10
+          example: ACTIVE
+        statusDate:
+          type: string
+          description: 'Date and time (in ISO 8601 format) when the consent was updated.
+
+            '
+          example: 2022-07-16 06:06:20+00:00
+    DataScopes:
+      type: array
+      description: List of data scopes requested or granted for this operation.
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Unique identifier for the data scope.
+          name:
+            type: string
+            description: Human‑readable description of the data scope.
+        required:
+        - id
+        - name
+      example:
+      - id: ACCOUNT_DETAILED
+        name: Account Information - Basic + account balances, credit limits, due dates, interest rates, rewards balances, recurrences
+      - id: CUSTOMER_PERSONAL
+        name: Name, Email, Address, Phone, Date of Birth, Tax ID, SSN on file with this institution
+      - id: ACCOUNT_BASIC
+        name: Account display name, masked account number, type, description
+      - id: STATEMENTS
+        name: Periodic PDF statement showing personal information, account and transaction details
     ConsentAccountDetails:
       required:
       - id
@@ -581,6 +494,27 @@ components:
           minLength: 5
           maxLength: 10
           example: ACTIVE
+    DataSharingConsentContext:
+      type: string
+      description: 'Represents the context in which consent receipt was created.
+
+        Possible values are
+
+
+
+
+        1. partner - User grants consent to access account data
+
+
+        2. crossPartner - User grants consent to access account data from
+
+        connections manager to another partner or associated applications
+
+
+        Context is mandatory in ![🇺🇸](https://flagcdn.com/20x15/us.png).
+
+        '
+      example: crossPartner
     DisclosureDetails:
       required:
       - type
@@ -598,57 +532,29 @@ components:
           type: string
           description: Name of the third party entity to whom that data is being disclosed.
           example: Partner Name
-  parameters:
-    ConsentLimitParameter:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of results per page
-      schema:
-        type: integer
-        format: int32
-        default: 25
-        maximum: 1000
-        minimum: 1
-        example: 25
-    ConsentInstitutionLoginIdParameter:
-      description: The institution login ID
-      name: institution_login_id
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/ConsentInstitutionLoginId'
+    ConsentInstitutionLoginId:
+      type: string
+      pattern: ^[0-9]+$
+      minLength: 1
+      maxLength: 20
+      description: A unique identifier of the authentication session with the Financial Institution within the Mastercard Open Banking system.
       example: '1007302745'
-    SortByParameter:
-      name: sort_by
-      in: query
-      description: 'Sort by consent creation or expiration date
+    ConsentAccessPeriod:
+      required:
+      - startDate
+      - endDate
+      type: object
+      description: 'A period of time allowed for accessing the customer’s data granted by this consent.
 
+        If the consent contains more than one institution arrangement, then this period is defined by the longest one.
 
-        Possible values are
-
-
-        1. startDate - Consent creation date
-
-
-        2. endDate - Consent expiration date
-
-
-        3. status - Consent status
-
-        '
-      example: startDate
-      required: false
-      schema:
-        type: string
-        default: startDate
-    DataSharingConsentUpdateByHeaderParam:
-      name: Update-By
-      in: header
-      description: "Describes the entity who is invoking the request. Possible values are:\n  1. CUSTOMER - when the update is made by customer, e.g. arrangement is revoked.\n  2. PARTNER - when the update is made by a partner, e.g. customer is deleted.\n"
-      schema:
-        type: string
-        example: CUSTOMER
+        This information is displayed to the customers in the consent agreement and consent receipt.'
+      properties:
+        startDate:
+          $ref: '#/components/schemas/ISODateTime'
+        endDate:
+          $ref: '#/components/schemas/ISODateTime'
+  parameters:
     DataSharingConsentStatusQueryParam:
       name: status
       in: query
@@ -664,26 +570,25 @@ components:
 
         '
       example: ACTIVE
-    SortOrderParameter:
-      name: sort_order
+    ConsentLimitParameter:
+      name: limit
       in: query
-      description: 'Ascending or Descending
-
-
-        Possible values are
-
-
-        1. Asc for Ascending
-
-
-        2. Desc for Descending
-
-        '
-      example: Asc
       required: false
+      description: Maximum number of results per page
+      schema:
+        type: integer
+        format: int32
+        default: 25
+        maximum: 1000
+        minimum: 1
+        example: 25
+    DataSharingConsentUpdateByHeaderParam:
+      name: Update-By
+      in: header
+      description: "Describes the entity who is invoking the request. Possible values are:\n  1. CUSTOMER - when the update is made by customer, e.g. arrangement is revoked.\n  2. PARTNER - when the update is made by a partner, e.g. customer is deleted.\n"
       schema:
         type: string
-        default: Desc
+        example: CUSTOMER
     DataSharingConsentContextParam:
       name: context
       in: query
@@ -711,6 +616,34 @@ components:
       schema:
         type: string
         example: 123e4567-e89b-42d3-a456-556642440000
+    SortOrderParameter:
+      name: sort_order
+      in: query
+      description: 'Ascending or Descending
+
+
+        Possible values are
+
+
+        1. Asc for Ascending
+
+
+        2. Desc for Descending
+
+        '
+      example: Asc
+      required: false
+      schema:
+        type: string
+        default: Desc
+    ConsentInstitutionLoginIdParameter:
+      description: The institution login ID
+      name: institution_login_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/ConsentInstitutionLoginId'
+      example: '1007302745'
     CustomerIdsQueryParameter:
       name: customer_id
       description: A Mastercard Open Finance customer ID
@@ -730,7 +663,48 @@ components:
         default: 1
         minimum: 1
         example: 1
+    SortByParameter:
+      name: sort_by
+      in: query
+      description: 'Sort by consent creation or expiration date
+
+
+        Possible values are
+
+
+        1. startDate - Consent creation date
+
+
+        2. endDate - Consent expiration date
+
+
+        3. status - Consent status
+
+        '
+      example: startDate
+      required: false
+      schema:
+        type: string
+        default: startDate
   examples:
+    ConsentMissingAppKeyExample:
+      value:
+        code: '10026'
+        status: '401'
+        message: Missing parameter (App-Key)
+        user_message: ''
+    ConsentInvalidFieldExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: Invalid parameter - sortBy
+        user_message: ''
+    DataSharingConsentNotFoundError:
+      value:
+        code: '10215'
+        status: '404'
+        message: Consent receipt not found
+        user_message: ''
     ConsentGenericBadRequestExample:
       value:
         code: '14020'
@@ -743,24 +717,50 @@ components:
         status: '401'
         message: Invalid (App-Token)
         user_message: ''
-    ConsentInvalidFieldExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: Invalid parameter - sortBy
-        user_message: ''
-    ConsentMissingAppKeyExample:
-      value:
-        code: '10026'
-        status: '401'
-        message: Missing parameter (App-Key)
-        user_message: ''
+  responses:
+    DataSharingConsentResponse:
+      description: Data sharing consent retrieved successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DataSharingConsentReceipt'
     DataSharingConsentNotFoundError:
-      value:
-        code: '10215'
-        status: '404'
-        message: Consent receipt not found
-        user_message: ''
+      description: Consent receipt not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConsentErrorMessage'
+          examples:
+            DataSharingConsentNotFoundError:
+              $ref: '#/components/examples/DataSharingConsentNotFoundError'
+    ConsentUnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "App-Key" or "App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConsentErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ConsentExpiredTokenExample'
+            MissingAppKeyExample:
+              $ref: '#/components/examples/ConsentMissingAppKeyExample'
+    DataSharingConsentsByCustomerIdResponse:
+      description: List of consent receipts
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DataSharingConsentReceipts'
+    ConsentBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConsentErrorMessage'
+          examples:
+            InvalidFieldExample:
+              $ref: '#/components/examples/ConsentInvalidFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/ConsentGenericBadRequestExample'
   securitySchemes:
     FinicityAppKey:
       name: Finicity-App-Key

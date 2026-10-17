@@ -169,181 +169,10 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundErrorResponse'
 components:
   examples:
-    InvalidFieldExample:
-      value:
-        code: '10010'
-        status: '400'
-        message: Customer ID does not exist or does not belong to this partner
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    ResellerInvalidDateRangeGreaterThanEndDateExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
-    GenericBadRequestExample:
-      value:
-        code: '14020'
-        message: Bad request.
-    MissingFieldExample:
-      value:
-        code: '10005'
-        message: Missing parameter (partnerId)
-    InvalidConsumerSSNExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
-    NoAccountForInstitutionLoginIdExample:
-      value:
-        code: '38007'
-        message: Customer does not have any accounts associated with institutionLoginId.
-    ConsumerNotFoundExample:
-      value:
-        code: '10100'
-        message: Cannot find consumer with id 1234.
-    CustomerAuthorizationDetailsExample:
-      value:
-        institutionLoginId: 7008461438
-        authorizationStartDate: 2024-01-01 16:11:23.200000+00:00
-        authorizationEndDate: 2024-12-31 16:11:23.200000+00:00
-    CustomerReportLimitExceedExample:
-      value:
-        code: '20400'
-        message: The max report generation limit was exceeded for this customer.
-    MissingFinicityAppTokenExample:
-      value:
-        code: '10024'
-        message: Missing parameter (Finicity-App-Token)
-    InvalidValueExample:
-      value:
-        code: '1618'
-        message: Negative or invalid value entered. Please use positive numbers only.
-    NoRegisteredApplicationExample:
-      value:
-        code: '50051'
-        message: No registered partner applications found.
-    ResellerInvalidDateRangeExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
-    InvalidExperienceFieldExample:
-      value:
-        code: '10010'
-        status: '400'
-        message: '"experience" must be a valid GUID'
-        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
-        tags: ''
-    ResellerInvalidDateRangeLessThanZeroExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
-    ResellerNoReportForPartnerExample:
-      value:
-        code: '10100'
-        message: Cannot find resellerBilling reports with id 2445581559892.
-    ACHDetailsWithoutRTPDetailsV3Example:
-      value:
-        paymentInstruction:
-        - type: ach
-          accountNumber: '1000001111'
-          descriptors:
-          - type: routingNumber
-            value: 091000019
-        - type: fedNow
-          accountNumber: '1000001111'
-          tanEnabled: false
-          descriptors:
-          - type: routingNumber
-            value: 091009919
-          transferInEnabled: true
-          transferOutEnabled: true
-    InvalidFinicityAppTokenExample:
-      value:
-        code: '10022'
-        message: Invalid (Finicity-App-Token)
-    InstitutionLoginIdNotFoundErrorResponseExample:
-      value:
-        code: '3003'
-        status: '404'
-        message: Resource Not Found.
-        user_message: Institution Login Id is not found
-    InvalidForesightReportRequestExample:
-      value:
-        code: '10100'
-        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
-    InvalidConsumerPhoneExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.phone.
-    BothCraAndFtcPurposeTrueExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
-    InvalidConsumerEmailExample:
-      value:
-        code: '10100'
-        message: Invalid format for field consumer.email.
-    NoConsumerForCustomerExample:
-      value:
-        code: '10100'
-        message: Cannot find consumer for customer with id 5011115315."
     ResourceNotFoundExample:
       value:
         code: '14001'
         message: Resource not found.
-    ResellerPartnerNotAuthorizedExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
-    ExpiredFinicityAppTokenExample:
-      value:
-        code: '10023'
-        message: Expired (Finicity-App-Token)
-    MissingFinicityAppKeyExample:
-      value:
-        code: '10026'
-        message: Missing parameter (Finicity-App-Key)
-    ACHDetailsExampleWithoutFedNowV3Example:
-      value:
-        paymentInstruction:
-        - type: ach
-          accountNumber: '1000001111'
-          descriptors:
-          - type: routingNumber
-            value: 091000019
-        - type: rtp
-          accountNumber: '1000001115'
-          tanEnabled: false
-          descriptors:
-          - type: routingNumber
-            value: 091009910
-          transferInEnabled: true
-          transferOutEnabled: true
-    ACHDetailsExampleWithoutFedNowAndWithoutRTPV3Example:
-      value:
-        paymentInstruction:
-        - type: ach
-          accountNumber: '1000001111'
-          descriptors:
-          - type: routingNumber
-            value: 091000019
-    ResellerNoDataForPartnerExample:
-      value:
-        code: '10100'
-        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
-    PermissiblePurposeCodeExample:
-      value:
-        code: '10100'
-        status: '400'
-        message: Permissible Purpose Code is required
-    CustomerNotFoundExample:
-      value:
-        code: '14001'
-        message: Customer not found.
-    BadCredentialsExample:
-      value:
-        code: '24302'
-        message: Bad credentials
     AccountTypeNotSupportedExample:
       value:
         code: '14020'
@@ -379,79 +208,191 @@ components:
             value: 091009919
           transferInEnabled: true
           transferOutEnabled: true
-    ExpiredTokenExample:
+    InvalidConsumerEmailExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.email.
+    CustomerAuthorizationDetailsExample:
+      value:
+        institutionLoginId: 7008461438
+        authorizationStartDate: 2024-01-01 16:11:23.200000+00:00
+        authorizationEndDate: 2024-12-31 16:11:23.200000+00:00
+    InvalidForesightReportRequestExample:
+      value:
+        code: '10100'
+        message: At least one of customerId or externalCustomerId must be provided; both are also allowed.
+    MissingFieldExample:
+      value:
+        code: '10005'
+        message: Missing parameter (partnerId)
+    ExpiredFinicityAppTokenExample:
       value:
         code: '10023'
         message: Expired (Finicity-App-Token)
+    MissingFinicityAppTokenExample:
+      value:
+        code: '10024'
+        message: Missing parameter (Finicity-App-Token)
     ResellerInvalidDateRangeGreaterThan31DaysExample:
       value:
         code: '10100'
         message: 'RESELLER_BILLING_REPORT: Invalid date range - It is more than 31 days'
+    ACHDetailsExampleWithoutFedNowAndWithoutRTPV3Example:
+      value:
+        paymentInstruction:
+        - type: ach
+          accountNumber: '1000001111'
+          descriptors:
+          - type: routingNumber
+            value: 091000019
+    NoAccountForInstitutionLoginIdExample:
+      value:
+        code: '38007'
+        message: Customer does not have any accounts associated with institutionLoginId.
+    InvalidValueExample:
+      value:
+        code: '1618'
+        message: Negative or invalid value entered. Please use positive numbers only.
+    ExpiredTokenExample:
+      value:
+        code: '10023'
+        message: Expired (Finicity-App-Token)
+    PermissiblePurposeCodeExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: Permissible Purpose Code is required
+    BadCredentialsExample:
+      value:
+        code: '24302'
+        message: Bad credentials
+    ACHDetailsExampleWithoutFedNowV3Example:
+      value:
+        paymentInstruction:
+        - type: ach
+          accountNumber: '1000001111'
+          descriptors:
+          - type: routingNumber
+            value: 091000019
+        - type: rtp
+          accountNumber: '1000001115'
+          tanEnabled: false
+          descriptors:
+          - type: routingNumber
+            value: 091009910
+          transferInEnabled: true
+          transferOutEnabled: true
+    ResellerInvalidDateRangeLessThanZeroExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date less than or equal to zero'
+    ACHDetailsWithoutRTPDetailsV3Example:
+      value:
+        paymentInstruction:
+        - type: ach
+          accountNumber: '1000001111'
+          descriptors:
+          - type: routingNumber
+            value: 091000019
+        - type: fedNow
+          accountNumber: '1000001111'
+          tanEnabled: false
+          descriptors:
+          - type: routingNumber
+            value: 091009919
+          transferInEnabled: true
+          transferOutEnabled: true
+    NoRegisteredApplicationExample:
+      value:
+        code: '50051'
+        message: No registered partner applications found.
+    BothCraAndFtcPurposeTrueExample:
+      value:
+        code: '10100'
+        status: '400'
+        message: forCRAPurpose and forFTCPurpose may not both be TRUE.
+    ResellerPartnerNotAuthorizedExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Partner is not authorized to access resellerBilling reports for partnerId 2445583947903'
+    ResellerNoReportForPartnerExample:
+      value:
+        code: '10100'
+        message: Cannot find resellerBilling reports with id 2445581559892.
+    ConsumerNotFoundExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer with id 1234.
+    InvalidConsumerPhoneExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.phone.
+    InvalidFinicityAppTokenExample:
+      value:
+        code: '10022'
+        message: Invalid (Finicity-App-Token)
+    ResellerInvalidDateRangeExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - start or end date is empty or null'
+    InvalidFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: Customer ID does not exist or does not belong to this partner
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    NoConsumerForCustomerExample:
+      value:
+        code: '10100'
+        message: Cannot find consumer for customer with id 5011115315."
+    ResellerNoDataForPartnerExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Reports not found 2445583947903 resellerBilling reports'
+    InvalidConsumerSSNExample:
+      value:
+        code: '10100'
+        message: Invalid format for field consumer.ssn.  Required format is 9 digits.
+    CustomerNotFoundExample:
+      value:
+        code: '14001'
+        message: Customer not found.
+    ResellerInvalidDateRangeGreaterThanEndDateExample:
+      value:
+        code: '10100'
+        message: 'RESELLER_BILLING_REPORT: Invalid date range - startDate is greaterThan endDate'
+    InvalidExperienceFieldExample:
+      value:
+        code: '10010'
+        status: '400'
+        message: '"experience" must be a valid GUID'
+        user_message: One or more of the fields could not be validated. Please ensure you have entered the correct data.
+        tags: ''
+    InstitutionLoginIdNotFoundErrorResponseExample:
+      value:
+        code: '3003'
+        status: '404'
+        message: Resource Not Found.
+        user_message: Institution Login Id is not found
+    MissingFinicityAppKeyExample:
+      value:
+        code: '10026'
+        message: Missing parameter (Finicity-App-Key)
+    CustomerReportLimitExceedExample:
+      value:
+        code: '20400'
+        message: The max report generation limit was exceeded for this customer.
+    GenericBadRequestExample:
+      value:
+        code: '14020'
+        message: Bad request.
   schemas:
-    AccountNumberLast4:
-      type: string
-      description: The last 4 digits of the account number, derived by Mastercard from the account number provided by the financial institution. This is only returned for ACH-enabled accounts.
-      example: '5678'
     UnixDate:
       type: integer
       description: 'A date in Unix epoch time (in seconds). See: [Handling Epoch Dates and Times](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/).'
       format: int64
       example: 1607450357
-    AllowedBalanceCacheInterval:
-      type: integer
-      format: int32
-      default: 30
-      minimum: 0
-      maximum: 1440
-      description: Cache interval in minutes for available balance retrieval. If omitted, the default interval is 30 minutes. If `0`, always fetch live balance. If greater than `0`, cached balance may be returned when cache age is within interval; otherwise live balance is retrieved.
-      example: 30
-    ErrorMessage:
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          type: object
-          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
-          example: '10001'
-        status:
-          type: string
-          description: A status code
-          example: '401'
-        title:
-          type: string
-          description: A title for the error
-          example: Connecting accounts error
-        level:
-          type: string
-          description: An error level
-          example: error
-        message:
-          type: string
-          description: An error message
-          example: Invalid authorization credentials
-        user_message:
-          type: string
-          description: Some more details about the error
-          example: The session has expired or is invalid
-        assetId:
-          $ref: '#/components/schemas/AssetId'
-        accountId:
-          $ref: '#/components/schemas/AccountId'
-        externalTransactionId:
-          type: string
-          description: A unique identifier for the transaction that assists in linking data back to your systems.
-          example: MAC1005061234
-          minLength: 1
-          maxLength: 100
-        tags:
-          type: string
-          description: Categories that the error belongs to
-          example: AGG
-    AccountId:
-      type: string
-      description: An account ID
-      example: '5011648377'
     PaymentInstructions:
       description: A list of payment instructions
       type: object
@@ -461,15 +402,46 @@ components:
           items:
             $ref: '#/components/schemas/PaymentInstruction'
           description: List of payment instructions
-    NumericCustomerId:
-      type: integer
-      format: int64
-      description: A customer ID represented as a number. See Add Customer API for how to create a customer ID.
-      example: 1005061234
     AssetId:
       type: string
       description: An asset ID. Generated by Data Connect or by using the Store Customer Pay Statement API.
       example: 097545c5-1c2a-4f20-a5ef-77f0820344c9-2018601178
+    AvailableBalance:
+      required:
+      - id
+      - realAccountNumberLast4
+      - availableBalance
+      - availableBalanceDate
+      - clearedBalance
+      - clearedBalanceDate
+      - aggregationStatusCode
+      - currency
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/NumericCustomerId'
+        realAccountNumberLast4:
+          $ref: '#/components/schemas/AccountNumberLast4'
+        availableBalance:
+          type: number
+          description: The available balance of the account
+          example: 173.47
+        availableBalanceDate:
+          $ref: '#/components/schemas/UnixDate'
+        clearedBalance:
+          type: number
+          description: The cleared balance of the account. Also referred as posted balance, current balance, ledger balance
+          example: 222.25
+        clearedBalanceDate:
+          $ref: '#/components/schemas/UnixDate'
+        aggregationStatusCode:
+          $ref: '#/components/schemas/AggregationStatusCode'
+        currency:
+          $ref: '#/components/schemas/Currency'
+    CustomerId:
+      type: string
+      description: A customer ID. See Add Customer API for how to create a customer ID.
+      example: '1005061234'
     LoanPaymentDetailsLoan:
       description: Loan details
       required:
@@ -502,38 +474,6 @@ components:
           description: The date to which the "Future Payoff Amount" applies
           format: date-time
           example: '2022-01-01T00:00:00.000Z'
-    ACHDetails:
-      required:
-      - routingNumber
-      - realAccountNumber
-      type: object
-      properties:
-        routingNumber:
-          type: string
-          description: The routing number of the financial institution for specific customer account
-          example: '123456789'
-        realAccountNumber:
-          type: string
-          description: The account number for initiating ACH transfers for this account
-          example: 002345678901
-      description: The routing and account number information to initiate ACH transfers
-    Descriptor:
-      required:
-      - type
-      - value
-      type: object
-      properties:
-        type:
-          type: string
-          description: Payment Instruction Descriptor Type
-          example: routingNumber
-        value:
-          type: string
-          description: Value that the Descriptor Type Holds
-          example: '2434345'
-    AggregationStatusCode:
-      type: integer
-      description: The status of the most recent aggregation attempt (see [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes)). Won't be present until you have run your first aggregation for the account.
     LoanPaymentDetailsGroup:
       description: Group details
       required:
@@ -609,10 +549,6 @@ components:
           type: boolean
           description: Indicates whether transfer from this account is enabled or not. Applicable for "RTP" and "FedNow" type only.
           example: true
-    Currency:
-      type: string
-      description: A currency code
-      example: USD
     LoanPaymentDetails:
       description: Loan payment details for a customer account
       required:
@@ -635,42 +571,87 @@ components:
           example: Heartland ECSI       PO Box 718       Wexford PA 15090
         accountDetail:
           $ref: '#/components/schemas/LoanPaymentDetailsAccount'
-    AvailableBalance:
+    NumericCustomerId:
+      type: integer
+      format: int64
+      description: A customer ID represented as a number. See Add Customer API for how to create a customer ID.
+      example: 1005061234
+    Descriptor:
       required:
-      - id
-      - realAccountNumberLast4
-      - availableBalance
-      - availableBalanceDate
-      - clearedBalance
-      - clearedBalanceDate
-      - aggregationStatusCode
-      - currency
+      - type
+      - value
       type: object
       properties:
-        id:
-          $ref: '#/components/schemas/NumericCustomerId'
-        realAccountNumberLast4:
-          $ref: '#/components/schemas/AccountNumberLast4'
-        availableBalance:
-          type: number
-          description: The available balance of the account
-          example: 173.47
-        availableBalanceDate:
-          $ref: '#/components/schemas/UnixDate'
-        clearedBalance:
-          type: number
-          description: The cleared balance of the account. Also referred as posted balance, current balance, ledger balance
-          example: 222.25
-        clearedBalanceDate:
-          $ref: '#/components/schemas/UnixDate'
-        aggregationStatusCode:
-          $ref: '#/components/schemas/AggregationStatusCode'
-        currency:
-          $ref: '#/components/schemas/Currency'
-    CustomerId:
+        type:
+          type: string
+          description: Payment Instruction Descriptor Type
+          example: routingNumber
+        value:
+          type: string
+          description: Value that the Descriptor Type Holds
+          example: '2434345'
+    AggregationStatusCode:
+      type: integer
+      description: The status of the most recent aggregation attempt (see [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes)). Won't be present until you have run your first aggregation for the account.
+    AccountNumberLast4:
       type: string
-      description: A customer ID. See Add Customer API for how to create a customer ID.
-      example: '1005061234'
+      description: The last 4 digits of the account number, derived by Mastercard from the account number provided by the financial institution. This is only returned for ACH-enabled accounts.
+      example: '5678'
+    AllowedBalanceCacheInterval:
+      type: integer
+      format: int32
+      default: 30
+      minimum: 0
+      maximum: 1440
+      description: Cache interval in minutes for available balance retrieval. If omitted, the default interval is 30 minutes. If `0`, always fetch live balance. If greater than `0`, cached balance may be returned when cache age is within interval; otherwise live balance is retrieved.
+      example: 30
+    ErrorMessage:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: object
+          description: 'An error code (can be returned as a number or a string). Useful links: [Common API Status Codes](https://developer.mastercard.com/open-finance-us/documentation/errors/best-practices/#common-api-status-codes), [Aggregation Status Codes](https://developer.mastercard.com/open-finance-us/documentation/products/manage/account-aggregation/#aggregation-status-codes).'
+          example: '10001'
+        status:
+          type: string
+          description: A status code
+          example: '401'
+        title:
+          type: string
+          description: A title for the error
+          example: Connecting accounts error
+        level:
+          type: string
+          description: An error level
+          example: error
+        message:
+          type: string
+          description: An error message
+          example: Invalid authorization credentials
+        user_message:
+          type: string
+          description: Some more details about the error
+          example: The session has expired or is invalid
+        assetId:
+          $ref: '#/components/schemas/AssetId'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        externalTransactionId:
+          type: string
+          description: A unique identifier for the transaction that assists in linking data back to your systems.
+          example: MAC1005061234
+          minLength: 1
+          maxLength: 100
+        tags:
+          type: string
+          description: Categories that the error belongs to
+          example: AGG
+    Currency:
+      type: string
+      description: A currency code
+      example: USD
     LoanPaymentDetailsAccount:
       required:
       - accountId
@@ -712,56 +693,27 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LoanPaymentDetailsLoan'
+    AccountId:
+      type: string
+      description: An account ID
+      example: '5011648377'
+    ACHDetails:
+      required:
+      - routingNumber
+      - realAccountNumber
+      type: object
+      properties:
+        routingNumber:
+          type: string
+          description: The routing number of the financial institution for specific customer account
+          example: '123456789'
+        realAccountNumber:
+          type: string
+          description: The account number for initiating ACH transfers for this account
+          example: 002345678901
+      description: The routing and account number information to initiate ACH transfers
   responses:
-    GetAvailableBalanceResponse:
-      description: The balance was successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AvailableBalance'
-    GetLoanPaymentDetailsResponse:
-      description: The loan payment details were successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/LoanPaymentDetails'
-    GetAccountPaymentInstructionBadRequestErrorResponse:
-      description: The request was rejected due to validation failures
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
-            InstitutionLoginIdNotFoundErrorResponseExample:
-              $ref: '#/components/examples/InstitutionLoginIdNotFoundErrorResponseExample'
-            InstitutionLoginIdDetailsNotFoundErrorResponseExample:
-              $ref: '#/components/examples/InstitutionLoginIdDetailsNotFoundErrorResponseExample'
-            MissingFieldExample:
-              $ref: '#/components/examples/MissingFieldExample'
-            InvalidFieldExample:
-              $ref: '#/components/examples/InvalidFieldExample'
-            GenericBadRequestExample:
-              $ref: '#/components/examples/GenericBadRequestExample'
-            AccountTypeNotSupportedExample:
-              $ref: '#/components/examples/AccountTypeNotSupportedExample'
-    GetAccountPaymentInstructionDetailsResponse:
-      description: Account ACH details were successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PaymentInstructions'
-          examples:
-            ACHDetailsV3Example:
-              $ref: '#/components/examples/ACHDetailsV3Example'
-            ACHDetailsWithoutRTPDetailsV3Example:
-              $ref: '#/components/examples/ACHDetailsWithoutRTPDetailsV3Example'
-            ACHDetailsExampleWithoutFedNowV3Example:
-              $ref: '#/components/examples/ACHDetailsExampleWithoutFedNowV3Example'
-            ACHDetailsExampleWithoutFedNowAndWithoutRTPV3Example:
-              $ref: '#/components/examples/ACHDetailsExampleWithoutFedNowAndWithoutRTPV3Example'
-            CustomerAuthorizationDetailsExample:
-              $ref: '#/components/examples/CustomerAuthorizationDetailsExample'
-    GetAvailableBalanceLiveBadRequestErrorResponse:
+    GetAccountACHDetailsBadRequestErrorResponse:
       description: The request was rejected
       content:
         application/json:
@@ -776,29 +728,27 @@ components:
               $ref: '#/components/examples/GenericBadRequestExample'
             AccountTypeNotSupportedExample:
               $ref: '#/components/examples/AccountTypeNotSupportedExample'
-    UnauthorizedErrorResponse:
-      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+    GetAvailableBalanceBadRequestErrorResponse:
+      description: The request was rejected
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorMessage'
           examples:
-            ExpiredTokenExample:
-              $ref: '#/components/examples/ExpiredTokenExample'
-            MissingFinicityAppKeyExample:
-              $ref: '#/components/examples/MissingFinicityAppKeyExample'
-            MissingFinicityAppTokenExample:
-              $ref: '#/components/examples/MissingFinicityAppTokenExample'
-            InvalidFinicityAppTokenExample:
-              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
-            ExpiredFinicityAppTokenExample:
-              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
-            BadCredentialsExample:
-              $ref: '#/components/examples/BadCredentialsExample'
-        text/plain:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+    GetLoanPaymentDetailsResponse:
+      description: The loan payment details were successfully retrieved
+      content:
+        application/json:
           schema:
-            type: string
-            example: Invalid (Finicity-App-Key)
+            $ref: '#/components/schemas/LoanPaymentDetails'
     ResourceNotFoundErrorResponse:
       description: The resource doesn't exist
       content:
@@ -822,12 +772,79 @@ components:
               $ref: '#/components/examples/ResellerNoDataForPartnerExample'
             ResellerNoReportForPartnerExample:
               $ref: '#/components/examples/ResellerNoReportForPartnerExample'
+    GetAvailableBalanceLiveBadRequestErrorResponse:
+      description: The request was rejected
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            MissingFieldExample:
+              $ref: '#/components/examples/MissingFieldExample'
+            InvalidFieldExample:
+              $ref: '#/components/examples/InvalidFieldExample'
+            GenericBadRequestExample:
+              $ref: '#/components/examples/GenericBadRequestExample'
+            AccountTypeNotSupportedExample:
+              $ref: '#/components/examples/AccountTypeNotSupportedExample'
+    GetAvailableBalanceResponse:
+      description: The balance was successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AvailableBalance'
+    UnauthorizedErrorResponse:
+      description: The request lacks valid authentication credentials. Check "Finicity-App-Key" or "Finicity-App-Token".
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          examples:
+            ExpiredTokenExample:
+              $ref: '#/components/examples/ExpiredTokenExample'
+            MissingFinicityAppKeyExample:
+              $ref: '#/components/examples/MissingFinicityAppKeyExample'
+            MissingFinicityAppTokenExample:
+              $ref: '#/components/examples/MissingFinicityAppTokenExample'
+            InvalidFinicityAppTokenExample:
+              $ref: '#/components/examples/InvalidFinicityAppTokenExample'
+            ExpiredFinicityAppTokenExample:
+              $ref: '#/components/examples/ExpiredFinicityAppTokenExample'
+            BadCredentialsExample:
+              $ref: '#/components/examples/BadCredentialsExample'
+        text/plain:
+          schema:
+            type: string
+            example: Invalid (Finicity-App-Key)
     GetAvailableBalanceLiveResponse:
       description: The live balance was successfully retrieved
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/AvailableBalance'
+    GetAccountPaymentInstructionDetailsResponse:
+      description: Account ACH details were successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentInstructions'
+          examples:
+            ACHDetailsV3Example:
+              $ref: '#/components/examples/ACHDetailsV3Example'
+            ACHDetailsWithoutRTPDetailsV3Example:
+              $ref: '#/components/examples/ACHDetailsWithoutRTPDetailsV3Example'
+            ACHDetailsExampleWithoutFedNowV3Example:
+              $ref: '#/components/examples/ACHDetailsExampleWithoutFedNowV3Example'
+            ACHDetailsExampleWithoutFedNowAndWithoutRTPV3Example:
+              $ref: '#/components/examples/ACHDetailsExampleWithoutFedNowAndWithoutRTPV3Example'
+            CustomerAuthorizationDetailsExample:
+              $ref: '#/components/examples/CustomerAuthorizationDetailsExample'
+    GetAccountACHDetailsResponse:
+      description: Account ACH details were successfully retrieved
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ACHDetails'
     BadRequestErrorResponse:
       description: The request was rejected
       content:
@@ -871,34 +888,17 @@ components:
               $ref: '#/components/examples/InvalidConsumerEmailExample'
             InvalidValue:
               $ref: '#/components/examples/InvalidValueExample'
-    GetAvailableBalanceBadRequestErrorResponse:
-      description: The request was rejected
+    GetAccountPaymentInstructionBadRequestErrorResponse:
+      description: The request was rejected due to validation failures
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorMessage'
           examples:
-            MissingFieldExample:
-              $ref: '#/components/examples/MissingFieldExample'
-            InvalidFieldExample:
-              $ref: '#/components/examples/InvalidFieldExample'
-            GenericBadRequestExample:
-              $ref: '#/components/examples/GenericBadRequestExample'
-            AccountTypeNotSupportedExample:
-              $ref: '#/components/examples/AccountTypeNotSupportedExample'
-    GetAccountACHDetailsResponse:
-      description: Account ACH details were successfully retrieved
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ACHDetails'
-    GetAccountACHDetailsBadRequestErrorResponse:
-      description: The request was rejected
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessage'
-          examples:
+            InstitutionLoginIdNotFoundErrorResponseExample:
+              $ref: '#/components/examples/InstitutionLoginIdNotFoundErrorResponseExample'
+            InstitutionLoginIdDetailsNotFoundErrorResponseExample:
+              $ref: '#/components/examples/InstitutionLoginIdDetailsNotFoundErrorResponseExample'
             MissingFieldExample:
               $ref: '#/components/examples/MissingFieldExample'
             InvalidFieldExample:
@@ -916,14 +916,6 @@ components:
       schema:
         $ref: '#/components/schemas/CustomerId'
       example: '1005061234'
-    AccountIdParameter:
-      description: The account ID
-      name: accountId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/AccountId'
-      example: '5011648377'
     AllowedBalanceCacheIntervalParameter:
       description: '`balance_cache_interval` (in minutes) is used at server side to decide whether to return existing cached balance or retrieve from financial institution in real-time. Details explained below:
 
@@ -938,6 +930,14 @@ components:
       schema:
         $ref: '#/components/schemas/AllowedBalanceCacheInterval'
       example: 1
+    AccountIdParameter:
+      description: The account ID
+      name: accountId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/AccountId'
+      example: '5011648377'
   securitySchemes:
     FinicityAppKey:
       name: Finicity-App-Key
