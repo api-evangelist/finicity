@@ -1,4 +1,4 @@
-# Finicity (finicity)
+# Finicity
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,96 +64,151 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Finicity, LLC is a Utah-based financial-data aggregator and open-finance technology provider acquired by Mastercard in 2020 and now operating as Mastercard Open Banking (US) within Mastercard Open Finance. It is not a chartered bank but a consumer-permissioned data-access and decisioning platform — and an FCRA-regulated consumer reporting agency for its verification products — providing account and transaction aggregation, Verification of Assets/Income/Employment, transaction and cash-flow analysis, statements, and account validation for ACH payments. Finicity is a founding participant in the Financial Data Exchange (FDX), ships FDX-aligned data-sharing APIs, and positions its platform as an enabler of CFPB Section 1033 personal financial data rights.
+Finicity, LLC is a Utah-based financial-data aggregator and open-finance technology provider acquired by Mastercard in 2020 and now operating as Mastercard Open Banking (US) within Mastercard Open Finance. It is not a chartered bank but a consumer-permissioned data-access and decisioning platform (and an FCRA-regulated consumer reporting agency for its verification products), providing account and transaction aggregation, Verification of Assets, Income and Employment, transaction and cash-flow analysis, statements, and account validation for ACH payments. Finicity runs a first-party developer portal (developer.mastercard.com/open-banking-us, formerly developer.finicity.com and docs.finicity.com, both of which now redirect) over the live api.finicity.com host, is a founding participant in the Financial Data Exchange (FDX) with FDX-aligned data-sharing APIs, and positions its platform as an enabler of CFPB Section 1033 personal financial data rights. Public product documentation is openly reachable, but the full API reference and any machine-readable OpenAPI specification are partner-gated behind Mastercard Developers credentials.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/finicity/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/finicity/refs/heads/main/apis.yml)
+**Areas:** Financial Services · Data Aggregation · Open Finance · Open Banking · FDX · United States · Payments · Financial Data
 
-## Open-Finance / API Posture
+## Finicity on APIs.io
 
-- **First-party developer portal (confirmed live):** [https://developer.mastercard.com/open-banking-us/documentation/](https://developer.mastercard.com/open-banking-us/documentation/) — HTTP 200. The legacy Finicity developer surfaces `developer.finicity.com` and `docs.finicity.com` both now redirect here.
-- **API host (confirmed live):** `https://api.finicity.com` — HTTP 401 (auth-gated; real production host).
-- **Authentication:** Finicity partner authentication — an application `Finicity-App-Key` plus Partner ID and Partner Secret are exchanged for a `Finicity-App-Token`, with consumer permissioning captured through Finicity Connect.
-- **OpenAPI / spec provenance:** No machine-readable OpenAPI/Swagger specification is publicly downloadable. The documentation landing page is public, but the full API reference and any specification are partner-gated behind Mastercard Developers credentials. No spec was harvested.
-- **FDX:** Founding participant in the Financial Data Exchange; data sharing is FDX-aligned.
-- **CFPB Section 1033:** Positioned publicly as an enabler of consumer financial data rights / 1033 open-banking access.
-- **Aggregator tier:** Finicity is itself an aggregator — for most connected institutions it is the data-access seam, alongside Plaid, MX, Akoya and others.
+Everything profiled for Finicity is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/finicity/](https://apis.io/providers/finicity/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (41)
 
-- Financial Services
-- Data Aggregation
-- Open Finance
-- Open Banking
-- FDX
-- United States
-- Payments
-- Financial Data
+- [Finicity Connect](https://apis.io/apis/finicity/finicity-connect/) — Hosted, embeddable account-linking experience that lets a consumer authenticate to their financial institution and permission data sharing, returning the…
+- [Finicity Verification of Assets (VoA) API](https://apis.io/apis/finicity/finicity-verification-of-assets-api/) — Generates a consumer-permissioned Verification of Assets report from aggregated account and balance data for mortgage, lending and underwriting workflows,…
+- [Finicity Verification of Income & Employment (VoIE) API](https://apis.io/apis/finicity/finicity-verification-of-income-employment-api/) — Derives income streams and employment signals from permissioned transaction and payroll data to produce Verification of Income and Verification of…
+- [Finicity Transaction Analysis (Cash Flow) API](https://apis.io/apis/finicity/finicity-transaction-analysis-api/) — Analyzes permissioned transaction history to produce cash-flow, income and expense insights used for prequalification, credit decisioning and…
+- [Finicity Payments (Account Validation) API](https://apis.io/apis/finicity/finicity-payments-account-validation-api/) — Validates account ownership and status for ACH and account-funding flows, returning account, routing and owner verification signals to reduce returned…
+- [Finicity Open Banking Data Access (FDX)](https://apis.io/apis/finicity/finicity-open-banking-data-access/) — FDX-aligned, consumer-permissioned open-banking data-access surface through which Finicity, as a founding Financial Data Exchange participant, shares…
+- [Finicity Account Validation Assistance API](https://apis.io/apis/finicity/finicity-account-validation-assistance-api/) — Micro entries and account verification
+- [Finicity Accounts API](https://apis.io/apis/finicity/finicity-accounts-api/) — Fetch or refresh customer accounts
+- [Finicity Accounts (Simple) API](https://apis.io/apis/finicity/finicity-accounts-simple-api/) — Fetch simple customer accounts
+- [Finicity App Registration API](https://apis.io/apis/finicity/finicity-app-registration-api/) — Register and assign apps to customers
+- [Finicity Authentication API](https://apis.io/apis/finicity/finicity-authentication-api/) — Generate authentication tokens and manage credentials
+- [Finicity Balance Analytics API](https://apis.io/apis/finicity/finicity-balance-analytics-api/) — Balance Analytics for businesses
+- [Finicity Bank Statements API](https://apis.io/apis/finicity/finicity-bank-statements-api/) — Fetch account statements and generate reports asynchronously
+- [Finicity Businesses API](https://apis.io/apis/finicity/finicity-businesses-api-api/) — Create and manage business associated with customers in order to use Balance Analytics or Cash Flow Analytics
+- [Finicity Cash Flow Analytics API](https://apis.io/apis/finicity/finicity-cash-flow-analytics-api/) — Cash Flow Analytics for business
+- [Finicity Cash Flow API](https://apis.io/apis/finicity/finicity-cash-flow-api/) — Generate cash flow reports asynchronously
+- [Finicity Connect API](https://apis.io/apis/finicity/finicity-connect-api/) — Allow customers to log into their financial institutions and grant Finicity authorization
+- [Finicity Connect Components API](https://apis.io/apis/finicity/finicity-connect-components-api/) — Allow customers to log into their financial institutions and grant Finicity authorization
+- [Finicity Consumer Foresight API](https://apis.io/apis/finicity/finicity-consumer-foresight-api/) — Generate consumer foresight analytics reports
+- [Finicity Consumers API](https://apis.io/apis/finicity/finicity-consumers-api/) — Create and manage consumers associated with customers in order to use report services
+- [Finicity Customer Authorization Details API](https://apis.io/apis/finicity/finicity-customer-authorization-details-api/) — APIs to retrieve customer authorization details
+- [Finicity Customers API](https://apis.io/apis/finicity/finicity-customers-api/) — Enroll and manage customers
+- [Finicity Data Sharing Consent API](https://apis.io/apis/finicity/finicity-data-sharing-consent-api/) — Manage data sharing consents
+- [Finicity Identity API](https://apis.io/apis/finicity/finicity-identity-api/) — Match the request details to the Institution account holder details
+- [Finicity Institutions API](https://apis.io/apis/finicity/finicity-institutions-api/) — Search and fetch financial institutions
+- [Finicity Pay Statements API](https://apis.io/apis/finicity/finicity-pay-statements-api/) — Upload pay statements
+- [Finicity Payment Enablement Bundle API](https://apis.io/apis/finicity/finicity-payment-enablement-bundle-api/) — Any or all of the Payments endpoints in one API call
+- [Finicity Payment History Report API](https://apis.io/apis/finicity/finicity-payment-history-report-api/) — Payment History Report for business
+- [Finicity Payment Success Indicator API](https://apis.io/apis/finicity/finicity-payment-success-indicator-api/) — Predict a transaction's likelihood to settle
+- [Finicity Payments API](https://apis.io/apis/finicity/finicity-payments-api/) — Fetch ACH details and account balances
+- [Finicity Portfolios API](https://apis.io/apis/finicity/finicity-portfolios-api/) — Generate portfolios of the most recent reports
+- [Finicity Reports API](https://apis.io/apis/finicity/finicity-reports-api/) — Fetch generated reports when ready
+- [Finicity Small Business Credit Analytics API](https://apis.io/apis/finicity/finicity-small-business-credit-analytics-api/) — Fetch merchant location matches and generate reports
+- [Finicity Third Party Access API](https://apis.io/apis/finicity/finicity-third-party-access-api/) — Generate and manage access keys for other partners
+- [Finicity Transaction Data Enrichment API](https://apis.io/apis/finicity/finicity-transaction-data-enrichment-api/) — Enhance the transaction data set
+- [Finicity Transactions API](https://apis.io/apis/finicity/finicity-transactions-api/) — Fetch customer and account transactions and generate reports asynchronously
+- [Finicity Transfer API](https://apis.io/apis/finicity/finicity-transfer-api/) — Fetch details of the deposit and bill pay switches
+- [Finicity Tx Push API](https://apis.io/apis/finicity/finicity-txpush-api/) — Manage TxPush subscriptions
+- [Finicity Verify Assets API](https://apis.io/apis/finicity/finicity-verify-assets-api/) — Generate asset reports asynchronously
+- [Finicity Verify Income and Employment API](https://apis.io/apis/finicity/finicity-verify-income-and-employment-api/) — Generate income and employment reports asynchronously
+- [Finicity Webhook Subscription API](https://apis.io/apis/finicity/finicity-webhook-subscription-api/) — APIs for Managing Partner Webhook Event Subscriptions
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-07-23
-- **Modified:** 2026-07-23
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### AsyncAPI (1)
 
-### Finicity Aggregation (Accounts & Transactions) API
+Event-driven and webhook contracts.
 
-Consumer-permissioned account and transaction aggregation across banks, credit unions, cards, loans and investment accounts, delivering account details, balances and categorized transactions.
+- [Finicity Webhooks](https://apis.io/asyncapis/finicity/finicity-webhooks/)
 
-- **Human URL:** [https://developer.mastercard.com/open-banking-us/documentation/](https://developer.mastercard.com/open-banking-us/documentation/)
-- **Base URL:** `https://api.finicity.com`
+#### MCP servers (1)
 
-### Finicity Connect
+Model Context Protocol servers that expose the API to agents.
 
-Hosted, embeddable account-linking experience that lets a consumer authenticate to their financial institution and permission data sharing, returning the linked accounts to the partner application.
+- [finicity](https://apis.io/servers/finicity/finicity/)
 
-- **Human URL:** [https://developer.mastercard.com/open-banking-us/documentation/connect/](https://developer.mastercard.com/open-banking-us/documentation/connect/)
-- **Base URL:** `https://api.finicity.com`
+#### Overlays (1)
 
-### Finicity Verification of Assets (VoA) API
+OpenAPI overlays, including conversational phrasing for each operation.
 
-Generates a consumer-permissioned Verification of Assets report from aggregated account and balance data for mortgage, lending and underwriting workflows — an FCRA-regulated consumer report product.
+- [Finicity Openbanking Us Overlay](https://apis.io/overlays/finicity/finicity-openbanking-us-overlay/)
 
-- **Human URL:** [https://developer.mastercard.com/open-banking-us/documentation/](https://developer.mastercard.com/open-banking-us/documentation/)
-- **Base URL:** `https://api.finicity.com`
+#### Security (2)
 
-### Finicity Verification of Income & Employment (VoIE) API
+Authentication, trust centre, and vulnerability disclosure.
 
-Derives income streams and employment signals from permissioned transaction and payroll data to produce Verification of Income and Verification of Employment reports for lending decisions.
+- [Finicity Authentication](https://apis.io/security/finicity/finicity-authentication/)
+- [Finicity Domain Security](https://apis.io/security/finicity/finicity-domain-security/)
 
-- **Human URL:** [https://developer.mastercard.com/open-banking-us/documentation/](https://developer.mastercard.com/open-banking-us/documentation/)
-- **Base URL:** `https://api.finicity.com`
+## Where to find this API
 
-### Finicity Transaction Analysis (Cash Flow) API
-
-Analyzes permissioned transaction history to produce cash-flow, income and expense insights used for prequalification, credit decisioning and financial-health scoring.
-
-- **Human URL:** [https://developer.mastercard.com/open-banking-us/documentation/](https://developer.mastercard.com/open-banking-us/documentation/)
-- **Base URL:** `https://api.finicity.com`
-
-### Finicity Payments (Account Validation) API
-
-Validates account ownership and status for ACH and account-funding flows, returning account, routing and owner verification signals to reduce returned payments and fraud.
-
-- **Human URL:** [https://developer.mastercard.com/open-banking-us/documentation/](https://developer.mastercard.com/open-banking-us/documentation/)
-- **Base URL:** `https://api.finicity.com`
-
-### Finicity Open Banking Data Access (FDX)
-
-FDX-aligned, consumer-permissioned open-banking data-access surface through which Finicity, as a founding Financial Data Exchange participant, shares financial data on behalf of connected institutions in support of CFPB Section 1033 data rights.
-
-- **Human URL:** [https://developer.mastercard.com/open-banking-us/documentation/](https://developer.mastercard.com/open-banking-us/documentation/)
-- **Base URL:** `https://api.finicity.com`
-
-## Common Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.finicity.com/)
-- [Developer Portal](https://developer.mastercard.com/open-banking-us/documentation/)
 - [Documentation](https://developer.mastercard.com/open-banking-us/documentation/)
-- [GitHub Organization](https://github.com/Finicity)
-- [LinkedIn](https://www.linkedin.com/company/finicity/)
+- [Getting started](https://developer.mastercard.com/open-banking-us/documentation/test-the-apis/)
+- [API reference](https://developer.mastercard.com/open-banking-us/documentation/api-reference/)
+- [Sign up](https://developer.mastercard.com/product/open-banking/)
+- [Support](https://developer.mastercard.com/support/)
+- [GitHub](https://github.com/Mastercard)
+- [Status](https://developer.mastercard.com/open-banking-us/documentation/status/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 47.2** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 59.9 |
+| Contract governance | 4.5 |
+| Operational transparency | 50.0 |
+| Developer ergonomics | 75.6 |
+| Access clarity | 13.2 |
+
+**Agent readiness 22.3** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 26.0** — Banking & Open Finance
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/finicity/](https://apis.io/providers/finicity/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Finicity: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/finicity/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
